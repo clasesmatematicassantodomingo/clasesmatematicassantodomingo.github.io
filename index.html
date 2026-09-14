@@ -2,9 +2,418 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi primera página web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profesor de Matemáticas y Nivelación en Santo Domingo de los Tsáchilas</title>
+    <meta name="description" content="Clases particulares de matemáticas, nivelación académica y preparación preuniversitaria en Santo Domingo de los Tsáchilas, Ecuador. ¡Resultados garantizados!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #1e293b;
+            --accent: #2563eb;
+            --whatsapp: #22c55e;
+            --whatsapp-hover: #16a34a;
+            --bg-light: #f8fafc;
+            --text-main: #334155;
+            --white: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            margin-bottom: 2rem;
+            color: #cbd5e1;
+        }
+
+        .btn-whatsapp {
+            background-color: var(--whatsapp);
+            color: var(--white);
+            padding: 0.85rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background-color: var(--whatsapp-hover);
+            transform: translateY(-2px);
+        }
+
+        section {
+            padding: 4rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: var(--primary-dark);
+        }
+
+        /* 2. Pilares de Servicio */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* 3. Por qué conmigo */
+        .authority {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .authority-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .authority-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+        }
+
+        /* 4. Gancho / Lead Magnet */
+        .lead-magnet {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .lead-magnet input {
+            padding: 0.75rem 1rem;
+            width: 100%;
+            max-width: 350px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-right: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-submit {
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* 5. Precios */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .price-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .price-card.featured {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 1.5rem 0;
+        }
+
+        /* 6. Testimonios */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            margin-top: 1rem;
+            font-weight: 600;
+            font-style: normal;
+            color: var(--primary);
+        }
+
+        /* 7. Pie de Página (SEO Local) */
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>¡Hola mundo! Mi página web está en GitHub.</h1>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Profe Andrés | Matemáticas SD</a>
+            <ul class="nav-links">
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#autoridad">Sobre Mí</a></li>
+                <li><a href="#precios">Precios</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 1. Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Tu hijo puede dominar las matemáticas sin estrés en Santo Domingo</h1>
+            <p>Nivelación personalizada para escuelas y colegios. Preparación especializada para exámenes de ingreso a la universidad en la localidad.</p>
+            <a href="https://wa.me/593900000000?text=Hola%20Profe%20Andrés,%20deseo%20información%20sobre%20las%20clases%20de%20matemáticas" class="btn-whatsapp" target="_blank">
+                Agendar clase de prueba por WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- 2. Pilares de Servicio -->
+    <section id="servicios">
+        <h2>Áreas de Nivelación y Apoyo Académico</h2>
+        <div class="pillars-grid">
+            <div class="card">
+                <h3>Refuerzo Escolar</h3>
+                <p>Ideal para estudiantes de escuela. Dominio de tablas de multiplicar, fracciones, operaciones básicas y razonamiento lógico sin frustraciones.</p>
+            </div>
+            <div class="card">
+                <h3>Bachillerato y Supletorios</h3>
+                <p>Enfoque directo en álgebra, trigonometría, geometría y cálculo. Diseñado para asegurar la aprobación del año lectivo y exámenes de grado.</p>
+            </div>
+            <div class="card">
+                <h3>Pre-Universitario Local</h3>
+                <p>Preparación intensiva orientada al razonamiento numérico para los procesos de admisión de la ESPE, UTE y universidades del país.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Sección "Por qué conmigo" -->
+    <section id="autoridad">
+        <div class="authority">
+            <div class="authority-grid">
+                <div>
+                    <h2>Experiencia y Resultados en Santo Domingo</h2>
+                    <p>Soy docente especialista con amplia trayectoria en instituciones educativas de la ciudad. Mi metodología combina el rigor analítico con herramientas tecnológicas prácticas para que los estudiantes dejen de memorizar fórmulas y aprendan a razonar.</p>
+                </div>
+                <div>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
+                        <li>✔️ Clases 100% dinámicas y enfocadas en la práctica real.</li>
+                        <li>✔️ Adaptado al ritmo de aprendizaje de cada alumno.</li>
+                        <li>✔️ Respaldo profesional y formal con cédula profesional registrada.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. El Gancho / Lead Magnet -->
+    <section>
+        <div class="lead-magnet">
+            <h2 style="margin-bottom: 1rem; font-size: 1.5rem;">Descarga Gratis la Guía de Casos de Factorización</h2>
+            <p style="margin-bottom: 1.5rem;">Recibe en tu correo el compendio rápido de ejercicios resueltos clave para exámenes de colegio.</p>
+            <form id="leadForm" onsubmit="handleLead(event)">
+                <input type="email" id="userEmail" placeholder="Ingresa tu correo electrónico" required>
+                <button type="submit" class="btn-submit">Descargar Guía</button>
+            </form>
+            <p id="formFeedback" style="margin-top: 0.5rem; color: var(--whatsapp); font-weight: 500; display: none;">¡Guía enviada con éxito! Revisa tu bandeja de entrada.</p>
+        </div>
+    </section>
+
+    <!-- 5. Tabla de Precios y Paquetes -->
+    <section id="precios">
+        <h2>Planes y Tarifas</h2>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>Sesión Flash</h3>
+                <p>Ideal para resolver dudas puntuales o preparar una lección específica.</p>
+                <div class="price">$15 <span style="font-size: 1rem; font-weight: normal;">/ hora</span></div>
+                <a href="https://wa.me/593900000000?text=Hola,%20deseo%20la%20Sesión%20Flash" class="btn-submit" style="display:inline-block; text-decoration:none;" target="_blank">Elegir Plan</a>
+            </div>
+            <div class="price-card featured">
+                <h3>Plan Nivelación</h3>
+                <p>8 sesiones mensuales + soporte continuo mediante chat para tareas.</p>
+                <div class="price">$90 <span style="font-size: 1rem; font-weight: normal;">/ mes</span></div>
+                <a href="https://wa.me/593900000000?text=Hola,%20deseo%20el%20Plan%20Nivelación" class="btn-whatsapp" style="justify-content: center;" target="_blank">Elegir Plan</a>
+            </div>
+            <div class="price-card">
+                <h3>Intensivo Pre-U</h3>
+                <p>Preparación completa orientada a exámenes de ingreso universitario.</p>
+                <div class="price">$140 <span style="font-size: 1rem; font-weight: normal;">/ mes</span></div>
+                <a href="https://wa.me/593900000000?text=Hola,%20deseo%20el%20Plan%20Pre-U" class="btn-submit" style="display:inline-block; text-decoration:none;" target="_blank">Elegir Plan</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Prueba Social (Testimonios) -->
+    <section id="testimonios">
+        <h2>Lo que dicen los padres de familia</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p>"Mi hijo iba a perder el año en matemáticas y gracias a las clases del profe logró exonerarse con excelentes calificaciones. Muy recomendado en Santo Domingo."</p>
+                <div class="testimonial-author">— Carlos M. (Padre de familia)</div>
+            </div>
+            <div class="testimonial-card">
+                <p>"La paciencia y la metodología son excelentes. Mi hija le ha perdido el miedo a los números y ahora comprende el álgebra con total facilidad."</p>
+                <div class="testimonial-author">— Andrea P. (Madre de familia)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Pie de Página (SEO Local) -->
+    <footer>
+        <p><strong>Profe Andrés - Profesor de Matemáticas y Nivelación Académica</strong></p>
+        <p>Ubicación presencial y virtual en la ciudad de Santo Domingo de los Tsáchilas, Ecuador (Sector Av. Chone / Urb. Los Rosales).</p>
+        <p>&copy; 2026 Todos los derechos reservados. Contacto directo vía WhatsApp.</p>
+    </footer>
+
+    <script>
+        function handleLead(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById('userEmail').value;
+            if(emailInput) {
+                document.getElementById('leadForm').style.display = 'none';
+                document.getElementById('formFeedback').style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>
