@@ -352,17 +352,32 @@
     </section>
 
     <!-- 4. El Gancho / Lead Magnet -->
-    <section>
-        <div class="lead-magnet">
-            <h2 style="margin-bottom: 1rem; font-size: 1.5rem;">Descarga Gratis la Guía de Casos de Factorización</h2>
-            <p style="margin-bottom: 1.5rem;">Recibe en tu correo el compendio rápido de ejercicios resueltos clave para exámenes.</p>
-            <form id="leadForm" onsubmit="handleLead(event)">
-                <input type="email" id="userEmail" placeholder="Ingresa tu correo electrónico" required>
-                <button type="submit" class="btn-submit">Descargar Guía</button>
-            </form>
-            <p id="formFeedback" style="margin-top: 0.5rem; color: var(--whatsapp); font-weight: 500; display: none;">¡Guía enviada con éxito! Revisa tu bandeja de entrada.</p>
-        </div>
-    </section>
+    <section style="background: var(--bg-light); padding: 4rem 1rem; text-align: center;">
+    <div style="max-width: 650px; margin: 0 auto;">
+        <h2 style="font-size: 2.2rem; color: var(--primary); margin-bottom: 1rem;">Descarga Gratis tu Guía de Ejercicios Clave</h2>
+        <p style="font-size: 1.1rem; color: var(--text-main); line-height: 1.6; margin-bottom: 2rem;">Selecciona tu nivel académico y recibe en tu correo el compendio rápido de ejercicios resueltos para exámenes:</p>
+        
+        <form id="leadForm" onsubmit="handleLead(event)" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+            
+            <!-- Selector de Nivel y Tema -->
+            <select id="nivelGuia" required style="width: 100%; max-width: 480px; padding: 0.85rem 1rem; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text-main); outline: none;">
+                <option value="" disabled selected>-- Selecciona tu nivel y guía gratuita --</option>
+                <option value="basica">Básica: Cómo resolver operaciones combinadas con fracciones</option>
+                <option value="bachillerato">Bachillerato: Cómo graficar un sistema de ecuaciones con 2 incógnitas</option>
+                <option value="preuniversitario">Pre-Universitario: Cómo resolver operaciones con casos de factorización</option>
+            </select>
+
+            <!-- Campo de Correo y Botón -->
+            <div style="display: flex; gap: 0.5rem; width: 100%; max-width: 480px; flex-wrap: wrap; justify-content: center;">
+                <input type="email" id="userEmail" placeholder="Ingresa tu correo electrónico" required style="flex: 1; min-width: 250px; padding: 0.85rem 1rem; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 8px; outline: none;">
+                <button type="submit" class="btn-submit" style="background: var(--accent); color: white; border: none; padding: 0.85rem 1.5rem; font-size: 1.05rem; font-weight: bold; border-radius: 8px; cursor: pointer;">Descargar Guía</button>
+            </div>
+        </form>
+
+        <!-- Mensaje de Éxito -->
+        <p id="formFeedback" style="display: none; margin-top: 1.5rem; padding: 1rem; background: #dcfce7; color: #166534; border-radius: 8px; font-size: 1.1rem; font-weight: 500;">¡Guía enviada con éxito!</p>
+    </div>
+</section>
 
     <!-- 5. Tabla de Precios y Paquetes -->
     <section id="planes" style="padding: 4rem 1rem; text-align: center;">
