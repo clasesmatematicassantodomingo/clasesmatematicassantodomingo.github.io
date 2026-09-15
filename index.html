@@ -436,7 +436,14 @@
         <p>&copy; 2026 Todos los derechos reservados. Contacto directo vía WhatsApp.</p>
     </footer>
 
-    <script>
+    <!-- Librería oficial de EmailJS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+    (function() {
+        // Reemplaza "TU_PUBLIC_KEY" con tu clave pública real de EmailJS
+        emailjs.init("-P2cSxI0eYGwnnJyQ");
+    })();
+
     function handleLead(event) {
         event.preventDefault();
         
@@ -444,14 +451,26 @@
         const selectNivel = document.getElementById('nivelGuia').value;
         
         if (emailInput && selectNivel) {
-            // Registro interno de la selección
-            console.log(`Enviando guía de [${selectNivel}] al correo: ${emailInput}`);
-            
-            // Ocultar formulario y mostrar mensaje de éxito personalizado
-            document.getElementById('leadForm').style.display = 'none';
-            const feedback = document.getElementById('formFeedback');
-            feedback.style.display = 'block';
-            feedback.innerHTML = `¡Excelente! La guía seleccionada ha sido enviada con éxito a <strong>${emailInput}</strong>. Revisa tu bandeja de entrada.`;
+            // Parámetros que coinciden con las etiquetas de tu plantilla en EmailJS
+            const templateParams = {
+                user_email: emailInput,
+                nivel_guia: selectNivel
+            };
+
+            // Envío a través de EmailJS (Service ID y Template ID)
+            emailjs.send('service_4xp19r7', 'template_yj2rjhj', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Ocultar formulario y mostrar mensaje de éxito personalizado
+                    document.getElementById('leadForm').style.display = 'none';
+                    const feedback = document.getElementById('formFeedback');
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = `¡Excelente! La guía seleccionada ha sido enviada con éxito a <strong>${emailInput}</strong>. Revisa tu bandeja de entrada.`;
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('Hubo un error al enviar la solicitud. Por favor, intenta de nuevo.');
+                });
         }
     }
 </script>
