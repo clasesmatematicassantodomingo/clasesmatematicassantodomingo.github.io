@@ -436,14 +436,23 @@
     </footer>
 
     <script>
-        function handleLead(event) {
-            event.preventDefault();
-            const emailInput = document.getElementById('userEmail').value;
-            if(emailInput) {
-                document.getElementById('leadForm').style.display = 'none';
-                document.getElementById('formFeedback').style.display = 'block';
-            }
+    function handleLead(event) {
+        event.preventDefault();
+        
+        const emailInput = document.getElementById('userEmail').value;
+        const selectNivel = document.getElementById('nivelGuia').value;
+        
+        if (emailInput && selectNivel) {
+            // Registro interno de la selección
+            console.log(`Enviando guía de [${selectNivel}] al correo: ${emailInput}`);
+            
+            // Ocultar formulario y mostrar mensaje de éxito personalizado
+            document.getElementById('leadForm').style.display = 'none';
+            const feedback = document.getElementById('formFeedback');
+            feedback.style.display = 'block';
+            feedback.innerHTML = `¡Excelente! La guía seleccionada ha sido enviada con éxito a <strong>${emailInput}</strong>. Revisa tu bandeja de entrada.`;
         }
-    </script>
+    }
+</script>
 </body>
 </html>
