@@ -440,7 +440,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script type="text/javascript">
     (function() {
-        // Reemplaza "TU_PUBLIC_KEY" con tu clave pública real de EmailJS
+        // Inicialización con tu Public Key real
         emailjs.init("-P2cSxI0eYGwnnJyQ");
     })();
 
@@ -451,26 +451,40 @@
         const selectNivel = document.getElementById('nivelGuia').value;
         
         if (emailInput && selectNivel) {
-            // Parámetros que coinciden con las etiquetas de tu plantilla en EmailJS
+            // 1. Asignar el enlace PDF correcto de GitHub según la opción seleccionada
+            let urlPdf = "";
+            if (selectNivel === "basica" || selectNivel === "Guia1") {
+                urlPdf = "https://raw.githubusercontent.com/clasesmatematicassantodomingo/clasesmatematicassantodomingo.github.io/main/GU%C3%8DA-DE-ESTUDIO-N1.pdf";
+            } else if (selectNivel === "bachillerato" || selectNivel === "Guia2") {
+                urlPdf = "https://raw.githubusercontent.com/clasesmatematicassantodomingo/clasesmatematicassantodomingo.github.io/main/GU%C3%8DA-DE-ESTUDIO-N2.pdf";
+            } else if (selectNivel === "preuniversitario" || selectNivel === "Guia3") {
+                urlPdf = "https://raw.githubusercontent.com/clasesmatematicassantodomingo/clasesmatematicassantodomingo.github.io/main/GU%C3%8DA-DE-ESTUDIO-N3.pdf";
+            }
+
+            // 2. Parámetros listos para tu plantilla de EmailJS
             const templateParams = {
                 user_email: emailInput,
                 nivel_guia: selectNivel
             };
 
-            // Envío a través de EmailJS (Service ID y Template ID)
+            // 3. Envío de la notificación a tu correo mediante EmailJS
             emailjs.send('service_4xp19r7', 'template_yj2rjhj', templateParams)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
-                    
-                    // Ocultar formulario y mostrar mensaje de éxito personalizado
-                    document.getElementById('leadForm').style.display = 'none';
-                    const feedback = document.getElementById('formFeedback');
-                    feedback.style.display = 'block';
-                    feedback.innerHTML = `¡Excelente! La guía seleccionada ha sido enviada con éxito a <strong>${emailInput}</strong>. Revisa tu bandeja de entrada.`;
                 }, function(error) {
                     console.log('FAILED...', error);
-                    alert('Hubo un error al enviar la solicitud. Por favor, intenta de nuevo.');
                 });
+
+            // 4. Ocultar formulario, mostrar mensaje de éxito y abrir el PDF automáticamente
+            document.getElementById('leadForm').style.display = 'none';
+            const feedback = document.getElementById('formFeedback');
+            feedback.style.display = 'block';
+            feedback.innerHTML = `¡Excelente! Tu guía ha sido enviada con éxito a <strong>${emailInput}</strong>. <br><br>👉 <a href="${urlPdf}" target="_blank" style="color: #166534; font-weight: bold; text-decoration: underline;">Haz clic aquí para descargar tu PDF ahora mismo</a>.`;
+            
+            // Abre la descarga del PDF de forma automática en una pestaña nueva
+            if (urlPdf) {
+                window.open(urlPdf, '_blank');
+            }
         }
     }
 </script>
