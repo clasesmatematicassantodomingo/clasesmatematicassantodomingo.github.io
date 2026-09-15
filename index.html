@@ -453,33 +453,55 @@
         if (emailInput && selectNivel) {
             // 1. Asignar el enlace PDF correcto de GitHub según la opción seleccionada
             let urlPdf = "";
-            if (selectNivel === "basica" || selectNivel === "Guia1") {
+            let nombreGuiaTexto = "";
+            
+            if (selectNivel === "basica") {
                 urlPdf = "https://raw.githubusercontent.com/clasesmatematicassantodomingo/clasesmatematicassantodomingo.github.io/main/GU%C3%8DA-DE-ESTUDIO-N1.pdf";
-            } else if (selectNivel === "bachillerato" || selectNivel === "Guia2") {
+                nombreGuiaTexto = "Guía 1 (Matemáticas)";
+            } else if (selectNivel === "bachillerato") {
                 urlPdf = "https://raw.githubusercontent.com/clasesmatematicassantodomingo/clasesmatematicassantodomingo.github.io/main/GU%C3%8DA-DE-ESTUDIO-N2.pdf";
-            } else if (selectNivel === "preuniversitario" || selectNivel === "Guia3") {
+                nombreGuiaTexto = "Guía 2 (Álgebra)";
+            } else if (selectNivel === "preuniversitario") {
                 urlPdf = "https://raw.githubusercontent.com/clasesmatematicassantodomingo/clasesmatematicassantodomingo.github.io/main/GU%C3%8DA-DE-ESTUDIO-N3.pdf";
+                nombreGuiaTexto = "Guía 3 (Álgebra Avanzada)";
             }
 
-            // 2. Parámetros listos para tu plantilla de EmailJS
+            // 2. Parámetros para tu plantilla en EmailJS
             const templateParams = {
                 user_email: emailInput,
-                nivel_guia: selectNivel
+                nivel_guia: nombreGuiaTexto
             };
 
             // 3. Envío de la notificación a tu correo mediante EmailJS
             emailjs.send('service_4xp19r7', 'template_yj2rjhj', templateParams)
                 .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
+                    console.log('SUCCESS EmailJS!', response.status, response.text);
                 }, function(error) {
-                    console.log('FAILED...', error);
+                    console.log('FAILED EmailJS...', error);
                 });
 
-            // 4. Ocultar formulario, mostrar mensaje de éxito y abrir el PDF automáticamente
+            // 4. GUARDAR AUTOMÁTICAMENTE EN TU GOOGLE SHEETS
+            fetch('https://sheetdb.io/api/v1/73h8rhhnw0ctf', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data: [
+                        { 'email': emailInput, 'nivel': nombreGuiaTexto }
+                    ]
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Guardado en Excel con éxito:', data))
+            .catch(error => console.error('Error al guardar:', error));
+
+            // 5. Ocultar formulario, mostrar mensaje de éxito y abrir el PDF automáticamente
             document.getElementById('leadForm').style.display = 'none';
             const feedback = document.getElementById('formFeedback');
             feedback.style.display = 'block';
-            feedback.innerHTML = `¡Excelente! Tu guía ha sido enviada con éxito a <strong>${emailInput}</strong>. <br><br>👉 <a href="${urlPdf}" target="_blank" style="color: #166534; font-weight: bold; text-decoration: underline;">Haz clic aquí para descargar tu PDF ahora mismo</a>.`;
+            feedback.innerHTML = `¡Guía enviada con éxito! Te la hemos enviado a <strong>${emailInput}</strong>. <br><br>👉 <a href="${urlPdf}" target="_blank" style="color: #166534; font-weight: bold; text-decoration: underline;">Haz clic aquí para descargar tu PDF de inmediato</a>.`;
             
             // Abre la descarga del PDF de forma automática en una pestaña nueva
             if (urlPdf) {
