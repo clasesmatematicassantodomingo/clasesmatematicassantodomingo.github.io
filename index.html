@@ -438,24 +438,8 @@
         <h2 style="color: var(--primary); font-size: 2rem; margin-bottom: 0.5rem;">Blog y Consejos de Matemáticas</h2>
         <p style="color: var(--text-muted); margin-bottom: 2.5rem;">Artículos prácticos para mejorar tus calificaciones y perderle el miedo a los números.</p>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; text-align: left;">
-            
-            <!-- Artículo 1 -->
-            <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                <span style="font-size: 0.85rem; color: var(--primary); font-weight: bold;">SEO & Consejos</span>
-                <h3 style="font-size: 1.2rem; margin: 0.5rem 0; color: var(--text-main);">¿Cómo superar los supletorios de matemáticas en Santo Domingo?</h3>
-                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem;">Estrategias clave de estudio intensivo para aprobar tus exámenes de arrastre sin frustraciones.</p>
-                <a href="https://wa.me/593993117800?text=Hola%20Profe%20Andrés,%20leí%20su%20artículo%20sobre%20supletorios%20y%20necesito%20asesoría." target="_blank" style="color: var(--primary); font-weight: bold; text-decoration: none;">Leer y Consultar →</a>
-            </div>
-
-            <!-- Artículo 2 -->
-            <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                <span style="font-size: 0.85rem; color: var(--primary); font-weight: bold;">Metodología</span>
-                <h3 style="font-size: 1.2rem; margin: 0.5rem 0; color: var(--text-main);">3 Claves para entender álgebra desde cero y sin memorizar</h3>
-                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem;">Aprende cómo el razonamiento lógico supera a la simple memorización de fórmulas complejas.</p>
-                <a href="https://wa.me/593993117800?text=Hola%20Profe%20Andrés,%20quiero%20aprender%20álgebra%20con%20su%20metodología." target="_blank" style="color: var(--primary); font-weight: bold; text-decoration: none;">Leer y Consultar →</a>
-            </div>
-
+        <!-- ESTE ES EL CONTENEDOR CLAVE: Aquí el script inyectará automáticamente los artículos -->
+        <div id="contenedor-articulos-blog" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; text-align: left;">
         </div>
     </div>
 </section>
@@ -540,6 +524,37 @@
             }
         }
     }
+   
+    // --- AQUÍ PEGABAS EL NUEVO SCRIPT DE INYECCIÓN AUTOMÁTICA DEL BLOG ---
+    const listaArticulos = [
+        {
+            id: 1,
+            categoria: "SEO & Supletorios",
+            titulo: "¿Vas a dejar que un supletorio le arruine las vacaciones a tu hijo en Santo Domingo?",
+            extracto: "Ataque directo al dolor: No pierdas el año escolar por una materia mal superada. Estrategia intensiva de rescate académico.",
+            keyword: "clases de supletorios de matemáticas en Santo Domingo",
+            whatsappLink: "https://wa.me/993993117800?text=Hola%20Profe%20Andrés,%20necesito%20información%20sobre%20el%20artículo%20de%20supletorios%20de%20matemáticas."
+        }
+    ];
+
+    function inyectarBlog() {
+        const contenedor = document.getElementById('contenedor-articulos-blog');
+        if (!contenedor) return;
+        contenedor.innerHTML = '';
+        listaArticulos.forEach(art => {
+            const tarjeta = document.createElement('div');
+            tarjeta.style.cssText = "background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);";
+            tarjeta.innerHTML = `
+                <span style="font-size: 0.85rem; color: var(--primary); font-weight: bold;">${art.categoria}</span>
+                <h3 style="font-size: 1.2rem; margin: 0.5rem 0; color: var(--text-main);">${art.titulo}</h3>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem;">${art.extracto}</p>
+                <a href="${art.whatsappLink}" target="_blank" style="color: var(--primary); font-weight: bold; text-decoration: none;">Leer y Consultar &rarr;</a>
+            `;
+            contenedor.appendChild(tarjeta);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', inyectarBlog);
 </script>
 </body>
 </html>
