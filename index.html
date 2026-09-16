@@ -526,91 +526,70 @@
     }
    
     <script>
-    // 1. Base de datos de artículos con su contenido completo para el estilo Romuald Fons
-    const listaArticulos = [
-        {
-            id: 1,
-            categoria: "SEO & Supletorios",
-            titulo: "¿Vas a dejar que un supletorio le arruine las vacaciones a tu hijo en Santo Domingo?",
-            extracto: "Ataque directo al dolor: No pierdas el año escolar por una materia mal superada. Estrategia intensiva de rescate académico.",
-            contenidoCompleto: `
-                <h2 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">¿Vas a dejar que un supletorio le arruine las vacaciones a tu hijo en Santo Domingo?</h2>
-                <p style="margin-bottom: 1rem; color: var(--text-main);">Se acabó el tiempo de esperar un milagro. Se acerca el periodo de exámenes supletorios y cada año veo el mismo patrón en los colegios de Santo Domingo: padres de familia estresados, estudiantes frustrados y semanas enteras de vacaciones tiradas a la basura por culpa de una sola materia.</p>
-                <h3 style="color: var(--primary); margin: 1.2rem 0 0.5rem 0; font-size: 1.2rem;">¿Por qué las academias tradicionales fallan?</h3>
-                <p style="margin-bottom: 1rem; color: var(--text-main);">Meter a tu hijo a cursos masivos donde repiten fórmulas de memoria como loros no sirve. Necesita un enfoque quirúrgico, directo al problema y con resultados medibles en tiempo récord.</p>
-                <h3 style="color: var(--primary); margin: 1.2rem 0 0.5rem 0; font-size: 1.2rem;">La solución definitiva en Santo Domingo</h3>
-                <p style="margin-bottom: 1.5rem; color: var(--text-main);">Con nuestro método especializado de nivelación y supletorios de matemáticas, atacamos las brechas exactas de aprendizaje. Salvamos el año escolar con rigor académico y estrategia.</p>
-                <a href="https://wa.me/993993117800?text=Hola%20Profe%20Andrés,%20leí%20el%20artículo%20de%20supletorios%20y%20necesito%20salvar%20el%20año%20de%20mi%20hijo." target="_blank" style="display: inline-block; background: #25d366; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; text-decoration: none;">Consultar por WhatsApp con el Profe Andrés &rarr;</a>
-            `,
-            whatsappLink: "https://wa.me/993993117800?text=Hola%20Profe%20Andrés,%20necesito%20información%20sobre%20supletorios."
-        }
-    ];
+    // 1. Definimos el artículo 1
+    const articulo1 = {
+        categoria: "SEO & Supletorios",
+        titulo: "¿Vas a dejar que un supletorio le arruine las vacaciones a tu hijo en Santo Domingo?",
+        extracto: "Ataque directo al dolor: No pierdas el año escolar por una materia mal superada. Estrategia intensiva de rescate académico.",
+        contenido: `
+            <h2 style="color: #0b2545; margin-bottom: 1rem; font-size: 1.5rem;">¿Vas a dejar que un supletorio le arruine las vacaciones a tu hijo en Santo Domingo?</h2>
+            <p style="margin-bottom: 1rem; color: #333;">Se acabó el tiempo de esperar un milagro. Se acerca el periodo de exámenes supletorios y cada año veo el mismo patrón en los colegios de Santo Domingo: padres de familia estresados, estudiantes frustrados y semanas enteras de vacaciones tiradas a la basura por culpa de una sola materia.</p>
+            <h3 style="color: #0b2545; margin: 1.2rem 0 0.5rem 0; font-size: 1.2rem;">¿Por qué las academias tradicionales fallan?</h3>
+            <p style="margin-bottom: 1rem; color: #333;">Meter a tu hijo a cursos masivos donde repiten fórmulas de memoria como loros no sirve. Necesita un enfoque quirúrgico, directo al problema y con resultados medibles en tiempo récord.</p>
+            <h3 style="color: #0b2545; margin: 1.2rem 0 0.5rem 0; font-size: 1.2rem;">La solución definitiva en Santo Domingo</h3>
+            <p style="margin-bottom: 1.5rem; color: #333;">Con nuestro método especializado de nivelación y supletorios de matemáticas, atacamos las brechas exactas de aprendizaje. Salvamos el año escolar con rigor académico y estrategia.</p>
+            <a href="https://wa.me/993993117800?text=Hola%20Profe%20Andrés,%20leí%20el%20artículo%20de%20supletorios%20y%20necesito%20salvar%20el%20año%20de%20mi%20hijo." target="_blank" style="display: inline-block; background: #25d366; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; text-decoration: none;">Consultar por WhatsApp con el Profe Andrés &rarr;</a>
+        `
+    };
 
-    // 2. Función para inyectar las tarjetas en el blog
-    function inyectarBlog() {
+    // 2. Inyectar tarjeta y crear modal automáticamente al cargar
+    window.onload = function() {
         const contenedor = document.getElementById('contenedor-articulos-blog');
-        if (!contenedor) return;
-        contenedor.innerHTML = '';
-
-        listaArticulos.forEach(art => {
-            const tarjeta = document.createElement('div');
-            tarjeta.style.cssText = "background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;";
-            
-            tarjeta.innerHTML = `
-                <div>
-                    <span style="font-size: 0.85rem; color: var(--primary); font-weight: bold;">${art.categoria}</span>
-                    <h3 style="font-size: 1.2rem; margin: 0.5rem 0; color: var(--text-main);">${art.titulo}</h3>
-                    <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem;">${art.extracto}</p>
+        if (contenedor) {
+            contenedor.innerHTML = `
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <span style="font-size: 0.85rem; color: #0b2545; font-weight: bold;">${articulo1.categoria}</span>
+                        <h3 style="font-size: 1.2rem; margin: 0.5rem 0; color: #111;">${articulo1.titulo}</h3>
+                        <p style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem;">${articulo1.extracto}</p>
+                    </div>
+                    <button id="btn-leer-art1" style="background: none; border: none; color: #0b2545; font-weight: bold; text-align: left; cursor: pointer; padding: 0; font-size: 1rem;">Leer artículo completo &rarr;</button>
                 </div>
-                <button onclick="abrirModal(${art.id})" style="background: none; border: none; color: var(--primary); font-weight: bold; text-align: left; cursor: pointer; padding: 0; font-size: 1rem;">Leer artículo completo &rarr;</button>
             `;
-            contenedor.appendChild(tarjeta);
-        });
-    }
+        }
 
-    // 3. Funciones para la Ventana Modal (Opción A)
-    function crearModalHTML() {
-        if (document.getElementById('modal-blog-overlay')) return;
-        
-        const overlay = document.createElement('div');
-        overlay.id = 'modal-blog-overlay';
-        overlay.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 1rem;";
-        
-        overlay.innerHTML = `
-            <div style="background: white; width: 100%; max-width: 700px; max-height: 85vh; border-radius: 12px; overflow-y: auto; padding: 2rem; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-                <button onclick="cerrarModal()" style="position: absolute; top: 1rem; right: 1rem; background: #eee; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; font-weight: bold;">&times;</button>
-                <div id="modal-contenido-dinamico"></div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
+        // Crear el Modal en el documento si no existe
+        if (!document.getElementById('modal-blog-overlay')) {
+            const overlay = document.createElement('div');
+            overlay.id = 'modal-blog-overlay';
+            overlay.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 1rem;";
+            overlay.innerHTML = `
+                <div style="background: white; width: 100%; max-width: 700px; max-height: 85vh; border-radius: 12px; overflow-y: auto; padding: 2rem; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                    <button id="cerrar-modal-btn" style="position: absolute; top: 1rem; right: 1rem; background: #eee; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; font-weight: bold;">&times;</button>
+                    <div id="modal-contenido-dinamico">${articulo1.contenido}</div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
 
-        // Cerrar haciendo clic fuera del modal
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) cerrarModal();
-        });
-    }
+            // Eventos para abrir y cerrar
+            document.getElementById('btn-leer-art1').addEventListener('click', () => {
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
 
-    function abrirModal(id) {
-        crearModalHTML();
-        const art = listaArticulos.find(a => a.id === id);
-        if (!art) return;
+            document.getElementById('cerrar-modal-btn').addEventListener('click', () => {
+                overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
 
-        document.getElementById('modal-contenido-dinamico').innerHTML = art.contenidoCompleto;
-        document.getElementById('modal-blog-overlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Evita scroll de fondo
-    }
-
-    function cerrarModal() {
-        const overlay = document.getElementById('modal-blog-overlay');
-        if (overlay) overlay.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    // Inicializar al cargar la página
-    document.addEventListener('DOMContentLoaded', () => {
-        inyectarBlog();
-        crearModalHTML();
-    });
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+    };
 </script>
 </body>
 </html>
