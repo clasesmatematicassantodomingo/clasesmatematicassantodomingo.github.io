@@ -14,11 +14,11 @@ long_tails = articulo_actual.get("long_tails", [])
 titulo = articulo_actual.get("titulo")
 slug = articulo_actual.get("slug")
 
-# URL base exacta apuntando a tu blog / blog posts
+# URL base exacta apuntando a tu blog con el slug correspondiente
 URL_BASE = "https://clasesmatematicassantodomingo.github.io/blog/"
 url_articulo = f"{URL_BASE}{slug}.html"
 
-# 2. Generar el contenido con el diseño profesional exacto de tu web
+# 2. Generar el contenido con el diseño profesional exacto de tu web y tu número real de WhatsApp
 contenido_html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -176,7 +176,7 @@ contenido_html = f"""<!DOCTYPE html>
 
         <div class="cta-section">
             <div class="cta-title">¿Listo para asegurar el año escolar de tu hijo hoy mismo?</div>
-            <a href="https://wa.me/593999999999?text=Hola%20Profe%20Andrés,%20necesito%20información%20sobre%20clases%20de%20supletorios" class="whatsapp-btn" target="_blank">Consultar por WhatsApp con el Profe Andrés →</a>
+            <a href="https://wa.me/593993117800?text=Hola%20Profe%20Andrés,%20necesito%20información%20sobre%20clases%20de%20supletorios" class="whatsapp-btn" target="_blank">Consultar por WhatsApp con el Profe Andrés →</a>
         </div>
     </div>
 
@@ -184,7 +184,7 @@ contenido_html = f"""<!DOCTYPE html>
 </html>
 """
 
-# 3. Guardar en la carpeta blog para que use la ruta /blog/
+# 3. Guardar en la carpeta blog con el slug correcto
 os.makedirs("blog", exist_ok=True)
 filename_post = f"blog/{slug}.html"
 with open(filename_post, "w", encoding="utf-8") as out:
@@ -200,4 +200,4 @@ with open(archivo_csv, mode="a", newline="", encoding="utf-8") as f:
         writer.writerow(["Titulo", "Slug", "URL para Search Console"])
     writer.writerow([titulo, slug, url_articulo])
 
-print(f"¡Artículo profesional generado con éxito en /blog/ y registrado en {archivo_csv}!")
+print(f"¡Artículo corregido y generado con éxito en /blog/{slug}.html!")
