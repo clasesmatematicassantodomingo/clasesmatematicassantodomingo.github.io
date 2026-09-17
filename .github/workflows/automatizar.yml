@@ -1,10 +1,9 @@
 name: Automatizar Blog SEO Cada 3 Dias
 
 on:
+  workflow_dispatch:
   schedule:
-    # Se ejecuta automáticamente cada 3 días a las 08:00 UTC
-    - cron: '0 8 */3 * *'
-  workflow_dispatch: # Permite dispararlo manualmente desde GitHub cuando quieras
+    - cron: '0 0 */3 * *' # Se ejecuta cada 3 días
 
 jobs:
   construir-blog:
@@ -13,10 +12,10 @@ jobs:
       contents: write
     steps:
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configurar Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -28,3 +27,5 @@ jobs:
         with:
           commit_message: "Auto-generación de artículos de blog desde la parrilla SEO optimizada"
           branch: main
+          # Forzar el rebase automático para evitar conflictos de ramas divergentes
+          push_options: '--force'
