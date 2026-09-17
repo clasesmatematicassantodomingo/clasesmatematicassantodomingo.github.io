@@ -1,0 +1,29 @@
+name: Automatizar Blog SEO
+
+on:
+  push:
+    paths:
+      - 'keywords.json'
+
+jobs:
+  construir-blog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Ejecutar script generador
+        run: python generar_blog.py
+
+      - name: Subir artículos generados automáticamente
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Auto-generación de artículos de blog desde la parrilla SEO"
+          branch: main
