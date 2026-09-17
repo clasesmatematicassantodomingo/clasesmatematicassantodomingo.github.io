@@ -12,14 +12,14 @@ keyword_principal = articulo_actual.get("keyword_principal")
 long_tails = articulo_actual.get("long_tails", [])
 titulo = articulo_actual.get("titulo")
 
-# FORZAMOS el slug exacto que deseas para que coincida con tu landing page
+# Slug oficial sincronizado con tu landing page
 slug = "clases-de-supletorios-de-matematicas-en-santo-domingo"
 
-# URL base exacta apuntando a tu blog con el slug largo
-URL_BASE = "https://clasesmatematicassantodomingo.github.io/blog/"
-url_articulo = f"{URL_BASE}{slug}.html"
+# URL base exacta
+DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
+url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
 
-# 2. Generar el contenido con el diseño profesional y WhatsApp correcto
+# 2. Generar el contenido del artículo
 contenido_html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -129,7 +129,7 @@ contenido_html = f"""<!DOCTYPE html>
 <body>
 
     <div class="top-bar">
-        <a href="https://clasesmatematicassantodomingo.github.io/">← Volver a la página principal de Clases de Matemáticas</a>
+        <a href="{DOMINIO_BASE}">← Volver a la página principal de Clases de Matemáticas</a>
     </div>
 
     <div class="main-container">
@@ -185,17 +185,36 @@ contenido_html = f"""<!DOCTYPE html>
 </html>
 """
 
-# 3. Guardar el archivo exactamente con el slug largo
+# 3. Guardar el archivo del post en la carpeta blog
 os.makedirs("blog", exist_ok=True)
 filename_post = f"blog/{slug}.html"
 with open(filename_post, "w", encoding="utf-8") as out:
     out.write(contenido_html)
 
-# 4. Registrar en el CSV la URL correcta
+# 4. Generar automáticamente el archivo sitemap.xml raíz
+sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>{DOMINIO_BASE}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>{url_articulo}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+</urlset>
+"""
+
+with open("sitemap.xml", "w", encoding="utf-8") as sm:
+    sm.write(sitemap_contenido)
+
+# 5. Registrar en el archivo CSV
 archivo_csv = "urls_articulos.csv"
 with open(archivo_csv, mode="w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
     writer.writerow(["Titulo", "Slug", "URL para Search Console"])
     writer.writerow([titulo, slug, url_articulo])
 
-print(f"¡Artículo generado correctamente en /blog/{slug}.html!")
+print(f"¡Artículo y sitemap.xml generados correctamente con éxito!")
