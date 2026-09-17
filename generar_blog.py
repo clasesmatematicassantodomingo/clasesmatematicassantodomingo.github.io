@@ -2,23 +2,24 @@ import json
 import os
 import csv
 
-# 1. Cargar la parrilla de keywords sin canibalismo
+# 1. Cargar la parrilla de keywords
 with open("keywords.json", "r", encoding="utf-8") as f:
     keywords_data = json.load(f)
 
-# Seleccionamos el primer artículo de la parrilla
 articulo_actual = keywords_data[0]
 
 keyword_principal = articulo_actual.get("keyword_principal")
 long_tails = articulo_actual.get("long_tails", [])
 titulo = articulo_actual.get("titulo")
-slug = articulo_actual.get("slug")
 
-# URL base exacta apuntando a tu blog con el slug correspondiente
+# FORZAMOS el slug exacto que deseas para que coincida con tu landing page
+slug = "clases-de-supletorios-de-matematicas-en-santo-domingo"
+
+# URL base exacta apuntando a tu blog con el slug largo
 URL_BASE = "https://clasesmatematicassantodomingo.github.io/blog/"
 url_articulo = f"{URL_BASE}{slug}.html"
 
-# 2. Generar el contenido con el diseño profesional exacto de tu web y tu número real de WhatsApp
+# 2. Generar el contenido con el diseño profesional y WhatsApp correcto
 contenido_html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -184,20 +185,17 @@ contenido_html = f"""<!DOCTYPE html>
 </html>
 """
 
-# 3. Guardar en la carpeta blog con el slug correcto
+# 3. Guardar el archivo exactamente con el slug largo
 os.makedirs("blog", exist_ok=True)
 filename_post = f"blog/{slug}.html"
 with open(filename_post, "w", encoding="utf-8") as out:
     out.write(contenido_html)
 
-# 4. Registrar o actualizar automáticamente el archivo CSV con la URL correcta
+# 4. Registrar en el CSV la URL correcta
 archivo_csv = "urls_articulos.csv"
-existe_archivo = os.path.exists(archivo_csv)
-
-with open(archivo_csv, mode="a", newline="", encoding="utf-8") as f:
+with open(archivo_csv, mode="w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
-    if not existe_archivo:
-        writer.writerow(["Titulo", "Slug", "URL para Search Console"])
+    writer.writerow(["Titulo", "Slug", "URL para Search Console"])
     writer.writerow([titulo, slug, url_articulo])
 
-print(f"¡Artículo corregido y generado con éxito en /blog/{slug}.html!")
+print(f"¡Artículo generado correctamente en /blog/{slug}.html!")
