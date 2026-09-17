@@ -1,7 +1,8 @@
 import json
 import os
+import csv
 
-# Cargar la parrilla de keywords actualizada
+# 1. Cargar la parrilla de keywords actualizada
 with open("keywords.json", "r", encoding="utf-8") as f:
     keywords_data = json.load(f)
 
@@ -14,7 +15,11 @@ titulo = articulo_actual.get("titulo")
 enfoque = articulo_actual.get("enfoque")
 slug = articulo_actual.get("slug")
 
-# Generar un artículo completo y profundo de más de 750 palabras
+# Definir la URL base de tu sitio web en GitHub Pages
+URL_BASE = "https://clasesmatematicassantodomingo.github.io/posts/"
+url_articulo = f"{URL_BASE}{slug}.html" # O ajusta la extensión si usas .md o rutas limpias
+
+# 2. Generar el contenido completo de más de 750 palabras
 contenido_markdown = f"""---
 title: "{titulo}"
 slug: "{slug}"
@@ -73,11 +78,22 @@ Dejar la preparación del supletorio para el último día es la forma más segur
 ¡No esperes a que sea demasiado tarde! Contáctanos hoy mismo a través de nuestros canales oficiales y asegura el éxito definitivo en los **{keyword_principal}**.
 """
 
-# Guardar en la carpeta de posts
+# Guardar el post en la carpeta de posts
 os.makedirs("posts", exist_ok=True)
-filename = f"posts/{slug}.md"
-
-with open(filename, "w", encoding="utf-8") as out:
+filename_post = f"posts/{slug}.md"
+with open(filename_post, "w", encoding="utf-8") as out:
     out.write(contenido_markdown)
 
-print(f"¡Artículo de +750 palabras generado con éxito: {filename}!")
+# 3. Registrar o actualizar automáticamente el archivo Excel/CSV con la URL
+archivo_csv = "urls_articulos.csv"
+existe_archivo = os.path.exists(archivo_csv)
+
+# Abrir en modo 'append' (agregar) para no sobrescribir las anteriores
+with open(archivo_csv, mode="a", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    # Si el archivo es nuevo, escribimos la cabecera
+    if not existe_archivo:
+        writer.writerow(["Titulo", "Slug", "URL para Search Console"])
+    writer.writerow([titulo, slug, url_articulo])
+
+print(f"¡Artículo generado y URL registrada en {archivo_csv} con éxito!")
