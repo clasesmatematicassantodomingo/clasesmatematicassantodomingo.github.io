@@ -1,9 +1,10 @@
-name: Automatizar Blog SEO
+name: Automatizar Blog SEO Cada 3 Dias
 
 on:
-  push:
-    paths:
-      - 'keywords.json'
+  schedule:
+    # Se ejecuta automáticamente cada 3 días a las 08:00 UTC
+    - cron: '0 8 */3 * *'
+  workflow_dispatch: # Permite dispararlo manualmente desde GitHub cuando quieras
 
 jobs:
   construir-blog:
@@ -25,5 +26,5 @@ jobs:
       - name: Subir artículos generados automáticamente
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Auto-generación de artículos de blog desde la parrilla SEO"
+          commit_message: "Auto-generación de artículos de blog desde la parrilla SEO optimizada"
           branch: main
