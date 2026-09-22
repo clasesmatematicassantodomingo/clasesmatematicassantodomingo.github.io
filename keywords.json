@@ -1,18 +1,5 @@
 [
     {
-        "id": 2,
-        "keyword_principal": "profesor particular matematicas",
-        "long_tails": [
-            "profesor a domicilio matematicas",
-            "profesor particular matematicas eso",
-            "profesor particular mates"
-        ],
-        "titulo": "Por qué el colegio de tu hijo está fracasando enseñando matemáticas (Y cómo lo arreglamos con un profesor particular)",
-        "enfoque": "Crítica al sistema educativo tradicional y autoridad profesional presencial.",
-        "slug": "profesor-particular-matematicas",
-        "fecha": "Día 4"
-    },
-    {
         "id": 3,
         "keyword_principal": "clases particulares matematicas",
         "long_tails": [
