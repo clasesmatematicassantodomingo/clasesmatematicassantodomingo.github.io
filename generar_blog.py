@@ -12,7 +12,7 @@ import csv
 #    exit()
 #
 # Tomar el primer artículo disponible
-articulo_actual = keywords_data.pop(0) # Extrae y remueve el primer elemento
+# articulo_actual = keywords_data.pop(0) # Extrae y remueve el primer elemento
 #
 # keyword_principal = articulo_actual.get("keyword_principal")
 # long_tails = articulo_actual.get("long_tails", [])
