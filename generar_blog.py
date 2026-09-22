@@ -195,9 +195,11 @@ if os.path.exists("blog"):
         <priority>0.8</priority>
     </url>""")
 
+# Definimos el salto de línea fuera del f-string para evitar el error de sintaxis
+salto_linea = "\n"
 sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{'\n'.join(urls_sitemap)}
+{salto_linea.join(urls_sitemap)}
 </urlset>
 """
 
