@@ -1,18 +1,5 @@
 [
     {
-        "id": 8,
-        "keyword_principal": "clases de matematicas y fisica",
-        "long_tails": [
-            "profesor de matematicas y fisica",
-            "clases particulares matematicas y fisica",
-            "profesor fisica y matematicas"
-        ],
-        "titulo": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
-        "enfoque": "Doble especialidad de alta autoridad académica.",
-        "slug": "clases-de-matematicas-y-fisica",
-        "fecha": "Día 22"
-    },
-    {
         "id": 9,
         "keyword_principal": "clase de geometria",
         "long_tails": [
