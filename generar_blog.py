@@ -6,20 +6,28 @@ import csv
 with open("keywords.json", "r", encoding="utf-8") as f:
     keywords_data = json.load(f)
 
-articulo_actual = keywords_data[0]
+# Validar si quedan artículos en la parrilla
+if not keywords_data:
+    print("¡No quedan más palabras clave en la parrilla!")
+    exit()
+
+# Tomar el primer artículo disponible
+articulo_actual = keywords_data.pop(0) # Extrae y remueve el primer elemento
 
 keyword_principal = articulo_actual.get("keyword_principal")
 long_tails = articulo_actual.get("long_tails", [])
 titulo = articulo_actual.get("titulo")
-
-# Slug oficial sincronizado con tu landing page
-slug = "clases-de-supletorios-de-matematicas-en-santo-domingo"
+slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
 
 # URL base exacta
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
 
-# 2. Generar el contenido del artículo
+# 2. Guardar el archivo actualizado de keywords (removiendo el ya usado)
+with open("keywords.json", "w", encoding="utf-8") as f:
+    json.dump(keywords_data, f, ensure_ascii=False, indent=4)
+
+# 3. Generar el contenido HTML del artículo
 contenido_html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,9 +53,6 @@ contenido_html = f"""<!DOCTYPE html>
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-        }}
-        .top-bar a:hover {{
-            text-decoration: underline;
         }}
         .main-container {{
             max-width: 800px;
@@ -133,51 +138,31 @@ contenido_html = f"""<!DOCTYPE html>
     </div>
 
     <div class="main-container">
-        <div class="category">SEO & SUPLETORIOS - SANTO DOMINGO</div>
+        <div class="category">SEO & MATEMÁTICAS - SANTO DOMINGO</div>
         <h1>{titulo}</h1>
         
         <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80" alt="Estudiantes en clase" class="featured-image">
 
-        <p>Se acabó el tiempo de esperar un milagro o cruzar los dedos. Se acerca inexorablemente el periodo de exámenes supletorios y, cada año, observo exactamente el mismo patrón repetitivo y desgastante en los colegios de Santo Domingo: padres de familia estresados gastando dinero en opciones equivocadas, estudiantes frustrados con el autoestima por el suelo, y semanas enteras de merecidas vacaciones tiradas a la basura por culpa de una sola materia maldita.</p>
+        <p>En el proceso de formación académica en Santo Domingo de los Tsáchilas, nos encontramos frecuentemente con desafíos relacionados con {keyword_principal}. Superar estas barreras requiere un enfoque estructurado, metodologías personalizadas y una guía constante para evitar retrasos en el rendimiento escolar.</p>
 
-        <h2>El verdadero problema detrás de los {keyword_principal}</h2>
+        <h2>Claves para dominar {keyword_principal} con éxito</h2>
 
-        <p>Cuando un estudiante suspende una asignatura clave, el error común de los padres es buscar una "recuperación rápida" basada en memorizar fórmulas sin entender su trasfondo real. En Santo Domingo de los Tsáchilas, las academias masivas suelen repetir el mismo esquema escolar que ya fracasó durante el quimestre: grupos grandes, explicaciones abstractas y cero atención individualizada.</p>
+        <p>A lo largo de nuestras tutorías especializadas, abordamos de raíz términos clave de búsqueda como <em>{", ".join(long_tails)}</em>. Comprendemos que cada estudiante posee un ritmo único de aprendizaje y necesita conectar la teoría matemática con aplicaciones prácticas y lógicas.</p>
 
-        <p>A lo largo de nuestras tutorías especializadas, abordamos de raíz términos clave de búsqueda como <em>{", ".join(long_tails)}</em>. Sabemos por experiencia que el cerebro de un adolescente no necesita más teoría acumulada, sino un puente directo entre la lógica matemática y su aplicación práctica.</p>
-
-        <h2>Por qué las clases tradicionales fallan estrepitosamente</h2>
+        <h2>Por qué la metodología tradicional suele quedarse corta</h2>
         <ul>
-            <li><strong>Falta de diagnóstico previo:</strong> Nadie se detiene a averiguar si el alumno arrastra vacíos fundamentales desde años anteriores (como fracciones, despeje de ecuaciones o leyes de Newton).</li>
-            <li><strong>Ritmo impersonal:</strong> Si el estudiante se queda atrás en el primer minuto de la explicación, se desconecta mentalmente el resto de la clase.</li>
-            <li><strong>Ausencia de motivación emocional:</strong> El miedo al fracaso bloquea el aprendizaje cognitivo, generando un rechazo crónico hacia los números y las ciencias exactas.</li>
+            <li><strong>Falta de atención individualizada:</strong> Los grupos masivos impiden resolver las dudas específicas de cada alumno de manera oportuna.</li>
+            <li><strong>Vacíos acumulados:</strong> Ignorar los cimientos teóricos de años anteriores dificulta la comprensión de nuevos temas avanzados.</li>
+            <li><strong>Gestión del estrés:</strong> La presión de los exámenes genera bloqueos mentales que disminuyen drásticamente las calificaciones.</li>
         </ul>
 
-        <h2>Nuestra metodología de rescate académico intensivo</h2>
+        <h2>Nuestro enfoque de enseñanza en Santo Domingo</h2>
 
-        <p>Para garantizar que el estudiante supere con éxito el examen supletorio y recupere su confianza, diseñamos un plan de choque estructurado en tres fases críticas:</p>
-
-        <p><strong>Diagnóstico quirúrgico de vacíos conceptuales:</strong> En la primera sesión evaluamos exactamente dónde se rompió el aprendizaje. No perdemos tiempo repasando lo que el alumno ya domina; atacamos de frente los puntos críticos que le impiden aprobar.</p>
-
-        <p><strong>Razonamiento lógico frente a memorización ciega:</strong> Las matemáticas y las ciencias exactas no se memorizan; se comprenden. Transformamos problemas complejos en ejercicios visuales y lógicos que cualquier estudiante puede resolver aplicando sentido común estructurado.</p>
-
-        <p><strong>Simulación de exámenes reales bajo presión:</strong> Entrenamos al alumno con exámenes supletorios de años anteriores aplicados en los principales colegios de Santo Domingo. De esta forma, el día de la prueba real sabrá gestionar los tiempos, controlar los nervios y asegurar cada punto en juego.</p>
-
-        <h2>Preguntas frecuentes que todo padre de familia se hace</h2>
-
-        <p><strong>¿Cuánto tiempo toma ver resultados tangibles?</strong> Gracias a la alta intensidad y personalización de nuestras sesiones, desde la segunda clase el estudiante comienza a resolver ejercicios complejos de manera autónoma, cambiando por completo su perspectiva frente a la materia.</p>
-
-        <p><strong>¿Las clases son a domicilio o virtuales?</strong> Ofrecemos total flexibilidad adaptada a las necesidades de tu hogar en Santo Domingo de los Tsáchilas, combinando apoyo presencial directo y tutorías online de alto rendimiento.</p>
-
-        <h2>No esperes al último día: El tiempo corre en contra</h2>
-
-        <p>Dejar pasar los días bajo la falsa ilusión de que "ya estudiará por su cuenta" es el camino más rápido hacia la pérdida del año escolar. El supletorio no es una segunda oportunidad de regalo; es una prueba de fuego que requiere estrategia, acompañamiento profesional y disciplina táctica.</p>
-
-        <p>No permitas que una mala nota le arruine el futuro académico a tu hijo ni sus vacaciones familiares. Es el momento de actuar con firmeza y poner el aprendizaje en manos de un especialista con experiencia probada en Santo Domingo.</p>
+        <p>Diseñamos un plan de acompañamiento enfocado en potenciar las fortalezas del estudiante, transformar las debilidades en oportunidades y garantizar una sólida preparación orientada a resultados reales.</p>
 
         <div class="cta-section">
-            <div class="cta-title">¿Listo para asegurar el año escolar de tu hijo hoy mismo?</div>
-            <a href="https://wa.me/593993117800?text=Hola%20Profe%20Andrés,%20necesito%20información%20sobre%20clases%20de%20supletorios" class="whatsapp-btn" target="_blank">Consultar por WhatsApp con el Profe Andrés →</a>
+            <div class="cta-title">¿Listo para potenciar el rendimiento académico de tu hijo hoy mismo?</div>
+            <a href="https://wa.me/593993117800?text=Hola%20Profe%20Andrés,%20necesito%20información%20sobre%20clases" class="whatsapp-btn" target="_blank">Consultar por WhatsApp con el Profe Andrés →</a>
         </div>
     </div>
 
@@ -185,36 +170,48 @@ contenido_html = f"""<!DOCTYPE html>
 </html>
 """
 
-# 3. Guardar el archivo del post en la carpeta blog
+# 4. Guardar el archivo HTML del post
 os.makedirs("blog", exist_ok=True)
 filename_post = f"blog/{slug}.html"
 with open(filename_post, "w", encoding="utf-8") as out:
     out.write(contenido_html)
 
-# 4. Generar automáticamente el archivo sitemap.xml raíz
-sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
+# 5. Generar o actualizar el sitemap.xml de forma dinámica con los posts existentes en la carpeta blog
+urls_sitemap = [f"""    <url>
         <loc>{DOMINIO_BASE}</loc>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>{url_articulo}</loc>
+    </url>"""]
+
+# Listar todos los archivos html dentro de la carpeta blog para incluirlos en el sitemap
+if os.path.exists("blog"):
+    for archivo_blog in os.listdir("blog"):
+        if archivo_blog.endswith(".html"):
+            slug_archivo = archivo_blog.replace(".html", "")
+            url_dinamica = f"{DOMINIO_BASE}blog/{archivo_blog}"
+            urls_sitemap.append(f"""    <url>
+        <loc>{url_dinamica}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
-    </url>
+    </url>""")
+
+sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{'\n'.join(urls_sitemap)}
 </urlset>
 """
 
 with open("sitemap.xml", "w", encoding="utf-8") as sm:
     sm.write(sitemap_contenido)
 
-# 5. Registrar en el archivo CSV
+# 6. Registrar en el archivo CSV (modo append para conservar historial)
 archivo_csv = "urls_articulos.csv"
-with open(archivo_csv, mode="w", newline="", encoding="utf-8") as f:
+file_exists = os.path.isfile(archivo_csv)
+
+with open(archivo_csv, mode="a", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
-    writer.writerow(["Titulo", "Slug", "URL para Search Console"])
+    if not file_exists:
+        writer.writerow(["Titulo", "Slug", "URL para Search Console"])
     writer.writerow([titulo, slug, url_articulo])
 
-print(f"¡Artículo y sitemap.xml generados correctamente con éxito!")
+print(f"¡Artículo '{titulo}' y sitemap actualizados correctamente con éxito!")
