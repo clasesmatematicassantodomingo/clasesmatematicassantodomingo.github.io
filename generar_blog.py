@@ -27,31 +27,34 @@ slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-sant
 
 url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
 
-# 2. Generar el contenido HTML del nuevo artículo
+# 2. Generar el contenido HTML ÚNICO para este artículo específico
 html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{titulo}</title>
-    <meta name="description" content="Artículo especializado sobre {keyword_principal} en Santo Domingo. Clases particulares y apoyo académico efectivo.">
+    <meta name="description" content="Guía especializada sobre {keyword_principal} en Santo Domingo. Soluciones efectivas y clases particulares.">
     <link rel="canonical" href="{url_articulo}">
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 2rem;">
     <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1rem; margin-bottom: 2rem;">
-        <span style="color: #0b2545; font-weight: bold; font-size: 0.9rem;">BLOG DE MATEMÁTICAS</span>
+        <span style="color: #0b2545; font-weight: bold; font-size: 0.9rem;">EXPERTOS EN MATEMÁTICAS</span>
         <h1 style="color: #0b2545; font-size: 2.2rem; margin-top: 0.5rem;">{titulo}</h1>
     </header>
     
     <main>
-        <p style="font-size: 1.1rem;">Bienvenido a nuestro espacio de asesoría académica. Si estás buscando mejorar el rendimiento en matemáticas mediante <strong>{keyword_principal}</strong>, estás en el lugar correcto.</p>
+        <p style="font-size: 1.1rem;">Si estás buscando optimizar el aprendizaje y necesitas orientación profesional en <strong>{keyword_principal}</strong>, estás en el artículo indicado para entender cómo resolver este desafío académico.</p>
         
-        <h2 style="color: #0b2545; margin-top: 2rem;">Clave del éxito académico</h2>
-        <p>Muchos estudiantes enfrentan retos constantes con la materia. Abordar temas específicos como <em>{', '.join(long_tails)}</em> de forma personalizada marca una diferencia radical en sus calificaciones.</p>
+        <h2 style="color: #0b2545; margin-top: 2rem;">Puntos clave a abordar</h2>
+        <p>Para dominar esta materia y ver mejoras reales en las calificaciones, es fundamental enfocarse en áreas críticas como: <em>{', '.join(long_tails)}</em>.</p>
         
+        <h2 style="color: #0b2545; margin-top: 2rem;">¿Cómo te ayudamos a superar esta etapa?</h2>
+        <p>Contamos con metodologías directas y adaptadas al sistema educativo de Santo Domingo para garantizar que el estudiante supere cualquier obstáculo en {keyword_principal}.</p>
+
         <div style="background: #f4f6f9; padding: 1.5rem; border-left: 4px solid #0b2545; margin: 2rem 0; border-radius: 4px;">
-            <p style="margin: 0; font-weight: bold;">¿Necesitas ayuda inmediata con las notas de tu hijo?</p>
-            <p style="margin: 0.5rem 0 0 0;">Contáctanos hoy mismo para asegurar su aprobación escolar con estrategias probadas.</p>
+            <p style="margin: 0; font-weight: bold;">¿Listo para asegurar el año escolar?</p>
+            <p style="margin: 0.5rem 0 0 0;">Reserva una clase de prueba y descubre nuestro sistema enfocado en resultados.</p>
         </div>
     </main>
 
@@ -63,16 +66,13 @@ html_contenido = f"""<!DOCTYPE html>
 </html>
 """
 
-# Asegurar que la carpeta blog exista
 os.makedirs("blog", exist_ok=True)
 ruta_archivo = os.path.join("blog", f"{slug}.html")
 
 with open(ruta_archivo, "w", encoding="utf-8") as f:
     f.write(html_contenido)
 
-print(f"Artículo generado con éxito: {ruta_archivo}")
-
-# 3. Guardar en el archivo CSV histórico de URLs
+# 3. Guardar en el CSV histórico
 csv_path = "urls_articulos.csv"
 file_exists = os.path.exists(csv_path)
 
@@ -82,17 +82,17 @@ with open(csv_path, mode="a", newline="", encoding="utf-8") as f:
         writer.writerow(["Titulo", "Slug", "URL para Search Console"])
     writer.writerow([titulo, slug, url_articulo])
 
-# 4. Cargar los títulos históricos desde el CSV para mapearlos correctamente en el index
+# 4. Cargar títulos desde el CSV para mapear el index
 titulos_por_slug = {}
 if os.path.exists(csv_path):
     with open(csv_path, mode="r", encoding="utf-8") as f:
         reader = csv.reader(f)
-        next(reader, None)  # Saltar cabecera
+        next(reader, None)
         for row in reader:
             if len(row) >= 2:
-                titulos_por_slug[row[1]] = row[0]  # Mapea {slug: titulo real}
+                titulos_por_slug[row[1]] = row[0]
 
-# 5. Generar o actualizar el sitemap.xml y las tarjetas para el index
+# 5. Generar sitemap y tarjetas para el index
 urls_sitemap = [f"""    <url>
         <loc>{DOMINIO_BASE}</loc>
         <changefreq>weekly</changefreq>
@@ -106,18 +106,15 @@ if os.path.exists("blog"):
     for archivo_blog in sorted(os.listdir("blog"), reverse=True):
         if archivo_blog.endswith(".html"):
             slug_archivo = archivo_blog.replace(".html", "")
-            # Obtiene el título real del CSV o usa un genérico si no lo encuentra
             titulo_card = titulos_por_slug.get(slug_archivo, "Artículo de Matemáticas")
             url_dinamica = f"{DOMINIO_BASE}blog/{archivo_blog}"
             
-            # Sitemap
             urls_sitemap.append(f"""    <url>
         <loc>{url_dinamica}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>""")
             
-            # Tarjeta visual para la página principal con su título correcto
             tarjeta = f"""
             <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
                 <div>
@@ -139,7 +136,7 @@ sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
 with open("sitemap.xml", "w", encoding="utf-8") as sm:
     sm.write(sitemap_contenido)
 
-# 6. Actualizar index.html automáticamente usando los marcadores
+# 6. Actualizar index.html
 if os.path.exists("index.html"):
     with open("index.html", "r", encoding="utf-8") as f:
         index_content = f.read()
@@ -156,8 +153,8 @@ if os.path.exists("index.html"):
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(index_actualizado)
 
-# 7. Guardar el archivo actualizado de keywords (removiendo el ya usado para que siga su ciclo automático)
+# 7. Guardar keywords actualizadas
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado con éxito! Índices, tarjetas y parrilla actualizados.")
+print("¡Proceso completado con contenido único por artículo!")
