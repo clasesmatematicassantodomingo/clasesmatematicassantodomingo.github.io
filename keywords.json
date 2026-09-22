@@ -1,110 +1,147 @@
 [
-  {
-    "id": 1,
-    "keyword_principal": "clases de supletorios de matemáticas en Santo Domingo",
-    "long_tails": ["supletorios matemáticas", "profesor particular santo domingo o supletorios matemáticas", "clases de supletorios Ecuador"],
-    "titulo": "¿Vas a dejar que un supletorio le arruine las vacaciones a tu hijo en Santo Domingo?",
-    "enfoque": "Urgencia temporal, ataque directo al dolor del padre y cómo tu método salva el año.",
-    "slug": "clases-de-supletorios-de-matematicas-en-santo-domingo",
-    "fecha": "Día 1"
-  },
-  {
-    "id": 2,
-    "keyword_principal": "profesor particular matematicas",
-    "long_tails": ["profesor a domicilio matematicas", "profesor particular matematicas eso", "profesor particular mates"],
-    "titulo": "Por qué el colegio de tu hijo está fracasando enseñando matemáticas (Y cómo lo arreglamos con un profesor particular)",
-    "enfoque": "Crítica al sistema educativo tradicional y autoridad profesional presencial.",
-    "slug": "profesor-particular-matematicas",
-    "fecha": "Día 4"
-  },
-  {
-    "id": 3,
-    "keyword_principal": "clases particulares matematicas",
-    "long_tails": ["clases particulares de matemáticas a domicilio", "clases privadas de matematicas", "clases de matematicas cerca de mi"],
-    "titulo": "Clases particulares de matemáticas que sí funcionan: Adiós a las horas de aburrimiento con tutorías masivas",
-    "enfoque": "Autoridad pedagógica, cercanía y enfoque práctico local.",
-    "slug": "clases-particulares-matematicas",
-    "fecha": "Día 7"
-  },
-  {
-    "id": 4,
-    "keyword_principal": "clases de matematicas online",
-    "long_tails": ["clases virtuales de matematicas", "clases en linea matematicas", "clases de matematicas online gratis"],
-    "titulo": "Clases online de matemáticas sin excusas: Aprende desde casa con un especialista real (Sin videos aburridos de YouTube)",
-    "enfoque": "Captación de alumnos digitales, objeción de costo y métodos virtuales.",
-    "slug": "clases-de-matematicas-online",
-    "fecha": "Día 10"
-  },
-  {
-    "id": 5,
-    "keyword_principal": "profesores de matemáticas a domicilio",
-    "long_tails": ["maestros de matemáticas a domicilio", "profesores de matematicas particulares", "busco profesor de matematicas a domicilio"],
-    "titulo": "El peligro de llevar a tu hijo a academias masivas: Por qué un profesor a domicilio en Santo Domingo marca la diferencia",
-    "enfoque": "Cercanía geográfica, comodidad y atención totalmente personalizada.",
-    "slug": "profesores-de-matematicas-a-domicilio",
-    "fecha": "Día 13"
-  },
-  {
-    "id": 6,
-    "keyword_principal": "clases de algebra",
-    "long_tails": ["clases de algebra desde cero", "clases de algebra para principiantes", "clase de álgebra", "profesor de algebra"],
-    "titulo": "Memorizar fórmulas de álgebra es de mediocres: Cómo entender las ecuaciones de verdad desde cero",
-    "enfoque": "Romper mitos de estudio y explicar la metodología DUA aplicada.",
-    "slug": "clases-de-algebra",
-    "fecha": "Día 16"
-  },
-  {
-    "id": 7,
-    "keyword_principal": "profesor de calculo",
-    "long_tails": ["clases de calculo diferencial", "clases de calculo integral", "clases de calculo para universitarios"],
-    "titulo": "Cálculo diferencial e integral sin llorar: Guía definitiva para aprobar la universidad y pasar los filtros más duros",
-    "enfoque": "Enfoque universitario y técnico superior especializado.",
-    "slug": "profesor-de-calculo",
-    "fecha": "Día 19"
-  },
-  {
-    "id": 8,
-    "keyword_principal": "clases de matematicas y fisica",
-    "long_tails": ["profesor de matematicas y fisica", "clases particulares matematicas y fisica", "profesor fisica y matematicas"],
-    "titulo": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
-    "enfoque": "Doble especialidad de alta autoridad académica.",
-    "slug": "clases-de-matematicas-y-fisica",
-    "fecha": "Día 22"
-  },
-  {
-    "id": 9,
-    "keyword_principal": "clase de geometria",
-    "long_tails": ["clase de geometria", "clases de geometria basica", "clases de geometria desde cero", "geometria clases"],
-    "titulo": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
-    "enfoque": "Metodología visual, lógica y razonamiento espacial.",
-    "slug": "clase-de-geometria",
-    "fecha": "Día 25"
-  },
-  {
-    "id": 10,
-    "keyword_principal": "clase de fracciones",
-    "long_tails": ["clase de fracciones", "clases de fracciones para primaria", "clases de fracciones para secundaria"],
-    "titulo": "Si tu hijo todavía sufre con las fracciones en el colegio, este es el único método que necesita para dominarlas",
-    "enfoque": "Resolución de problemas base en niños y adolescentes.",
-    "slug": "clase-de-fracciones",
-    "fecha": "Día 28"
-  },
-  {
-    "id": 11,
-    "keyword_principal": "clases de matematicas bachillerato",
-    "long_tails": ["clases particulares matemáticas bachillerato", "profesor matemáticas bachillerato", "clases de mate para bachillerato"],
-    "titulo": "Matemáticas de bachillerato para no iniciados: El plan de rescate intensivo para graduarte sin arrastrar materias",
-    "enfoque": "Enfoque directo en estudiantes de secundaria en peligro de año perdido.",
-    "slug": "clases-de-matematicas-bachillerato",
-    "fecha": "Día 31"
-  },
-  {
-    "id": 12,
-    "keyword_principal": "clases de matematicas universidad",
-    "long_tails": ["clases matematicas universidad", "clases de matematicas universitarias", "clases de matematica basica universitaria"],
-    "titulo": "El salto mortal de la escuela a la universidad en matemáticas: Por qué el 80% de cachimbos reprueba el primer ciclo",
-    "enfoque": "Autoridad para nivel superior y universitario en la localidad.",
-    "slug": "clases-de-matematicas-universidad",
-    "fecha": "Día 34"
-  }
+    {
+        "id": 2,
+        "keyword_principal": "profesor particular matematicas",
+        "long_tails": [
+            "profesor a domicilio matematicas",
+            "profesor particular matematicas eso",
+            "profesor particular mates"
+        ],
+        "titulo": "Por qué el colegio de tu hijo está fracasando enseñando matemáticas (Y cómo lo arreglamos con un profesor particular)",
+        "enfoque": "Crítica al sistema educativo tradicional y autoridad profesional presencial.",
+        "slug": "profesor-particular-matematicas",
+        "fecha": "Día 4"
+    },
+    {
+        "id": 3,
+        "keyword_principal": "clases particulares matematicas",
+        "long_tails": [
+            "clases particulares de matemáticas a domicilio",
+            "clases privadas de matematicas",
+            "clases de matematicas cerca de mi"
+        ],
+        "titulo": "Clases particulares de matemáticas que sí funcionan: Adiós a las horas de aburrimiento con tutorías masivas",
+        "enfoque": "Autoridad pedagógica, cercanía y enfoque práctico local.",
+        "slug": "clases-particulares-matematicas",
+        "fecha": "Día 7"
+    },
+    {
+        "id": 4,
+        "keyword_principal": "clases de matematicas online",
+        "long_tails": [
+            "clases virtuales de matematicas",
+            "clases en linea matematicas",
+            "clases de matematicas online gratis"
+        ],
+        "titulo": "Clases online de matemáticas sin excusas: Aprende desde casa con un especialista real (Sin videos aburridos de YouTube)",
+        "enfoque": "Captación de alumnos digitales, objeción de costo y métodos virtuales.",
+        "slug": "clases-de-matematicas-online",
+        "fecha": "Día 10"
+    },
+    {
+        "id": 5,
+        "keyword_principal": "profesores de matemáticas a domicilio",
+        "long_tails": [
+            "maestros de matemáticas a domicilio",
+            "profesores de matematicas particulares",
+            "busco profesor de matematicas a domicilio"
+        ],
+        "titulo": "El peligro de llevar a tu hijo a academias masivas: Por qué un profesor a domicilio en Santo Domingo marca la diferencia",
+        "enfoque": "Cercanía geográfica, comodidad y atención totalmente personalizada.",
+        "slug": "profesores-de-matematicas-a-domicilio",
+        "fecha": "Día 13"
+    },
+    {
+        "id": 6,
+        "keyword_principal": "clases de algebra",
+        "long_tails": [
+            "clases de algebra desde cero",
+            "clases de algebra para principiantes",
+            "clase de álgebra",
+            "profesor de algebra"
+        ],
+        "titulo": "Memorizar fórmulas de álgebra es de mediocres: Cómo entender las ecuaciones de verdad desde cero",
+        "enfoque": "Romper mitos de estudio y explicar la metodología DUA aplicada.",
+        "slug": "clases-de-algebra",
+        "fecha": "Día 16"
+    },
+    {
+        "id": 7,
+        "keyword_principal": "profesor de calculo",
+        "long_tails": [
+            "clases de calculo diferencial",
+            "clases de calculo integral",
+            "clases de calculo para universitarios"
+        ],
+        "titulo": "Cálculo diferencial e integral sin llorar: Guía definitiva para aprobar la universidad y pasar los filtros más duros",
+        "enfoque": "Enfoque universitario y técnico superior especializado.",
+        "slug": "profesor-de-calculo",
+        "fecha": "Día 19"
+    },
+    {
+        "id": 8,
+        "keyword_principal": "clases de matematicas y fisica",
+        "long_tails": [
+            "profesor de matematicas y fisica",
+            "clases particulares matematicas y fisica",
+            "profesor fisica y matematicas"
+        ],
+        "titulo": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
+        "enfoque": "Doble especialidad de alta autoridad académica.",
+        "slug": "clases-de-matematicas-y-fisica",
+        "fecha": "Día 22"
+    },
+    {
+        "id": 9,
+        "keyword_principal": "clase de geometria",
+        "long_tails": [
+            "clase de geometria",
+            "clases de geometria basica",
+            "clases de geometria desde cero",
+            "geometria clases"
+        ],
+        "titulo": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
+        "enfoque": "Metodología visual, lógica y razonamiento espacial.",
+        "slug": "clase-de-geometria",
+        "fecha": "Día 25"
+    },
+    {
+        "id": 10,
+        "keyword_principal": "clase de fracciones",
+        "long_tails": [
+            "clase de fracciones",
+            "clases de fracciones para primaria",
+            "clases de fracciones para secundaria"
+        ],
+        "titulo": "Si tu hijo todavía sufre con las fracciones en el colegio, este es el único método que necesita para dominarlas",
+        "enfoque": "Resolución de problemas base en niños y adolescentes.",
+        "slug": "clase-de-fracciones",
+        "fecha": "Día 28"
+    },
+    {
+        "id": 11,
+        "keyword_principal": "clases de matematicas bachillerato",
+        "long_tails": [
+            "clases particulares matemáticas bachillerato",
+            "profesor matemáticas bachillerato",
+            "clases de mate para bachillerato"
+        ],
+        "titulo": "Matemáticas de bachillerato para no iniciados: El plan de rescate intensivo para graduarte sin arrastrar materias",
+        "enfoque": "Enfoque directo en estudiantes de secundaria en peligro de año perdido.",
+        "slug": "clases-de-matematicas-bachillerato",
+        "fecha": "Día 31"
+    },
+    {
+        "id": 12,
+        "keyword_principal": "clases de matematicas universidad",
+        "long_tails": [
+            "clases matematicas universidad",
+            "clases de matematicas universitarias",
+            "clases de matematica basica universitaria"
+        ],
+        "titulo": "El salto mortal de la escuela a la universidad en matemáticas: Por qué el 80% de cachimbos reprueba el primer ciclo",
+        "enfoque": "Autoridad para nivel superior y universitario en la localidad.",
+        "slug": "clases-de-matematicas-universidad",
+        "fecha": "Día 34"
+    }
 ]
