@@ -5,15 +5,15 @@ import csv
 # 1. Cargar la parrilla de keywords
 # with open("keywords.json", "r", encoding="utf-8") as f:
     # keywords_data = json.load(f)
-
+#
 # Validar si quedan artículos en la parrilla
 # if not keywords_data:
-    print("¡No quedan más palabras clave en la parrilla!")
-    exit()
-
+#    print("¡No quedan más palabras clave en la parrilla!")
+#    exit()
+#
 # Tomar el primer artículo disponible
 articulo_actual = keywords_data.pop(0) # Extrae y remueve el primer elemento
-
+#
 # keyword_principal = articulo_actual.get("keyword_principal")
 # long_tails = articulo_actual.get("long_tails", [])
 # titulo = articulo_actual.get("titulo")
@@ -21,7 +21,7 @@ articulo_actual = keywords_data.pop(0) # Extrae y remueve el primer elemento
 
 # URL base exacta
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
-url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
+# url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
 
 # 2. Guardar el archivo actualizado de keywords (removiendo el ya usado)
 # with open("keywords.json", "w", encoding="utf-8") as f:
