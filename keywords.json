@@ -1,19 +1,5 @@
 [
     {
-        "id": 6,
-        "keyword_principal": "clases de algebra",
-        "long_tails": [
-            "clases de algebra desde cero",
-            "clases de algebra para principiantes",
-            "clase de álgebra",
-            "profesor de algebra"
-        ],
-        "titulo": "Memorizar fórmulas de álgebra es de mediocres: Cómo entender las ecuaciones de verdad desde cero",
-        "enfoque": "Romper mitos de estudio y explicar la metodología DUA aplicada.",
-        "slug": "clases-de-algebra",
-        "fecha": "Día 16"
-    },
-    {
         "id": 7,
         "keyword_principal": "profesor de calculo",
         "long_tails": [
