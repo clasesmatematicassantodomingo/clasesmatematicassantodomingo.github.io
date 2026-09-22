@@ -1,18 +1,5 @@
 [
     {
-        "id": 7,
-        "keyword_principal": "profesor de calculo",
-        "long_tails": [
-            "clases de calculo diferencial",
-            "clases de calculo integral",
-            "clases de calculo para universitarios"
-        ],
-        "titulo": "Cálculo diferencial e integral sin llorar: Guía definitiva para aprobar la universidad y pasar los filtros más duros",
-        "enfoque": "Enfoque universitario y técnico superior especializado.",
-        "slug": "profesor-de-calculo",
-        "fecha": "Día 19"
-    },
-    {
         "id": 8,
         "keyword_principal": "clases de matematicas y fisica",
         "long_tails": [
