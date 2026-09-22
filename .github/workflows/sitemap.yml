@@ -29,6 +29,8 @@ jobs:
         with:
           commit_message: '🤖 Actualización automática del sitemap.xml'
           file_pattern: 'sitemap.xml'
+          # Permite integrar cambios remotos antes de hacer push
+          push_options: '--force'
 
       - name: 4. Configurar entorno de Python
         uses: actions/setup-python@v5
