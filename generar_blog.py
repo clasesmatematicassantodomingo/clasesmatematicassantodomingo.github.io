@@ -1,192 +1,98 @@
 import json
 import os
 import csv
+from datetime import datetime
+
+DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 
 # 1. Cargar la parrilla de keywords
-# with open("keywords.json", "r", encoding="utf-8") as f:
-    # keywords_data = json.load(f)
-#
-# Validar si quedan artículos en la parrilla
-# if not keywords_data:
-#    print("¡No quedan más palabras clave en la parrilla!")
-#    exit()
-#
+if not os.path.exists("keywords.json"):
+    print("El archivo keywords.json no existe.")
+    exit()
+
+with open("keywords.json", "r", encoding="utf-8") as f:
+    keywords_data = json.load(f)
+
+if not keywords_data:
+    print("¡No quedan más palabras clave en la parrilla!")
+    exit()
+
 # Tomar el primer artículo disponible
-# articulo_actual = keywords_data.pop(0) # Extrae y remueve el primer elemento
-#
-# keyword_principal = articulo_actual.get("keyword_principal")
-# long_tails = articulo_actual.get("long_tails", [])
-# titulo = articulo_actual.get("titulo")
-# slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
+articulo_actual = keywords_data.pop(0)
 
-# URL base exacta
-DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
-# url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
+keyword_principal = articulo_actual.get("keyword_principal")
+long_tails = articulo_actual.get("long_tails", [])
+titulo = articulo_actual.get("titulo")
+slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
 
-# 2. Guardar el archivo actualizado de keywords (removiendo el ya usado)
-# with open("keywords.json", "w", encoding="utf-8") as f:
-   # json.dump(keywords_data, f, ensure_ascii=False, indent=4)
+url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
 
-# 3. Generar el contenido HTML del artículo
-contenido_html = f"""<!DOCTYPE html>
+# 2. Generar el contenido HTML del nuevo artículo
+html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{titulo}</title>
-    <style>
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f6f9;
-            color: #222;
-            line-height: 1.6;
-        }}
-        .top-bar {{
-            background-color: #0b2239;
-            padding: 15px 20px;
-            text-align: left;
-        }}
-        .top-bar a {{
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }}
-        .main-container {{
-            max-width: 800px;
-            margin: 40px auto;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }}
-        .category {{
-            font-size: 12px;
-            font-weight: bold;
-            color: #111;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }}
-        h1 {{
-            font-size: 32px;
-            color: #0b2239;
-            margin-top: 0;
-            line-height: 1.3;
-        }}
-        .featured-image {{
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin: 20px 0 30px 0;
-        }}
-        h2 {{
-            font-size: 22px;
-            color: #0b2239;
-            margin-top: 35px;
-            margin-bottom: 15px;
-        }}
-        p {{
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #333;
-        }}
-        ul {{
-            margin-bottom: 25px;
-            padding-left: 20px;
-        }}
-        li {{
-            margin-bottom: 10px;
-            font-size: 16px;
-        }}
-        .cta-section {{
-            margin-top: 50px;
-            text-align: center;
-            padding: 30px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-        }}
-        .cta-title {{
-            font-size: 20px;
-            font-weight: bold;
-            color: #0b2239;
-            margin-bottom: 20px;
-        }}
-        .whatsapp-btn {{
-            display: inline-block;
-            background-color: #25d366;
-            color: white;
-            padding: 14px 28px;
-            font-size: 18px;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: background 0.3s ease;
-        }}
-        .whatsapp-btn:hover {{
-            background-color: #20ba5a;
-        }}
-    </style>
+    <meta name="description" content="Artículo especializado sobre {keyword_principal} en Santo Domingo. Clases particulares y apoyo académico efectivo.">
+    <link rel="canonical" href="{url_articulo}">
 </head>
-<body>
-
-    <div class="top-bar">
-        <a href="{DOMINIO_BASE}">← Volver a la página principal de Clases de Matemáticas</a>
-    </div>
-
-    <div class="main-container">
-        <div class="category">SEO & MATEMÁTICAS - SANTO DOMINGO</div>
-        <h1>{titulo}</h1>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 2rem;">
+    <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1rem; margin-bottom: 2rem;">
+        <span style="color: #0b2545; font-weight: bold; font-size: 0.9rem;">BLOG DE MATEMÁTICAS</span>
+        <h1 style="color: #0b2545; font-size: 2.2rem; margin-top: 0.5rem;">{titulo}</h1>
+    </header>
+    
+    <main>
+        <p style="font-size: 1.1rem;">Bienvenido a nuestro espacio de asesoría académica. Si estás buscando mejorar el rendimiento en matemáticas mediante <strong>{keyword_principal}</strong>, estás en el lugar correcto.</p>
         
-        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80" alt="Estudiantes en clase" class="featured-image">
-
-        <p>En el proceso de formación académica en Santo Domingo de los Tsáchilas, nos encontramos frecuentemente con desafíos relacionados con {keyword_principal}. Superar estas barreras requiere un enfoque estructurado, metodologías personalizadas y una guía constante para evitar retrasos en el rendimiento escolar.</p>
-
-        <h2>Claves para dominar {keyword_principal} con éxito</h2>
-
-        <p>A lo largo de nuestras tutorías especializadas, abordamos de raíz términos clave de búsqueda como <em>{", ".join(long_tails)}</em>. Comprendemos que cada estudiante posee un ritmo único de aprendizaje y necesita conectar la teoría matemática con aplicaciones prácticas y lógicas.</p>
-
-        <h2>Por qué la metodología tradicional suele quedarse corta</h2>
-        <ul>
-            <li><strong>Falta de atención individualizada:</strong> Los grupos masivos impiden resolver las dudas específicas de cada alumno de manera oportuna.</li>
-            <li><strong>Vacíos acumulados:</strong> Ignorar los cimientos teóricos de años anteriores dificulta la comprensión de nuevos temas avanzados.</li>
-            <li><strong>Gestión del estrés:</strong> La presión de los exámenes genera bloqueos mentales que disminuyen drásticamente las calificaciones.</li>
-        </ul>
-
-        <h2>Nuestro enfoque de enseñanza en Santo Domingo</h2>
-
-        <p>Diseñamos un plan de acompañamiento enfocado en potenciar las fortalezas del estudiante, transformar las debilidades en oportunidades y garantizar una sólida preparación orientada a resultados reales.</p>
-
-        <div class="cta-section">
-            <div class="cta-title">¿Listo para potenciar el rendimiento académico de tu hijo hoy mismo?</div>
-            <a href="https://wa.me/593993117800?text=Hola%20Profe%20Andrés,%20necesito%20información%20sobre%20clases" class="whatsapp-btn" target="_blank">Consultar por WhatsApp con el Profe Andrés →</a>
+        <h2 style="color: #0b2545; margin-top: 2rem;">Clave del éxito académico</h2>
+        <p>Muchos estudiantes enfrentan retos constantes con la materia. Abordar temas específicos como <em>{', '.join(long_tails)}</em> de forma personalizada marca una diferencia radical en sus calificaciones.</p>
+        
+        <div style="background: #f4f6f9; padding: 1.5rem; border-left: 4px solid #0b2545; margin: 2rem 0; border-radius: 4px;">
+            <p style="margin: 0; font-weight: bold;">¿Necesitas ayuda inmediata con las notas de tu hijo?</p>
+            <p style="margin: 0.5rem 0 0 0;">Contáctanos hoy mismo para asegurar su aprobación escolar con estrategias probadas.</p>
         </div>
-    </div>
+    </main>
 
+    <footer style="margin-top: 4rem; border-top: 1px solid #eaeaea; padding-top: 1rem; text-align: center; color: #777; font-size: 0.9rem;">
+        <p>&copy; {datetime.now().year} Clases de Matemáticas Santo Domingo. Todos los derechos reservados.</p>
+        <p><a href="../index.html" style="color: #0b2545; text-decoration: none;">← Volver al inicio</a></p>
+    </footer>
 </body>
 </html>
 """
 
-# 4. Guardar el archivo HTML del post
+# Asegurar que la carpeta blog exista
 os.makedirs("blog", exist_ok=True)
-filename_post = f"blog/{slug}.html"
-with open(filename_post, "w", encoding="utf-8") as out:
-    out.write(contenido_html)
+ruta_archivo = os.path.join("blog", f"{slug}.html")
 
-# 5. Cargar los títulos históricos desde el CSV para mapearlos en el index
+with open(ruta_archivo, "w", encoding="utf-8") as f:
+    f.write(html_contenido)
+
+print(f"Artículo generado con éxito: {ruta_archivo}")
+
+# 3. Guardar en el archivo CSV histórico de URLs
+csv_path = "urls_articulos.csv"
+file_exists = os.path.exists(csv_path)
+
+with open(csv_path, mode="a", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    if not file_exists:
+        writer.writerow(["Titulo", "Slug", "URL para Search Console"])
+    writer.writerow([titulo, slug, url_articulo])
+
+# 4. Cargar los títulos históricos desde el CSV para mapearlos correctamente en el index
 titulos_por_slug = {}
-if os.path.exists("urls_articulos.csv"):
-    with open("urls_articulos.csv", mode="r", encoding="utf-8") as f:
+if os.path.exists(csv_path):
+    with open(csv_path, mode="r", encoding="utf-8") as f:
         reader = csv.reader(f)
         next(reader, None)  # Saltar cabecera
         for row in reader:
             if len(row) >= 2:
-                titulos_por_slug[row[1]] = row[0]  # {slug: titulo}
+                titulos_por_slug[row[1]] = row[0]  # Mapea {slug: titulo real}
 
-# 6. Generar o actualizar el sitemap.xml y las tarjetas para el index
+# 5. Generar o actualizar el sitemap.xml y las tarjetas para el index
 urls_sitemap = [f"""    <url>
         <loc>{DOMINIO_BASE}</loc>
         <changefreq>weekly</changefreq>
@@ -200,6 +106,7 @@ if os.path.exists("blog"):
     for archivo_blog in sorted(os.listdir("blog"), reverse=True):
         if archivo_blog.endswith(".html"):
             slug_archivo = archivo_blog.replace(".html", "")
+            # Obtiene el título real del CSV o usa un genérico si no lo encuentra
             titulo_card = titulos_por_slug.get(slug_archivo, "Artículo de Matemáticas")
             url_dinamica = f"{DOMINIO_BASE}blog/{archivo_blog}"
             
@@ -232,7 +139,7 @@ sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
 with open("sitemap.xml", "w", encoding="utf-8") as sm:
     sm.write(sitemap_contenido)
 
-# 7. Actualizar index.html automáticamente si tiene los marcadores
+# 6. Actualizar index.html automáticamente usando los marcadores
 if os.path.exists("index.html"):
     with open("index.html", "r", encoding="utf-8") as f:
         index_content = f.read()
@@ -249,15 +156,8 @@ if os.path.exists("index.html"):
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(index_actualizado)
 
-print("¡Índice y sitemap actualizados correctamente con sus títulos reales!")
-# 7. Registrar en el archivo CSV (modo append para conservar historial)
-archivo_csv = "urls_articulos.csv"
-file_exists = os.path.isfile(archivo_csv)
+# 7. Guardar el archivo actualizado de keywords (removiendo el ya usado para que siga su ciclo automático)
+with open("keywords.json", "w", encoding="utf-8") as f:
+    json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-with open(archivo_csv, mode="a", newline="", encoding="utf-8") as f:
-    writer = csv.writer(f)
-    if not file_exists:
-        writer.writerow(["Titulo", "Slug", "URL para Search Console"])
-    writer.writerow([titulo, slug, url_articulo])
-
-print(f"¡Artículo '{titulo}', sitemap e index.html actualizados correctamente con éxito!")
+print("¡Proceso completado con éxito! Índices, tarjetas y parrilla actualizados.")
