@@ -17,7 +17,7 @@ jobs:
       - name: 2. Generar el archivo sitemap.xml
         uses: cicirello/generate-sitemap@v1
         with:
-          base-url: 'https://clasesmatematicassantodomingo.github.io'
+          base-url-path: 'https://clasesmatematicassantodomingo.github.io'
           destination-file: 'sitemap.xml'
           exclude: |
             **/404.html
