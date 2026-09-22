@@ -3,29 +3,29 @@ import os
 import csv
 
 # 1. Cargar la parrilla de keywords
-with open("keywords.json", "r", encoding="utf-8") as f:
-    keywords_data = json.load(f)
+# with open("keywords.json", "r", encoding="utf-8") as f:
+    # keywords_data = json.load(f)
 
 # Validar si quedan artículos en la parrilla
-if not keywords_data:
+# if not keywords_data:
     print("¡No quedan más palabras clave en la parrilla!")
     exit()
 
 # Tomar el primer artículo disponible
 articulo_actual = keywords_data.pop(0) # Extrae y remueve el primer elemento
 
-keyword_principal = articulo_actual.get("keyword_principal")
-long_tails = articulo_actual.get("long_tails", [])
-titulo = articulo_actual.get("titulo")
-slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
+# keyword_principal = articulo_actual.get("keyword_principal")
+# long_tails = articulo_actual.get("long_tails", [])
+# titulo = articulo_actual.get("titulo")
+# slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
 
 # URL base exacta
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
 
 # 2. Guardar el archivo actualizado de keywords (removiendo el ya usado)
-with open("keywords.json", "w", encoding="utf-8") as f:
-    json.dump(keywords_data, f, ensure_ascii=False, indent=4)
+# with open("keywords.json", "w", encoding="utf-8") as f:
+   # json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
 # 3. Generar el contenido HTML del artículo
 contenido_html = f"""<!DOCTYPE html>
