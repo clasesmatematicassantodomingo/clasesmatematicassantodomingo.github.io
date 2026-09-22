@@ -1,12 +1,12 @@
-name: Generar Sitemap Automaticamente
+name: Sitemap y Indexación Automática
 
 on:
   push:
     branches:
-      - main # Cambia 'main' por 'master' si tu rama principal se llama así
+      - main # Cambia a 'master' si tu rama principal se llama así
 
 jobs:
-  sitemap:
+  sitemap-and-index:
     runs-on: ubuntu-latest
     steps:
       - name: 1. Descargar el código del repositorio
@@ -17,9 +17,8 @@ jobs:
       - name: 2. Generar el archivo sitemap.xml
         uses: cicirello/generate-sitemap@v1
         with:
-          baseurl: 'https://clasesmatematicassantodomingo.github.io/'
+          baseurl: 'https://clasesmatematicassantodomingo.github.io' # <--- REEMPLAZA CON TU URL REAL
           destination-file: 'sitemap.xml'
-          # Excluye páginas que no sean artículos o blogs (como páginas de error, CSS, etc.)
           exclude: |
             **/404.html
             **/assets/**
@@ -30,3 +29,75 @@ jobs:
         with:
           commit_message: '🤖 Actualización automática del sitemap.xml'
           file_pattern: 'sitemap.xml'
+
+      - name: 4. Configurar entorno de Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 5. Instalar dependencias para la Indexación
+        run: |
+          pip install requests google-auth
+
+      - name: 6. Enviar URLs a Google Indexing API
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SITE_URL: 'https://clasesmatematicassantodomingo.github.io' # <--- REEMPLAZA CON TU URL REAL
+        run: |
+          python -c '
+          import os
+          import json
+          import xml.etree.ElementTree as ET
+          from google.oauth2 import service_account
+          import google.auth.transport.requests
+          import requests
+
+          # Cargar credenciales desde el secreto de GitHub
+          creds_json = os.environ.get("GOOGLE_CREDENTIALS")
+          if not creds_json:
+              print("Error: No se encontró el secreto GOOGLE_CREDENTIALS")
+              exit(1)
+
+          creds_dict = json.loads(creds_json)
+          scopes = ["https://www.googleapis.com/auth/indexing"]
+          credentials = service_account.Credentials.from_service_account_info(creds_dict, scopes=scopes)
+          request = google.auth.transport.requests.Request()
+          credentials.refresh(request)
+
+          endpoint = "https://indexing.googleapis.com/v3/urlNotifications:publish"
+
+          # Leer sitemap.xml generado en el paso anterior
+          if not os.path.exists("sitemap.xml"):
+              print("No se encontró el archivo sitemap.xml")
+              exit(0)
+
+          tree = ET.parse("sitemap.xml")
+          root = tree.getroot()
+          # Manejar namespaces de XML en sitemaps
+          namespace = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+
+          urls = []
+          for url in root.findall("ns:url", namespace):
+              loc = url.find("ns:loc", namespace)
+              if loc is not None and loc.text:
+                  urls.append(loc.text)
+
+          print(f"Se encontraron {len(urls)} URLs en el sitemap.")
+
+          # Enviar cada URL a la API de Google
+          session = requests.Session()
+          for url in urls:
+              headers = {
+                  "Content-Type": "application/json",
+                  "Authorization": f"Bearer {credentials.token}"
+              }
+              body = {
+                  "url": url,
+                  "type": "URL_UPDATED"
+              }
+              response = session.post(endpoint, headers=headers, json=body)
+              if response.status_code == 200:
+                  print(f"✅ Indexado con éxito: {url}")
+              else:
+                  print(f"❌ Error al indexar {url}: {response.text}")
+          '
