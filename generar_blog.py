@@ -176,37 +176,49 @@ filename_post = f"blog/{slug}.html"
 with open(filename_post, "w", encoding="utf-8") as out:
     out.write(contenido_html)
 
-# 5. Generar o actualizar el sitemap.xml de forma dinámica
+# 5. Cargar los títulos históricos desde el CSV para mapearlos en el index
+titulos_por_slug = {}
+if os.path.exists("urls_articulos.csv"):
+    with open("urls_articulos.csv", mode="r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)  # Saltar cabecera
+        for row in reader:
+            if len(row) >= 2:
+                titulos_por_slug[row[1]] = row[0]  # {slug: titulo}
+
+# 6. Generar o actualizar el sitemap.xml y las tarjetas para el index
 urls_sitemap = [f"""    <url>
         <loc>{DOMINIO_BASE}</loc>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>"""]
 
-# Listar todos los archivos html dentro de la carpeta blog para las tarjetas y el sitemap
 tarjetas_html = []
 salto_linea = "\n"
 
 if os.path.exists("blog"):
-    for archivo_blog in sorted(os.listdir("blog"), reverse=True): # Los más nuevos primero
+    for archivo_blog in sorted(os.listdir("blog"), reverse=True):
         if archivo_blog.endswith(".html"):
             slug_archivo = archivo_blog.replace(".html", "")
+            titulo_card = titulos_por_slug.get(slug_archivo, "Artículo de Matemáticas")
             url_dinamica = f"{DOMINIO_BASE}blog/{archivo_blog}"
             
-            # Agregar al sitemap
+            # Sitemap
             urls_sitemap.append(f"""    <url>
         <loc>{url_dinamica}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>""")
             
-            # Crear la tarjeta visual para index.html (puedes ajustar el diseño de la tarjeta aquí)
+            # Tarjeta visual para la página principal con su título correcto
             tarjeta = f"""
-            <div style="background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0;">
-                <div style="font-size: 12px; font-weight: bold; color: #0b2239; text-transform: uppercase; margin-bottom: 8px;">SEO & MATEMÁTICAS</div>
-                <h3 style="font-size: 20px; color: #0b2239; margin-top: 0; margin-bottom: 12px;">{titulo}</h3>
-                <p style="color: #4a5568; font-size: 15px; margin-bottom: 15px;">Artículo especializado enfocado en potenciar el rendimiento académico y resolver las dudas clave de los estudiantes.</p>
-                <a href="blog/{archivo_blog}" style="color: #1e3a8a; font-weight: bold; text-decoration: none;">Leer artículo completo →</a>
+            <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 0.85rem; color: #0b2545; font-weight: bold;">SEO & MATEMÁTICAS</span>
+                    <h3 style="font-size: 1.2rem; margin: 0.5rem 0; color: #111;">{titulo_card}</h3>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem;">Artículo especializado enfocado en potenciar el rendimiento académico y resolver las dudas clave de los estudiantes.</p>
+                </div>
+                <a href="blog/{archivo_blog}" target="_blank" style="color: #0b2545; font-weight: bold; text-decoration: none; font-size: 1rem;">Leer artículo completo →</a>
             </div>
             """
             tarjetas_html.append(tarjeta)
@@ -220,7 +232,7 @@ sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
 with open("sitemap.xml", "w", encoding="utf-8") as sm:
     sm.write(sitemap_contenido)
 
-# 6. Actualizar automáticamente index.html inyectando las tarjetas del blog
+# 7. Actualizar index.html automáticamente si tiene los marcadores
 if os.path.exists("index.html"):
     with open("index.html", "r", encoding="utf-8") as f:
         index_content = f.read()
@@ -230,7 +242,6 @@ if os.path.exists("index.html"):
     
     if start_marker in index_content and end_marker in index_content:
         nuevo_bloque_blog = f"{start_marker}\n" + "".join(tarjetas_html) + f"\n{end_marker}"
-        # Reemplazar la sección entre los marcadores
         partes = index_content.split(start_marker)
         segunda_parte = partes[1].split(end_marker)[1]
         index_actualizado = partes[0] + nuevo_bloque_blog + segunda_parte
@@ -238,6 +249,7 @@ if os.path.exists("index.html"):
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(index_actualizado)
 
+print("¡Índice y sitemap actualizados correctamente con sus títulos reales!")
 # 7. Registrar en el archivo CSV (modo append para conservar historial)
 archivo_csv = "urls_articulos.csv"
 file_exists = os.path.isfile(archivo_csv)
