@@ -1,0 +1,32 @@
+name: Generar Sitemap Automaticamente
+
+on:
+  push:
+    branches:
+      - main # Cambia 'main' por 'master' si tu rama principal se llama así
+
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Descargar el código del repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 2. Generar el archivo sitemap.xml
+        uses: cicirello/generate-sitemap@v1
+        with:
+          baseurl: 'https://clasesmatematicassantodomingo.github.io/'
+          destination-file: 'sitemap.xml'
+          # Excluye páginas que no sean artículos o blogs (como páginas de error, CSS, etc.)
+          exclude: |
+            **/404.html
+            **/assets/**
+            **/admin/**
+
+      - name: 3. Guardar y subir el sitemap al repositorio
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: '🤖 Actualización automática del sitemap.xml'
+          file_pattern: 'sitemap.xml'
