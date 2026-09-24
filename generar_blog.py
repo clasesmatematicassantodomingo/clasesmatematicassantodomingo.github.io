@@ -5,7 +5,7 @@ from datetime import datetime
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 # REEMPLAZA ESTE NÚMERO CON TU WHATSAPP REAL (Ej: 593999999999 sin el símbolo +)
-NUMERO_WHATSAPP = "593999999999" 
+NUMERO_WHATSAPP = "593993117800" 
 
 # 1. Cargar la parrilla de keywords
 if not os.path.exists("keywords.json"):
