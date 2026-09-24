@@ -1,19 +1,5 @@
 [
     {
-        "id": 9,
-        "keyword_principal": "clase de geometria",
-        "long_tails": [
-            "clase de geometria",
-            "clases de geometria basica",
-            "clases de geometria desde cero",
-            "geometria clases"
-        ],
-        "titulo": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
-        "enfoque": "Metodología visual, lógica y razonamiento espacial.",
-        "slug": "clase-de-geometria",
-        "fecha": "Día 25"
-    },
-    {
         "id": 10,
         "keyword_principal": "clase de fracciones",
         "long_tails": [
