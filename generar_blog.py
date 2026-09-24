@@ -37,20 +37,27 @@ elif "supletorio" in slug:
 else:
     imagen_url = "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=1200&q=80"
 
-# 2. Generar contenido HTML dinámico, único y profundo para este artículo
+# 2. Generar contenido HTML con estilo persuasivo, dinámico y enfoque de conversión (Estilo Romuald Fons)
+parrafos_long_tails = ""
+for tail in long_tails:
+    parrafos_long_tails += f"""
+    <h3 style="color: #0b2545; margin-top: 2rem; font-size: 1.3rem; font-weight: 700;">El secreto detrás de {tail}</h3>
+    <p style="font-size: 1.05rem; margin-bottom: 1rem;">Seamos honestos: el sistema educativo tradicional falla porque enseña matemáticas de memoria, sin conectar con la realidad. Cuando abordamos {tail} en Santo Domingo, rompemos con esa dinámica aburrida. Aquí vamos directo a lo que importa para que el estudiante entienda los conceptos de una vez por todas.</p>
+    """
+
 html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{titulo}</title>
-    <meta name="description" content="Análisis especializado y guía práctica sobre {keyword_principal} en Santo Domingo. Apoyo académico garantizado.">
+    <meta name="description" content="Guía definitiva sobre {keyword_principal} en Santo Domingo. Domina {', '.join(long_tails) if long_tails else keyword_principal} sin rodeos y asegura tus notas.">
     <link rel="canonical" href="{url_articulo}">
 </head>
-<body style="font-family: Arial, sans-serif; line-height: 1.7; color: #2c3e50; max-width: 800px; margin: 0 auto; padding: 2rem;">
+<body style="font-family: Arial, sans-serif; line-height: 1.8; color: #2c3e50; max-width: 800px; margin: 0 auto; padding: 2rem;">
     <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1.5rem; margin-bottom: 2rem;">
-        <span style="color: #0b2545; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Excelencia Académica en Santo Domingo</span>
-        <h1 style="color: #0b2545; font-size: 2.3rem; margin-top: 0.5rem; line-height: 1.2;">{titulo}</h1>
+        <span style="color: #0b2545; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Rendimiento Escolar sin Excusas</span>
+        <h1 style="color: #0b2545; font-size: 2.4rem; margin-top: 0.5rem; line-height: 1.2; font-weight: 800;">{titulo}</h1>
     </header>
     
     <main>
@@ -58,21 +65,20 @@ html_contenido = f"""<!DOCTYPE html>
             <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 380px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
         </div>
 
-        <p style="font-size: 1.15rem; font-weight: 500;">Enfrentar los retos del sistema educativo actual requiere algo más que memorizar fórmulas; exige comprender a fondo <strong>{keyword_principal}</strong> para transformar el rendimiento escolar desde la raíz.</p>
+        <p style="font-size: 1.15rem; font-weight: 600; color: #111;">¿Harto de ver malas calificaciones y horas de frustración frente al cuaderno? Si buscas dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención, porque la solución no está en más tutorías masivas que aburren al estudiante, sino en un método que sí funciona.</p>
         
-        <h2 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.5rem;">¿Por qué este enfoque marca la diferencia en el rendimiento?</h2>
-        <p>Muchos estudiantes experimentan frustración debido a metodologías impersonales. Al trabajar de manera directa sobre conceptos clave como <em>{', '.join(long_tails) if long_tails else keyword_principal}</em>, desbloqueamos el verdadero potencial analítico del alumno.</p>
+        <h2 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.5rem; font-weight: 700;">¿Por qué las clases tradicionales de matemáticas ya no sirven?</h2>
+        <p style="font-size: 1.05rem;">Metodologías anticuadas obligan a los jóvenes a repetir procesos mecánicos sin entender el <em>porqué</em>. Con un enfoque especializado en {keyword_principal}, cambiamos las reglas del juego: diagnosticamos el problema de raíz y atacamos los baches académicos antes de que sea demasiado tarde.</p>
         
-        <h2 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.5rem;">Estrategias prácticas implementadas</h2>
-        <ul style="padding-left: 1.2rem; margin: 1rem 0;">
-            <li style="margin-bottom: 0.7rem;">Diagnóstico inicial de vacíos conceptuales en matemáticas.</li>
-            <li style="margin-bottom: 0.7rem;">Ejercicios dinámicos enfocados en la resolución de problemas reales de exámenes.</li>
-            <li style="margin-bottom: 0.7rem;">Acompañamiento constante adaptado al ritmo de asimilación del estudiante.</li>
-        </ul>
+        {parrafos_long_tails}
 
-        <div style="background: #f4f6f9; padding: 1.8rem; border-left: 4px solid #0b2545; margin: 2.5rem 0; border-radius: 6px;">
-            <p style="margin: 0; font-weight: bold; font-size: 1.1rem; color: #0b2545;">¿Necesitas una solución definitiva para las calificaciones?</p>
-            <p style="margin: 0.5rem 0 0 0;">No esperes a que sea tarde. Contáctanos hoy mismo para asegurar el éxito escolar con asesoría profesional especializada en Santo Domingo.</p>
+        <h2 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.5rem; font-weight: 700;">La estrategia exacta para aprobar con éxito</h2>
+        <p style="font-size: 1.05rem;">No venimos a dar teoría de relleno. Nuestro sistema se centra en simulacros de exámenes, resolución táctica de problemas y un acompañamiento constante que transforma las matemáticas en una ventaja competitiva real.</p>
+
+        <div style="background: #f4f6f9; padding: 2rem; border-left: 5px solid #0b2545; margin: 2.5rem 0; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+            <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #0b2545;">¿Vas a dejar que un mal promedio arruine el año escolar?</p>
+            <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.05rem;">Toma el control ahora mismo. Escríbenos y asegura un profesor particular enfocado en resultados reales en Santo Domingo.</p>
+            <a href="https://wa.me/" target="_blank" style="background: #0b2545; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">¡Quiero agendar una asesoría ahora! →</a>
         </div>
     </main>
 
@@ -83,7 +89,6 @@ html_contenido = f"""<!DOCTYPE html>
 </body>
 </html>
 """
-
 os.makedirs("blog", exist_ok=True)
 ruta_archivo = os.path.join("blog", f"{slug}.html")
 
