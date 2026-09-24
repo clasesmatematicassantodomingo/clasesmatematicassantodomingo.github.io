@@ -13,43 +13,37 @@ if not os.path.exists("keywords.json"):
 with open("keywords.json", "r", encoding="utf-8") as f:
     keywords_data = json.load(f)
 
-if not keywords_data:
-    print("¡No quedan más palabras clave en la parrilla!")
-    exit()
+# Si hay keywords disponibles, generar un nuevo artículo
+if keywords_data:
+    articulo_actual = keywords_data.pop(0)
 
-# Tomar el primer artículo disponible
-articulo_actual = keywords_data.pop(0)
+    keyword_principal = articulo_actual.get("keyword_principal")
+    long_tails = articulo_actual.get("long_tails", [])
+    titulo = articulo_actual.get("titulo")
+    slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
 
-keyword_principal = articulo_actual.get("keyword_principal")
-long_tails = articulo_actual.get("long_tails", [])
-titulo = articulo_actual.get("titulo")
-slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
+    url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
 
-url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
+    # Selección de imagen temática única (Estilo visual Romuald Fons)
+    if "online" in slug:
+        imagen_url = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
+    elif "domicilio" in slug or "profesor" in slug:
+        imagen_url = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80"
+    elif "supletorio" in slug:
+        imagen_url = "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
+    else:
+        imagen_url = "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=1200&q=80"
 
-# Selección de imagen temática única basada en el slug o categoría
-if "online" in slug:
-    imagen_url = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
-elif "domicilio" in slug or "profesor" in slug:
-    imagen_url = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80"
-elif "supletorio" in slug:
-    imagen_url = "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
-else:
-    imagen_url = "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=1200&q=80"
+    # Generación de bloques Long Tails (Estilo persuasivo y de autoridad)
+    parrafos_long_tails = ""
+    for tail in long_tails:
+        parrafos_long_tails += f"""
+        <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">El enfoque definitivo sobre {tail}</h3>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">Seamos sinceros: la mayoría de estudiantes fracasan porque intentan memorizar fórmulas sin entender el contexto. Cuando aplicamos una metodología táctica en <strong>{tail}</strong> dentro de Santo Domingo, rompemos con esa dinámica aburrida. Aquí vamos directos a lo que te da puntos en los exámenes, sin rodeos ni teorías de relleno.</p>
+        """
 
-# 2. Generar contenido HTML dinámico, profundo, con longitud óptima y Estilo Romuald Fons (Conversión + SEO de autoridad)
-parrafos_long_tails = ""
-for tail in long_tails:
-    parrafos_long_tails += f"""
-    <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">El enfoque definitivo sobre {tail}</h3>
-    <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">Seamos sinceros: la mayoría de estudiantes fracasan porque intentan memorizar fórmulas sin entender el contexto. Cuando aplicamos una metodología táctica en <strong>{tail}</strong> dentro de Santo Domingo, rompemos con esa dinámica aburrida. Aquí vamos directos a lo que te da puntos en los exámenes, sin rodeos ni teorías de relleno que no sirven para nada.</p>
-    <ul style="padding-left: 1.2rem; margin: 1rem 0; color: #444;">
-        <li style="margin-bottom: 0.5rem;">Identificación rápida de errores comunes en {tail}.</li>
-        <li style="margin-bottom: 0.5rem;">Ejercicios prácticos enfocados en la resolución de exámenes reales.</li>
-    </ul>
-    """
-
-html_contenido = f"""<!DOCTYPE html>
+    # HTML del Artículo (Estilo Romuald Fons / BigSeo)
+    html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -72,12 +66,12 @@ html_contenido = f"""<!DOCTYPE html>
         <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">¿Harto de ver malas calificaciones y horas de frustración frente a los libros? Si tu objetivo real es dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención. La solución no está en clases masivas aburridas, sino en un sistema probado que va directo al grano.</p>
         
         <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales de matemáticas ya no funcionan?</h2>
-        <p style="font-size: 1.05rem; color: #333;">El sistema educativo actual obliga a los estudiantes a memorizar conceptos abstractos sin comprender su utilidad práctica. Cuando trabajamos enfocados en <strong>{keyword_principal}</strong>, transformamos esa debilidad en una ventaja competitiva: detectamos los baches de base y los corregimos desde la primera sesión.</p>
+        <p style="font-size: 1.05rem; color: #333;">El sistema educativo actual obliga a los estudiantes a memorizar conceptos abstractos sin comprender su utilidad práctica. Cuando trabajamos enfocados en <strong>{keyword_principal}</strong>, transformamos esa debilidad en una ventaja competitiva.</p>
         
         {parrafos_long_tails}
 
         <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La estrategia exacta para aprobar con garantías</h2>
-        <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo. Nuestro acompañamiento está diseñado bajo una estructura de alta retención: explicaciones visuales, resolución metódica de problemas tipo y un seguimiento constante que asegura resultados predecibles y escalables en tus notas.</p>
+        <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo. Nuestro acompañamiento está diseñado bajo una estructura de alta retención para asegurar resultados predecibles y escalables en tus notas.</p>
 
         <div style="background: #f8fafc; padding: 2.2rem; border-left: 6px solid #0b2545; margin: 3rem 0; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.04);">
             <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545;">¿Vas a dejar que un mal promedio arruine tu futuro académico?</p>
@@ -93,24 +87,35 @@ html_contenido = f"""<!DOCTYPE html>
 </body>
 </html>
 """
-os.makedirs("blog", exist_ok=True)
-ruta_archivo = os.path.join("blog", f"{slug}.html")
 
-with open(ruta_archivo, "w", encoding="utf-8") as f:
-    f.write(html_contenido)
+    os.makedirs("blog", exist_ok=True)
+    ruta_archivo = os.path.join("blog", f"{slug}.html")
+    with open(ruta_archivo, "w", encoding="utf-8") as f:
+        f.write(html_contenido)
 
-# 3. Guardar en el CSV histórico
-csv_path = "urls_articulos.csv"
-file_exists = os.path.exists(csv_path)
+    # Actualizar CSV histórico de forma segura
+    csv_path = "urls_articulos.csv"
+    registros_csv = []
+    if os.path.exists(csv_path):
+        with open(csv_path, mode="r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 2:
+                    registros_csv.append(row)
+    
+    # Evitar duplicados en el CSV
+    if not any(r[1] == slug for r in registros_csv):
+        registros_csv.append([titulo, slug, url_articulo])
 
-with open(csv_path, mode="a", newline="", encoding="utf-8") as f:
-    writer = csv.writer(f)
-    if not file_exists:
+    with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
         writer.writerow(["Titulo", "Slug", "URL para Search Console"])
-    writer.writerow([titulo, slug, url_articulo])
+        writer.writerows(registros_csv)
 
-# 4. Cargar títulos desde el CSV para mapear el index
+# 2. Sincronizar títulos desde el CSV
 titulos_por_slug = {}
+csv_path = "urls_articulos.csv"
 if os.path.exists(csv_path):
     with open(csv_path, mode="r", encoding="utf-8") as f:
         reader = csv.reader(f)
@@ -119,7 +124,7 @@ if os.path.exists(csv_path):
             if len(row) >= 2:
                 titulos_por_slug[row[1]] = row[0]
 
-# 5. Generar sitemap y tarjetas para el index
+# 3. Generar Sitemap y Tarjetas de la Landing Page 100% sincronizadas con los archivos físicos reales
 urls_sitemap = [f"""    <url>
         <loc>{DOMINIO_BASE}</loc>
         <changefreq>weekly</changefreq>
@@ -130,6 +135,7 @@ tarjetas_html = []
 salto_linea = "\n"
 
 if os.path.exists("blog"):
+    # Escaneamos únicamente los archivos .html que físicamente existen
     for archivo_blog in sorted(os.listdir("blog"), reverse=True):
         if archivo_blog.endswith(".html"):
             slug_archivo = archivo_blog.replace(".html", "")
@@ -142,14 +148,15 @@ if os.path.exists("blog"):
         <priority>0.8</priority>
     </url>""")
             
+            # Tarjeta mejorada visualmente para la landing page
             tarjeta = f"""
-            <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="background: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #edf2f7;">
                 <div>
-                    <span style="font-size: 0.85rem; color: #0b2545; font-weight: bold;">SEO & MATEMÁTICAS</span>
-                    <h3 style="font-size: 1.2rem; margin: 0.5rem 0; color: #111;">{titulo_card}</h3>
-                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem;">Artículo especializado enfocado en potenciar el rendimiento académico y resolver las dudas clave de los estudiantes.</p>
+                    <span style="font-size: 0.8rem; color: #0b2545; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">SEO & Matemáticas</span>
+                    <h3 style="font-size: 1.25rem; margin: 0.6rem 0; color: #111; font-weight: 700; line-height: 1.4;">{titulo_card}</h3>
+                    <p style="font-size: 0.95rem; color: #555; margin-bottom: 1.5rem; line-height: 1.5;">Guía práctica y directa enfocada en resolver problemas reales y potenciar las calificaciones de los estudiantes.</p>
                 </div>
-                <a href="blog/{archivo_blog}" target="_blank" style="color: #0b2545; font-weight: bold; text-decoration: none; font-size: 1rem;">Leer artículo completo →</a>
+                <a href="blog/{archivo_blog}" target="_blank" style="color: #0b2545; font-weight: 800; text-decoration: none; font-size: 0.95rem; display: inline-flex; align-items: center;">Leer artículo completo →</a>
             </div>
             """
             tarjetas_html.append(tarjeta)
@@ -163,7 +170,7 @@ sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
 with open("sitemap.xml", "w", encoding="utf-8") as sm:
     sm.write(sitemap_contenido)
 
-# 6. Actualizar index.html
+# 4. Actualizar index.html dinámicamente según los archivos existentes
 if os.path.exists("index.html"):
     with open("index.html", "r", encoding="utf-8") as f:
         index_content = f.read()
@@ -180,8 +187,8 @@ if os.path.exists("index.html"):
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(index_actualizado)
 
-# 7. Guardar keywords actualizadas
+# 5. Guardar keywords restantes
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado con contenido e imágenes dinámicas y únicas!")
+print("¡Proceso completado con sincronización estricta de la landing page!")
