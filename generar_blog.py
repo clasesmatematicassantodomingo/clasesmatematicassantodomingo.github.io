@@ -37,12 +37,16 @@ elif "supletorio" in slug:
 else:
     imagen_url = "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=1200&q=80"
 
-# 2. Generar contenido HTML con estilo persuasivo, dinámico y enfoque de conversión (Estilo Romuald Fons)
+# 2. Generar contenido HTML dinámico, profundo, con longitud óptima y Estilo Romuald Fons (Conversión + SEO de autoridad)
 parrafos_long_tails = ""
 for tail in long_tails:
     parrafos_long_tails += f"""
-    <h3 style="color: #0b2545; margin-top: 2rem; font-size: 1.3rem; font-weight: 700;">El secreto detrás de {tail}</h3>
-    <p style="font-size: 1.05rem; margin-bottom: 1rem;">Seamos honestos: el sistema educativo tradicional falla porque enseña matemáticas de memoria, sin conectar con la realidad. Cuando abordamos {tail} en Santo Domingo, rompemos con esa dinámica aburrida. Aquí vamos directo a lo que importa para que el estudiante entienda los conceptos de una vez por todas.</p>
+    <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">El enfoque definitivo sobre {tail}</h3>
+    <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">Seamos sinceros: la mayoría de estudiantes fracasan porque intentan memorizar fórmulas sin entender el contexto. Cuando aplicamos una metodología táctica en <strong>{tail}</strong> dentro de Santo Domingo, rompemos con esa dinámica aburrida. Aquí vamos directos a lo que te da puntos en los exámenes, sin rodeos ni teorías de relleno que no sirven para nada.</p>
+    <ul style="padding-left: 1.2rem; margin: 1rem 0; color: #444;">
+        <li style="margin-bottom: 0.5rem;">Identificación rápida de errores comunes en {tail}.</li>
+        <li style="margin-bottom: 0.5rem;">Ejercicios prácticos enfocados en la resolución de exámenes reales.</li>
+    </ul>
     """
 
 html_contenido = f"""<!DOCTYPE html>
@@ -51,34 +55,34 @@ html_contenido = f"""<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{titulo}</title>
-    <meta name="description" content="Guía definitiva sobre {keyword_principal} en Santo Domingo. Domina {', '.join(long_tails) if long_tails else keyword_principal} sin rodeos y asegura tus notas.">
+    <meta name="description" content="Guía definitiva sobre {keyword_principal} en Santo Domingo. Domina {', '.join(long_tails) if long_tails else keyword_principal} sin rodeos y asegura el año escolar.">
     <link rel="canonical" href="{url_articulo}">
 </head>
-<body style="font-family: Arial, sans-serif; line-height: 1.8; color: #2c3e50; max-width: 800px; margin: 0 auto; padding: 2rem;">
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.8; color: #222; max-width: 800px; margin: 0 auto; padding: 2rem;">
     <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1.5rem; margin-bottom: 2rem;">
-        <span style="color: #0b2545; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Rendimiento Escolar sin Excusas</span>
-        <h1 style="color: #0b2545; font-size: 2.4rem; margin-top: 0.5rem; line-height: 1.2; font-weight: 800;">{titulo}</h1>
+        <span style="color: #0b2545; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;">Rendimiento Escolar sin Excusas</span>
+        <h1 style="color: #0b2545; font-size: 2.5rem; margin-top: 0.5rem; line-height: 1.15; font-weight: 900; letter-spacing: -1px;">{titulo}</h1>
     </header>
     
     <main>
-        <div style="margin-bottom: 2rem;">
-            <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 380px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <div style="margin-bottom: 2.5rem;">
+            <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 380px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
         </div>
 
-        <p style="font-size: 1.15rem; font-weight: 600; color: #111;">¿Harto de ver malas calificaciones y horas de frustración frente al cuaderno? Si buscas dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención, porque la solución no está en más tutorías masivas que aburren al estudiante, sino en un método que sí funciona.</p>
+        <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">¿Harto de ver malas calificaciones y horas de frustración frente a los libros? Si tu objetivo real es dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención. La solución no está en clases masivas aburridas, sino en un sistema probado que va directo al grano.</p>
         
-        <h2 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.5rem; font-weight: 700;">¿Por qué las clases tradicionales de matemáticas ya no sirven?</h2>
-        <p style="font-size: 1.05rem;">Metodologías anticuadas obligan a los jóvenes a repetir procesos mecánicos sin entender el <em>porqué</em>. Con un enfoque especializado en {keyword_principal}, cambiamos las reglas del juego: diagnosticamos el problema de raíz y atacamos los baches académicos antes de que sea demasiado tarde.</p>
+        <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales de matemáticas ya no funcionan?</h2>
+        <p style="font-size: 1.05rem; color: #333;">El sistema educativo actual obliga a los estudiantes a memorizar conceptos abstractos sin comprender su utilidad práctica. Cuando trabajamos enfocados en <strong>{keyword_principal}</strong>, transformamos esa debilidad en una ventaja competitiva: detectamos los baches de base y los corregimos desde la primera sesión.</p>
         
         {parrafos_long_tails}
 
-        <h2 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.5rem; font-weight: 700;">La estrategia exacta para aprobar con éxito</h2>
-        <p style="font-size: 1.05rem;">No venimos a dar teoría de relleno. Nuestro sistema se centra en simulacros de exámenes, resolución táctica de problemas y un acompañamiento constante que transforma las matemáticas en una ventaja competitiva real.</p>
+        <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La estrategia exacta para aprobar con garantías</h2>
+        <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo. Nuestro acompañamiento está diseñado bajo una estructura de alta retención: explicaciones visuales, resolución metódica de problemas tipo y un seguimiento constante que asegura resultados predecibles y escalables en tus notas.</p>
 
-        <div style="background: #f4f6f9; padding: 2rem; border-left: 5px solid #0b2545; margin: 2.5rem 0; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-            <p style="margin: 0; font-weight: 800; font-size: 1.2rem; color: #0b2545;">¿Vas a dejar que un mal promedio arruine el año escolar?</p>
-            <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.05rem;">Toma el control ahora mismo. Escríbenos y asegura un profesor particular enfocado en resultados reales en Santo Domingo.</p>
-            <a href="https://wa.me/" target="_blank" style="background: #0b2545; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">¡Quiero agendar una asesoría ahora! →</a>
+        <div style="background: #f8fafc; padding: 2.2rem; border-left: 6px solid #0b2545; margin: 3rem 0; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.04);">
+            <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545;">¿Vas a dejar que un mal promedio arruine tu futuro académico?</p>
+            <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.1rem; color: #444;">Toma el control hoy mismo. Escríbenos directamente y asegura un profesor particular especializado en resultados en Santo Domingo.</p>
+            <a href="https://wa.me/" target="_blank" style="background: #0b2545; color: white; padding: 0.9rem 1.8rem; border-radius: 6px; text-decoration: none; font-weight: 800; display: inline-block; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(11,37,69,0.3);">¡Quiero asegurar mis calificaciones ahora! →</a>
         </div>
     </main>
 
