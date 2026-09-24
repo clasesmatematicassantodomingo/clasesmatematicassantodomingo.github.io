@@ -4,6 +4,8 @@ import csv
 from datetime import datetime
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
+# REEMPLAZA ESTE NÚMERO CON TU WHATSAPP REAL (Ej: 593999999999 sin el símbolo +)
+NUMERO_WHATSAPP = "593999999999" 
 
 # 1. Cargar la parrilla de keywords
 if not os.path.exists("keywords.json"):
@@ -23,6 +25,9 @@ if keywords_data:
     slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
 
     url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
+    
+    # Extracto único y dinámico para la landing page basado en la keyword
+    extracto_card = f"Guía especializada sobre {keyword_principal} en Santo Domingo con métodos prácticos para asegurar tus calificaciones."
 
     # Selección de imagen temática única (Estilo visual Romuald Fons)
     if "online" in slug:
@@ -42,48 +47,50 @@ if keywords_data:
         <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">Seamos sinceros: la mayoría de estudiantes fracasan porque intentan memorizar fórmulas sin entender el contexto. Cuando aplicamos una metodología táctica en <strong>{tail}</strong> dentro de Santo Domingo, rompemos con esa dinámica aburrida. Aquí vamos directos a lo que te da puntos en los exámenes, sin rodeos ni teorías de relleno.</p>
         """
 
-    # HTML del Artículo (Estilo Romuald Fons / BigSeo)
+    # HTML del Artículo con diseño Responsive (ancho fluido PC y móvil)
     html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{titulo}</title>
-    <meta name="description" content="Guía definitiva sobre {keyword_principal} en Santo Domingo. Domina {', '.join(long_tails) if long_tails else keyword_principal} sin rodeos y asegura el año escolar.">
+    <meta name="description" content="{extracto_card}">
     <link rel="canonical" href="{url_articulo}">
 </head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.8; color: #222; max-width: 800px; margin: 0 auto; padding: 2rem;">
-    <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1.5rem; margin-bottom: 2rem;">
-        <span style="color: #0b2545; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;">Rendimiento Escolar sin Excusas</span>
-        <h1 style="color: #0b2545; font-size: 2.5rem; margin-top: 0.5rem; line-height: 1.15; font-weight: 900; letter-spacing: -1px;">{titulo}</h1>
-    </header>
-    
-    <main>
-        <div style="margin-bottom: 2.5rem;">
-            <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 380px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
-        </div>
-
-        <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">¿Harto de ver malas calificaciones y horas de frustración frente a los libros? Si tu objetivo real es dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención. La solución no está en clases masivas aburridas, sino en un sistema probado que va directo al grano.</p>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.8; color: #222; background-color: #fdfdfd; margin: 0; padding: 0;">
+    <div style="max-width: 1000px; width: 90%; margin: 40px auto; background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1.5rem; margin-bottom: 2rem;">
+            <span style="color: #0b2545; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;">Rendimiento Escolar sin Excusas</span>
+            <h1 style="color: #0b2545; font-size: 2.5rem; margin-top: 0.5rem; line-height: 1.15; font-weight: 900; letter-spacing: -1px;">{titulo}</h1>
+        </header>
         
-        <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales de matemáticas ya no funcionan?</h2>
-        <p style="font-size: 1.05rem; color: #333;">El sistema educativo actual obliga a los estudiantes a memorizar conceptos abstractos sin comprender su utilidad práctica. Cuando trabajamos enfocados en <strong>{keyword_principal}</strong>, transformamos esa debilidad en una ventaja competitiva.</p>
-        
-        {parrafos_long_tails}
+        <main>
+            <div style="margin-bottom: 2.5rem;">
+                <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 420px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+            </div>
 
-        <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La estrategia exacta para aprobar con garantías</h2>
-        <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo. Nuestro acompañamiento está diseñado bajo una estructura de alta retención para asegurar resultados predecibles y escalables en tus notas.</p>
+            <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">¿Harto de ver malas calificaciones y horas de frustración frente a los libros? Si tu objetivo real es dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención. La solución no está en clases masivas aburridas, sino en un sistema probado que va directo al grano.</p>
+            
+            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales de matemáticas ya no funcionan?</h2>
+            <p style="font-size: 1.05rem; color: #333;">El sistema educativo actual obliga a los estudiantes a memorizar conceptos abstractos sin comprender su utilidad práctica. Cuando trabajamos enfocados en <strong>{keyword_principal}</strong>, transformamos esa debilidad en una ventaja competitiva.</p>
+            
+            {parrafos_long_tails}
 
-        <div style="background: #f8fafc; padding: 2.2rem; border-left: 6px solid #0b2545; margin: 3rem 0; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.04);">
-            <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545;">¿Vas a dejar que un mal promedio arruine tu futuro académico?</p>
-            <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.1rem; color: #444;">Toma el control hoy mismo. Escríbenos directamente y asegura un profesor particular especializado en resultados en Santo Domingo.</p>
-            <a href="https://wa.me/" target="_blank" style="background: #0b2545; color: white; padding: 0.9rem 1.8rem; border-radius: 6px; text-decoration: none; font-weight: 800; display: inline-block; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(11,37,69,0.3);">¡Quiero asegurar mis calificaciones ahora! →</a>
-        </div>
-    </main>
+            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La estrategia exacta para aprobar con garantías</h2>
+            <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo. Nuestro acompañamiento está diseñado bajo una estructura de alta retención para asegurar resultados predecibles y escalables en tus notas.</p>
 
-    <footer style="margin-top: 4rem; border-top: 1px solid #eaeaea; padding-top: 1.5rem; text-align: center; color: #777; font-size: 0.9rem;">
-        <p>&copy; {datetime.now().year} Clases de Matemáticas Santo Domingo. Todos los derechos reservados.</p>
-        <p><a href="../index.html" style="color: #0b2545; text-decoration: none; font-weight: bold;">← Volver a la página principal</a></p>
-    </footer>
+            <div style="background: #f8fafc; padding: 2.2rem; border-left: 6px solid #0b2545; margin: 3rem 0; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.04);">
+                <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545;">¿Vas a dejar que un mal promedio arruine tu futuro académico?</p>
+                <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.1rem; color: #444;">Toma el control hoy mismo. Escríbenos directamente y asegura un profesor particular especializado en resultados en Santo Domingo.</p>
+                <a href="https://wa.me/{NUMERO_WHATSAPP}?text=Hola,%20necesito%20información%20sobre%20clases%20de%20matemáticas%20para%20asegurar%20mis%20calificaciones." target="_blank" style="background: #25d366; color: white; padding: 0.9rem 1.8rem; border-radius: 6px; text-decoration: none; font-weight: 800; display: inline-block; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(37,211,102,0.3);">¡Quiero asegurar mis calificaciones ahora! →</a>
+            </div>
+        </main>
+
+        <footer style="margin-top: 4rem; border-top: 1px solid #eaeaea; padding-top: 1.5rem; text-align: center; color: #777; font-size: 0.9rem;">
+            <p>&copy; {datetime.now().year} Clases de Matemáticas Santo Domingo. Todos los derechos reservados.</p>
+            <p><a href="../index.html" style="color: #0b2545; text-decoration: none; font-weight: bold;">← Volver a la página principal</a></p>
+        </footer>
+    </div>
 </body>
 </html>
 """
@@ -93,7 +100,7 @@ if keywords_data:
     with open(ruta_archivo, "w", encoding="utf-8") as f:
         f.write(html_contenido)
 
-    # Actualizar CSV histórico de forma segura
+    # Actualizar CSV histórico guardando Título, Slug, URL y el Extracto único
     csv_path = "urls_articulos.csv"
     registros_csv = []
     if os.path.exists(csv_path):
@@ -101,30 +108,34 @@ if keywords_data:
             reader = csv.reader(f)
             next(reader, None)
             for row in reader:
-                if len(row) >= 2:
+                if len(row) >= 3:
                     registros_csv.append(row)
+                elif len(row) == 2:
+                    registros_csv.append([row[0], row[1], f"{DOMINIO_BASE}blog/{row[1]}.html", f"Guía especializada sobre {row[0]} en Santo Domingo."])
     
     # Evitar duplicados en el CSV
     if not any(r[1] == slug for r in registros_csv):
-        registros_csv.append([titulo, slug, url_articulo])
+        registros_csv.append([titulo, slug, url_articulo, extracto_card])
 
     with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["Titulo", "Slug", "URL para Search Console"])
+        writer.writerow(["Titulo", "Slug", "URL para Search Console", "Extracto"])
         writer.writerows(registros_csv)
 
-# 2. Sincronizar títulos desde el CSV
-titulos_por_slug = {}
+# 2. Cargar datos desde el CSV (Títulos y Extractos)
+datos_por_slug = {}
 csv_path = "urls_articulos.csv"
 if os.path.exists(csv_path):
     with open(csv_path, mode="r", encoding="utf-8") as f:
         reader = csv.reader(f)
         next(reader, None)
         for row in reader:
-            if len(row) >= 2:
-                titulos_por_slug[row[1]] = row[0]
+            if len(row) >= 4:
+                datos_por_slug[row[1]] = {"titulo": row[0], "extracto": row[3]}
+            elif len(row) >= 2:
+                datos_por_slug[row[1]] = {"titulo": row[0], "extracto": f"Guía práctica sobre {row[0]}."}
 
-# 3. Generar Sitemap y Tarjetas de la Landing Page 100% sincronizadas con los archivos físicos reales
+# 3. Generar Sitemap y Tarjetas de la Landing Page 100% sincronizadas y con extracto único
 urls_sitemap = [f"""    <url>
         <loc>{DOMINIO_BASE}</loc>
         <changefreq>weekly</changefreq>
@@ -135,11 +146,13 @@ tarjetas_html = []
 salto_linea = "\n"
 
 if os.path.exists("blog"):
-    # Escaneamos únicamente los archivos .html que físicamente existen
     for archivo_blog in sorted(os.listdir("blog"), reverse=True):
         if archivo_blog.endswith(".html"):
             slug_archivo = archivo_blog.replace(".html", "")
-            titulo_card = titulos_por_slug.get(slug_archivo, "Artículo de Matemáticas")
+            info_articulo = datos_por_slug.get(slug_archivo, {"titulo": "Artículo de Matemáticas", "extracto": "Artículo especializado en potenciar el rendimiento académico."})
+            
+            titulo_card = info_articulo["titulo"]
+            extracto_card = info_articulo["extracto"]
             url_dinamica = f"{DOMINIO_BASE}blog/{archivo_blog}"
             
             urls_sitemap.append(f"""    <url>
@@ -148,13 +161,12 @@ if os.path.exists("blog"):
         <priority>0.8</priority>
     </url>""")
             
-            # Tarjeta mejorada visualmente para la landing page
             tarjeta = f"""
             <div style="background: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #edf2f7;">
                 <div>
                     <span style="font-size: 0.8rem; color: #0b2545; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">SEO & Matemáticas</span>
                     <h3 style="font-size: 1.25rem; margin: 0.6rem 0; color: #111; font-weight: 700; line-height: 1.4;">{titulo_card}</h3>
-                    <p style="font-size: 0.95rem; color: #555; margin-bottom: 1.5rem; line-height: 1.5;">Guía práctica y directa enfocada en resolver problemas reales y potenciar las calificaciones de los estudiantes.</p>
+                    <p style="font-size: 0.95rem; color: #555; margin-bottom: 1.5rem; line-height: 1.5;">{extracto_card}</p>
                 </div>
                 <a href="blog/{archivo_blog}" target="_blank" style="color: #0b2545; font-weight: 800; text-decoration: none; font-size: 0.95rem; display: inline-flex; align-items: center;">Leer artículo completo →</a>
             </div>
@@ -170,7 +182,7 @@ sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
 with open("sitemap.xml", "w", encoding="utf-8") as sm:
     sm.write(sitemap_contenido)
 
-# 4. Actualizar index.html dinámicamente según los archivos existentes
+# 4. Actualizar index.html dinámicamente
 if os.path.exists("index.html"):
     with open("index.html", "r", encoding="utf-8") as f:
         index_content = f.read()
@@ -191,4 +203,4 @@ if os.path.exists("index.html"):
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado con sincronización estricta de la landing page!")
+print("¡Proceso completado con diseño responsive, extractos únicos y WhatsApp directo!")
