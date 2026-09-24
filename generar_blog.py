@@ -2,6 +2,7 @@ import json
 import os
 import csv
 from datetime import datetime
+import random
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 # REEMPLAZA ESTE NÚMERO CON TU WHATSAPP REAL (Ej: 593999999999 sin el símbolo +)
@@ -26,28 +27,40 @@ if keywords_data:
 
     url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
     
-    # Extracto único y dinámico para la landing page basado en la keyword
-    extracto_card = f"Guía especializada sobre {keyword_principal} en Santo Domingo con métodos prácticos para asegurar tus calificaciones."
+    # Extracto único y dinámico para la landing page
+    extracto_card = f"Análisis y guía experta sobre {keyword_principal} en Santo Domingo. Descubre los secretos metodológicos para aprobar sin estrés."
 
-    # Selección de imagen temática única (Estilo visual Romuald Fons)
-    if "online" in slug:
-        imagen_url = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
-    elif "domicilio" in slug or "profesor" in slug:
-        imagen_url = "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80"
-    elif "supletorio" in slug:
-        imagen_url = "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
-    else:
-        imagen_url = "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=1200&q=80"
+    # Banco extendido de imágenes únicas basadas en Unsplash (diferentes para cada temática)
+    imagenes_banco = [
+        "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80"
+    ]
+    # Seleccionar una imagen de forma pseudo-aleatoria pero fija basada en la longitud del slug para que siempre sea la misma por artículo
+    imagen_url = imagenes_banco[len(slug) % len(imagenes_banco)]
 
-    # Generación de bloques Long Tails (Estilo persuasivo y de autoridad)
+    # Generación de bloques Long Tails con variantes únicas de H2/H3 (Evita contenido clonado)
     parrafos_long_tails = ""
-    for tail in long_tails:
+    enfoques_titulos = [
+        "Claves ocultas para entender",
+        "Errores fatales que debes evitar en",
+        "El método definitivo para dominar",
+        "Cómo superar los exámenes más duros de"
+    ]
+    
+    for i, tail in enumerate(long_tails):
+        prefijo_h3 = enfoques_titulos[i % len(enfoques_titulos)]
         parrafos_long_tails += f"""
-        <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">El enfoque definitivo sobre {tail}</h3>
-        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">Seamos sinceros: la mayoría de estudiantes fracasan porque intentan memorizar fórmulas sin entender el contexto. Cuando aplicamos una metodología táctica en <strong>{tail}</strong> dentro de Santo Domingo, rompemos con esa dinámica aburrida. Aquí vamos directos a lo que te da puntos en los exámenes, sin rodeos ni teorías de relleno.</p>
+        <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">{prefijo_h3} {tail}</h3>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">Uno de los mayores dolores de cabeza para los estudiantes en Santo Domingo radica en cómo aplicar la teoría de <strong>{tail}</strong> sin caer en confusiones. El secreto no está en pasar horas memorizando fórmulas abstractas, sino en descomponer el problema analíticamente hasta dominar la lógica interna de la materia.</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #444;">Cuando trabajamos directamente sobre este punto en nuestras sesiones de refuerzo, medimos el progreso mediante ejercicios prácticos que replican exactamente el nivel de exigencia escolar actual.</p>
         """
 
-    # HTML del Artículo con diseño Responsive (ancho fluido PC y móvil)
+    # HTML del Artículo con diseño dinámico, exclusivo y adaptable
     html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -69,15 +82,15 @@ if keywords_data:
                 <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 420px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
             </div>
 
-            <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">¿Harto de ver malas calificaciones y horas de frustración frente a los libros? Si tu objetivo real es dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención. La solución no está en clases masivas aburridas, sino en un sistema probado que va directo al grano.</p>
+            <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">¿Harto de ver malas calificaciones y horas de frustración frente a los libros? Si tu objetivo real es dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención. La solución definitiva no se encuentra en academias masivas que ignoran el ritmo del alumno, sino en un sistema enfocado en resultados rápidos.</p>
             
-            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales de matemáticas ya no funcionan?</h2>
-            <p style="font-size: 1.05rem; color: #333;">El sistema educativo actual obliga a los estudiantes a memorizar conceptos abstractos sin comprender su utilidad práctica. Cuando trabajamos enfocados en <strong>{keyword_principal}</strong>, transformamos esa debilidad en una ventaja competitiva.</p>
+            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué las clases tradicionales ya no dan resultados?</h2>
+            <p style="font-size: 1.05rem; color: #333;">El sistema educativo convencional fuerza a los jóvenes a retener información de forma mecánica. En cuanto se enfrentan a un examen con variaciones en los ejercicios, el castillo de naipes se derrumba. Abordar <strong>{keyword_principal}</strong> requiere un cambio de enfoque radical: pasar de la memorización pasiva al razonamiento lógico.</p>
             
             {parrafos_long_tails}
 
-            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La estrategia exacta para aprobar con garantías</h2>
-            <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo. Nuestro acompañamiento está diseñado bajo una estructura de alta retención para asegurar resultados predecibles y escalables en tus notas.</p>
+            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La ruta crítica para asegurar tu aprobación</h2>
+            <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo con teoría innecesaria. Nuestro modelo de enseñanza detecta tus puntos débiles específicos desde el primer día y traza una ruta de estudio personalizada para garantizar que alcances la nota que necesitas.</p>
 
             <div style="background: #f8fafc; padding: 2.2rem; border-left: 6px solid #0b2545; margin: 3rem 0; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.04);">
                 <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545;">¿Vas a dejar que un mal promedio arruine tu futuro académico?</p>
@@ -100,7 +113,7 @@ if keywords_data:
     with open(ruta_archivo, "w", encoding="utf-8") as f:
         f.write(html_contenido)
 
-    # Actualizar CSV histórico guardando Título, Slug, URL y el Extracto único
+    # Actualizar CSV histórico
     csv_path = "urls_articulos.csv"
     registros_csv = []
     if os.path.exists(csv_path):
@@ -108,12 +121,11 @@ if keywords_data:
             reader = csv.reader(f)
             next(reader, None)
             for row in reader:
-                if len(row) >= 3:
+                if len(row) >= 4:
                     registros_csv.append(row)
-                elif len(row) == 2:
-                    registros_csv.append([row[0], row[1], f"{DOMINIO_BASE}blog/{row[1]}.html", f"Guía especializada sobre {row[0]} en Santo Domingo."])
+                elif len(row) >= 2:
+                    registros_csv.append([row[0], row[1], f"{DOMINIO_BASE}blog/{row[1]}.html", f"Guía especializada sobre {row[0]}."])
     
-    # Evitar duplicados en el CSV
     if not any(r[1] == slug for r in registros_csv):
         registros_csv.append([titulo, slug, url_articulo, extracto_card])
 
@@ -122,7 +134,7 @@ if keywords_data:
         writer.writerow(["Titulo", "Slug", "URL para Search Console", "Extracto"])
         writer.writerows(registros_csv)
 
-# 2. Cargar datos desde el CSV (Títulos y Extractos)
+# 2. Cargar datos desde el CSV
 datos_por_slug = {}
 csv_path = "urls_articulos.csv"
 if os.path.exists(csv_path):
@@ -133,9 +145,9 @@ if os.path.exists(csv_path):
             if len(row) >= 4:
                 datos_por_slug[row[1]] = {"titulo": row[0], "extracto": row[3]}
             elif len(row) >= 2:
-                datos_por_slug[row[1]] = {"titulo": row[0], "extracto": f"Guía práctica sobre {row[0]}."}
+                datos_por_slug[row[1]] = {"titulo": row[0], "extracto": f"Guía sobre {row[0]}."}
 
-# 3. Generar Sitemap y Tarjetas de la Landing Page 100% sincronizadas y con extracto único
+# 3. Generar Sitemap y Tarjetas de la Landing Page
 urls_sitemap = [f"""    <url>
         <loc>{DOMINIO_BASE}</loc>
         <changefreq>weekly</changefreq>
@@ -203,4 +215,4 @@ if os.path.exists("index.html"):
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado con diseño responsive, extractos únicos y WhatsApp directo!")
+print("¡Proceso completado con estructura SEO única, imágenes variadas y alta autoridad!")
