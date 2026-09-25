@@ -2,12 +2,16 @@ import json
 import os
 import csv
 from datetime import datetime
-import random
+from google import genai
+from google.genai import types
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
-# REEMPLAZA ESTE NÚMERO CON TU WHATSAPP REAL (Ej: 593999999999 sin el símbolo +)
-NUMERO_WHATSAPP = "593993117800" 
+NUMERO_WHATSAPP = "593993117800" # Reemplaza con tu número real si deseas
 csv_path = "urls_articulos.csv"
+
+# Inicializar cliente de Google Gemini (Gratis con la API Key del entorno)
+api_key = os.environ.get("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key) if api_key else None
 
 # 1. Cargar la parrilla de keywords
 if not os.path.exists("keywords.json"):
@@ -17,8 +21,8 @@ if not os.path.exists("keywords.json"):
 with open("keywords.json", "r", encoding="utf-8") as f:
     keywords_data = json.load(f)
 
-# Si hay keywords disponibles, generar un nuevo artículo
-if keywords_data:
+# Si hay keywords disponibles, generar un nuevo artículo único mediante IA
+if keywords_data and client:
     articulo_actual = keywords_data.pop(0)
 
     keyword_principal = articulo_actual.get("keyword_principal")
@@ -29,7 +33,7 @@ if keywords_data:
     url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
     extracto_card = f"Guía experta sobre {keyword_principal} en Santo Domingo con métodos prácticos para asegurar tus notas."
 
-    # Banco de imágenes únicas
+    # Banco de imágenes únicas por temática
     imagenes_banco = [
         "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80",
@@ -39,7 +43,7 @@ if keywords_data:
     ]
     imagen_url = imagenes_banco[len(slug) % len(imagenes_banco)]
 
-    # Cargar historial CSV para Interlinking automático con otro post existente
+    # Cargar historial CSV para Interlinking automático
     historial_posts = []
     if os.path.exists(csv_path):
         with open(csv_path, mode="r", encoding="utf-8") as f:
@@ -49,53 +53,70 @@ if keywords_data:
                 if len(row) >= 2 and row[1] != slug:
                     historial_posts.append((row[0], f"../blog/{row[1]}.html"))
 
-    # Seleccionar enlace interno (si existe otro artículo previo)
     enlace_interno_html = ""
     if historial_posts:
         titulo_prev, url_prev = historial_posts[0]
         enlace_interno_html = f'<p style="margin-top: 1.5rem; font-size: 1rem;">Te recomendamos leer también nuestra guía relacionada sobre <a href="{url_prev}" style="color: #0b2545; font-weight: bold; text-decoration: underline;">{titulo_prev}</a> para complementar tu aprendizaje.</p>'
 
-    # Banco de redacciones únicas y variadas para los párrafos de desarrollo (Evita contenido clonado)
-    banco_parrafos_desarrollo = [
-        (
-            "El gran error en los colegios de Santo Domingo es pretender que los estudiantes memoricen procedimientos mecánicos sin entender el razonamiento lógico que hay detrás. Al profundizar en <strong>{tail}</strong>, desglosamos cada ejercicio paso a paso para que el alumno descubra el patrón de resolución por sí mismo.",
-            "Nuestra experiencia nos demuestra que con explicaciones visuales y ejercicios orientados a exámenes reales, la frustración desaparece y la confianza se dispara en pocas sesiones."
-        ),
-        (
-            "Enfrentarse a evaluaciones complejas sin dominar <strong>{tail}</strong> suele terminar en notas reprobatorias y horas de estudio desperdiciadas frente a los libros. La clave del éxito radica en identificar las trampas más comunes que colocan los profesores en las pruebas.",
-            "Trabajamos con una metodología táctica diseñada específicamente para optimizar el tiempo de estudio, enfocándonos estrictamente en lo que tiene mayor peso y puntuación en las calificaciones."
-        ),
-        (
-            "Muchos padres buscan ayuda tarde, cuando el promedio escolar ya está comprometido. Dominar <strong>{tail}</strong> requiere un acompañamiento individualizado que detecte exactamente dónde se rompe la cadena de comprensión del estudiante.",
-            "Mediante simulacros prácticos y explicaciones directas al grano, transformamos las debilidades académicas en fortalezas competitivas para asegurar el año escolar."
-        )
-    ]
+    # Prompt inteligente para que Gemini redacte contenido 100% único, fluido y profesional sin repetir plantillas
+    prompt_ia = f"""
+    Actúa como un profesor experto de matemáticas y redactor SEO especializado en educación en Santo Domingo, Ecuador.
+    Escribe el contenido redactado para las secciones de un artículo web sobre la keyword principal: "{keyword_principal}".
+    Las subsecciones secundarias (long tails) que debes desarrollar en formato de párrafos variados, técnicos y directos son:
+    {json.dumps(long_tails, ensure_ascii=False)}
 
-    enfoques_titulos = [
-        "Claves ocultas para entender",
-        "Errores fatales que debes evitar en",
-        "El método definitivo para dominar",
-        "Cómo superar los exámenes más duros de"
-    ]
-    
+    Requisitos estrictos de redacción:
+    1. Proporciona exactamente un párrafo de introducción potente enfocado en los dolores del estudiante local en Santo Domingo (frustración con las notas).
+    2. Proporciona un párrafo explicativo para un bloque titulado "¿Por qué los métodos tradicionales ya no dan resultados?".
+    3. Para cada una de las subsecciones (long tails) listadas arriba, redacta 2 párrafos únicos, profundos y originales que expliquen la materia y la solución práctica (no repitas frases hechas, usa redacción editorial rica).
+    4. Devuelve la respuesta exclusivamente en formato JSON válido con esta estructura exacta, sin texto adicional alrededor:
+    {{
+      "intro": "texto aquí...",
+      "por_que": "texto aquí...",
+      "long_tails_desarrollo": [
+        {{"h3": "Título H3 optimizado 1", "p1": "párrafo 1...", "p2": "párrafo 2..."}},
+        {{"h3": "Título H3 optimizado 2", "p1": "párrafo 1...", "p2": "párrafo 2..."}}
+      ]
+    }}
+    """
+
+    # Llamada a la IA gratuita de Gemini
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt_ia,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
+        )
+        contenido_ia = json.loads(response.text)
+    except Exception as e:
+        print(f"Error al conectar con la IA de Gemini: {e}")
+        # Fallback de respaldo por si ocurre algún fallo puntual de red
+        contenido_ia = {
+            "intro": f"Si tu objetivo real es dominar {keyword_principal} en Santo Domingo, la solución definitiva requiere un sistema enfocado en resultados rápidos y prácticos.",
+            "por_que": f"El sistema convencional fuerza la memorización. Abordar {keyword_principal} exige entender la lógica detrás de los ejercicios.",
+            "long_tails_desarrollo": [{"h3": f"Claves para entender {t}", "p1": f"Desglosamos {t} paso a paso.", "p2": "Práctica enfocada en exámenes reales."} for t in long_tails]
+        }
+
+    # Armar los bloques H3 dinámicos generados por la IA
     parrafos_long_tails = ""
-    for i, tail in enumerate(long_tails):
-        prefijo_h3 = enfoques_titulos[i % len(enfoques_titulos)]
-        
-        parrafo_plantilla_1, parrafo_plantilla_2 = banco_parrafos_desarrollo[i % len(banco_parrafos_desarrollo)]
-        texto_p1 = parrafo_plantilla_1.format(tail=tail)
-        
+    for i, item in enumerate(contenido_ia.get("long_tails_desarrollo", [])):
+        h3_text = item.get("h3")
+        p1_text = item.get("p1")
+        p2_text = item.get("p2")
+
         enlace_externo = ""
         if i == 0:
             enlace_externo = ' Puedes consultar metodologías de práctica global complementarias en portales educativos de referencia como <a href="https://es.khanacademy.org" target="_blank" rel="noopener" style="color: #0b2545; text-decoration: underline;">Khan Academy</a>.'
 
         parrafos_long_tails += f"""
-        <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">{prefijo_h3} {tail}</h3>
-        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">{texto_p1}{enlace_externo}</p>
-        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #444;">{parrafo_plantilla_2}</p>
+        <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">{h3_text}</h3>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">{p1_text}{enlace_externo}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #444;">{p2_text}</p>
         """
 
-    # HTML del Artículo con estructura estricta y contenido único por secciones
+    # Estructura HTML final del artículo con diseño SILO perfecto
     html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -117,10 +138,10 @@ if keywords_data:
                 <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 420px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
             </div>
 
-            <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">¿Harto de ver malas calificaciones y horas de frustración frente a los libros? Si tu objetivo real es dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención. La solución definitiva no se encuentra en academias masivas que ignoran el ritmo del alumno, sino en un sistema enfocado en resultados rápidos.</p>
+            <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">{contenido_ia.get("intro")}</p>
             
             <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales ya no dan resultados?</h2>
-            <p style="font-size: 1.05rem; color: #333;">El sistema educativo convencional fuerza a los jóvenes a retener información de forma mecánica y aburrida. Abordar <strong>{keyword_principal}</strong> exige un cambio radical de perspectiva: entender la materia desde su aplicación práctica para que el estudiante gane autonomía y confianza inmediata en cada evaluación.</p>
+            <p style="font-size: 1.05rem; color: #333;">{contenido_ia.get("por_que")}</p>
             
             {parrafos_long_tails}
 
@@ -249,4 +270,4 @@ if os.path.exists("index.html"):
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado con éxito, variable global establecida y contenido dinámico!")
+print("¡Proceso completado con IA gratuita y contenido redactado de forma única!")
