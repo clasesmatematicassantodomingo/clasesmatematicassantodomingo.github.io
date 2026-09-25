@@ -7,6 +7,7 @@ import random
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 # REEMPLAZA ESTE NÚMERO CON TU WHATSAPP REAL (Ej: 593999999999 sin el símbolo +)
 NUMERO_WHATSAPP = "593993117800" 
+csv_path = "urls_articulos.csv"
 
 # 1. Cargar la parrilla de keywords
 if not os.path.exists("keywords.json"):
@@ -40,7 +41,6 @@ if keywords_data:
 
     # Cargar historial CSV para Interlinking automático con otro post existente
     historial_posts = []
-    csv_path = "urls_articulos.csv"
     if os.path.exists(csv_path):
         with open(csv_path, mode="r", encoding="utf-8") as f:
             reader = csv.reader(f)
@@ -82,12 +82,9 @@ if keywords_data:
     for i, tail in enumerate(long_tails):
         prefijo_h3 = enfoques_titulos[i % len(enfoques_titulos)]
         
-        # Seleccionar un par de párrafos únicos y rotativos basados en el índice del loop
         parrafo_plantilla_1, parrafo_plantilla_2 = banco_parrafos_desarrollo[i % len(banco_parrafos_desarrollo)]
-        
         texto_p1 = parrafo_plantilla_1.format(tail=tail)
         
-        # Enlace externo de autoridad en el primer bloque long tail
         enlace_externo = ""
         if i == 0:
             enlace_externo = ' Puedes consultar metodologías de práctica global complementarias en portales educativos de referencia como <a href="https://es.khanacademy.org" target="_blank" rel="noopener" style="color: #0b2545; text-decoration: underline;">Khan Academy</a>.'
@@ -98,7 +95,7 @@ if keywords_data:
         <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #444;">{parrafo_plantilla_2}</p>
         """
 
-    # HTML del Artículo con estructura estricta pero contenido 100% dinámico y único
+    # HTML del Artículo con estructura estricta y contenido único por secciones
     html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -252,4 +249,4 @@ if os.path.exists("index.html"):
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado con estructura SILO estricta y contenido 100% dinámico y único!")
+print("¡Proceso completado con éxito, variable global establecida y contenido dinámico!")
