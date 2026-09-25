@@ -49,9 +49,9 @@ if keywords_data:
                     historial_posts.append((row[0], f"../blog/{row[1]}.html"))
 
     # Seleccionar enlace interno (si existe otro artículo previo)
-     enlace_interno_html = ""
+    enlace_interno_html = ""
     if historial_posts:
-        titulo_prev, url_prev = historial_posts[0] # Toma uno anterior de ejemplo
+        titulo_prev, url_prev = historial_posts[0]
         enlace_interno_html = f'<p style="margin-top: 1.5rem; font-size: 1rem;">Te recomendamos leer también nuestra guía relacionada sobre <a href="{url_prev}" style="color: #0b2545; font-weight: bold; text-decoration: underline;">{titulo_prev}</a> para complementar tu aprendizaje.</p>'
 
     # Generación de bloques Long Tails con variantes únicas de H3 y enlace externo de autoridad
@@ -65,7 +65,6 @@ if keywords_data:
     
     for i, tail in enumerate(long_tails):
         prefijo_h3 = enfoques_titulos[i % len(enfoques_titulos)]
-        # Añadimos un enlace externo de autoridad en el primer párrafo de long tail
         enlace_externo = ""
         if i == 0:
             enlace_externo = ' Puedes consultar metodologías de práctica global complementarias en portales educativos de referencia como <a href="https://es.khanacademy.org" target="_blank" rel="noopener" style="color: #0b2545; text-decoration: underline;">Khan Academy</a>.'
