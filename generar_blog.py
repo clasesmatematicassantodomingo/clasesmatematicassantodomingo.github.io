@@ -2,6 +2,7 @@ import json
 import os
 import csv
 from datetime import datetime
+import random
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 # REEMPLAZA ESTE NÚMERO CON TU WHATSAPP REAL (Ej: 593999999999 sin el símbolo +)
@@ -54,8 +55,22 @@ if keywords_data:
         titulo_prev, url_prev = historial_posts[0]
         enlace_interno_html = f'<p style="margin-top: 1.5rem; font-size: 1rem;">Te recomendamos leer también nuestra guía relacionada sobre <a href="{url_prev}" style="color: #0b2545; font-weight: bold; text-decoration: underline;">{titulo_prev}</a> para complementar tu aprendizaje.</p>'
 
-    # Generación de bloques Long Tails con variantes únicas de H3 y enlace externo de autoridad
-    parrafos_long_tails = ""
+    # Banco de redacciones únicas y variadas para los párrafos de desarrollo (Evita contenido clonado)
+    banco_parrafos_desarrollo = [
+        (
+            "El gran error en los colegios de Santo Domingo es pretender que los estudiantes memoricen procedimientos mecánicos sin entender el razonamiento lógico que hay detrás. Al profundizar en <strong>{tail}</strong>, desglosamos cada ejercicio paso a paso para que el alumno descubra el patrón de resolución por sí mismo.",
+            "Nuestra experiencia nos demuestra que con explicaciones visuales y ejercicios orientados a exámenes reales, la frustración desaparece y la confianza se dispara en pocas sesiones."
+        ),
+        (
+            "Enfrentarse a evaluaciones complejas sin dominar <strong>{tail}</strong> suele terminar en notas reprobatorias y horas de estudio desperdiciadas frente a los libros. La clave del éxito radica en identificar las trampas más comunes que colocan los profesores en las pruebas.",
+            "Trabajamos con una metodología táctica diseñada específicamente para optimizar el tiempo de estudio, enfocándonos estrictamente en lo que tiene mayor peso y puntuación en las calificaciones."
+        ),
+        (
+            "Muchos padres buscan ayuda tarde, cuando el promedio escolar ya está comprometido. Dominar <strong>{tail}</strong> requiere un acompañamiento individualizado que detecte exactamente dónde se rompe la cadena de comprensión del estudiante.",
+            "Mediante simulacros prácticos y explicaciones directas al grano, transformamos las debilidades académicas en fortalezas competitivas para asegurar el año escolar."
+        )
+    ]
+
     enfoques_titulos = [
         "Claves ocultas para entender",
         "Errores fatales que debes evitar en",
@@ -63,19 +78,27 @@ if keywords_data:
         "Cómo superar los exámenes más duros de"
     ]
     
+    parrafos_long_tails = ""
     for i, tail in enumerate(long_tails):
         prefijo_h3 = enfoques_titulos[i % len(enfoques_titulos)]
+        
+        # Seleccionar un par de párrafos únicos y rotativos basados en el índice del loop
+        parrafo_plantilla_1, parrafo_plantilla_2 = banco_parrafos_desarrollo[i % len(banco_parrafos_desarrollo)]
+        
+        texto_p1 = parrafo_plantilla_1.format(tail=tail)
+        
+        # Enlace externo de autoridad en el primer bloque long tail
         enlace_externo = ""
         if i == 0:
             enlace_externo = ' Puedes consultar metodologías de práctica global complementarias en portales educativos de referencia como <a href="https://es.khanacademy.org" target="_blank" rel="noopener" style="color: #0b2545; text-decoration: underline;">Khan Academy</a>.'
-            
+
         parrafos_long_tails += f"""
         <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">{prefijo_h3} {tail}</h3>
-        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">Uno de los mayores retos para los estudiantes en Santo Domingo radica en cómo aplicar la teoría de <strong>{tail}</strong> sin caer en confusiones.{enlace_externo}</p>
-        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #444;">Cuando trabajamos directamente sobre este punto en nuestras sesiones de refuerzo, medimos el progreso mediante ejercicios prácticos que replican exactamente el nivel de exigencia escolar actual.</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">{texto_p1}{enlace_externo}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #444;">{parrafo_plantilla_2}</p>
         """
 
-    # HTML del Artículo con CTA 100% CENTRADO y Enlace a Planes y Tarifas
+    # HTML del Artículo con estructura estricta pero contenido 100% dinámico y único
     html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -99,13 +122,13 @@ if keywords_data:
 
             <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">¿Harto de ver malas calificaciones y horas de frustración frente a los libros? Si tu objetivo real es dominar <strong>{keyword_principal}</strong> en Santo Domingo, detén lo que estás haciendo y presta atención. La solución definitiva no se encuentra en academias masivas que ignoran el ritmo del alumno, sino en un sistema enfocado en resultados rápidos.</p>
             
-            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué las clases tradicionales ya no dan resultados?</h2>
-            <p style="font-size: 1.05rem; color: #333;">El sistema educativo convencional fuerza a los jóvenes a retener información de forma mecánica. Abordar <strong>{keyword_principal}</strong> requiere un cambio de enfoque radical: pasar de la pasividad al razonamiento lógico.</p>
+            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales ya no dan resultados?</h2>
+            <p style="font-size: 1.05rem; color: #333;">El sistema educativo convencional fuerza a los jóvenes a retener información de forma mecánica y aburrida. Abordar <strong>{keyword_principal}</strong> exige un cambio radical de perspectiva: entender la materia desde su aplicación práctica para que el estudiante gane autonomía y confianza inmediata en cada evaluación.</p>
             
             {parrafos_long_tails}
 
             <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La ruta crítica para asegurar tu aprobación</h2>
-            <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo. Revisa nuestros <a href="../index.html#planes" style="color: #0b2545; font-weight: bold; text-decoration: underline;">planes y tarifas de tutorías</a> para elegir el acompañamiento perfecto adaptado a tus necesidades académicas.</p>
+            <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo con teoría innecesaria. Revisa nuestros <a href="../index.html#planes" style="color: #0b2545; font-weight: bold; text-decoration: underline;">planes y tarifas de tutorías</a> para elegir el acompañamiento perfecto adaptado a tus necesidades académicas.</p>
             
             {enlace_interno_html}
 
@@ -229,4 +252,4 @@ if os.path.exists("index.html"):
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado con arquitectura SEO avanzada y CTA centrado!")
+print("¡Proceso completado con estructura SILO estricta y contenido 100% dinámico y único!")
