@@ -10,32 +10,35 @@ NUMERO_WHATSAPP = "593993117800"
 csv_path = "urls_articulos.csv"
 api_key = os.environ.get("GEMINI_API_KEY")
 
-print("Iniciando generación de blog con IA de Gemini...")
+print("Iniciando generación de blog con IA de Gemini (Versión Blindada)...")
+if not api_key:
+    print("¡ALERTA CRÍTICA!: La variable GEMINI_API_KEY no está configurada en los Secrets de GitHub.")
+else:
+    print("Clave API detectada correctamente en el entorno.")
 
 def generar_texto_con_gemini(keyword, long_tails):
     if not api_key:
-        print("Aviso: No se encontró GEMINI_API_KEY en los secretos. Usando respaldo estático.")
         return None
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     
     prompt = f"""
-    Actúa como un profesor experto de matemáticas y redactor SEO especializado en educación en Santo Domingo, Ecuador.
-    Escribe el contenido redactado para las secciones de un artículo web sobre la keyword principal: "{keyword}".
-    Las subsecciones secundarias (long tails) que debes desarrollar en formato de párrafos variados, técnicos y directos son:
+    Actúa como un profesor experto de matemáticas y redactor SEO senior especializado en educación en Santo Domingo, Ecuador.
+    Escribe un artículo extremadamente completo y profundo (de redacción extensa y detallada) sobre la keyword principal: "{keyword}".
+    Las subsecciones secundarias (long tails) que debes desarrollar obligatoriamente son:
     {json.dumps(long_tails, ensure_ascii=False)}
 
-    Requisitos estrictos de redacción:
-    1. Proporciona exactamente un párrafo de introducción potente enfocado en los dolores del estudiante local en Santo Domingo (frustración con las notas).
-    2. Proporciona un párrafo explicativo para un bloque titulado "¿Por qué los métodos tradicionales ya no dan resultados?".
-    3. Para cada una de las subsecciones (long tails) listadas arriba, redacta 2 párrafos únicos, profundos y originales que expliquen la materia y la solución práctica.
-    4. Devuelve la respuesta exclusivamente en formato JSON válido con esta estructura exacta, sin bloques de código markdown extra, solo el texto JSON puro:
+    Requisitos estrictos de redacción de alta calidad:
+    1. "intro": Escribe 3 párrafos robustos, profesionales y persuasivos abordando los problemas reales de los estudiantes en los colegios y universidades de Santo Domingo con las matemáticas, la frustración de las malas calificaciones y la falta de metodologías claras.
+    2. "por_que": Escribe 2 párrafos extensos explicando por qué la educación tradicional y las academias masivas fallan en esta materia.
+    3. "long_tails_desarrollo": Para cada una de las subsecciones (long tails) listadas arriba, redacta un bloque que contenga un título H3 optimizado, y **tres párrafos largos y explicativos** por cada sección que aborden la teoría clave, errores comunes de los alumnos y la solución práctica paso a paso.
+    4. Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro. No uses bloques de código markdown como ```json ... ```, solo la estructura de llaves {} exacta:
     {{
-      "intro": "texto aquí...",
-      "por_que": "texto aquí...",
+      "intro": "Párrafo 1... Párrafo 2... Párrafo 3...",
+      "por_que": "Párrafo 1... Párrafo 2...",
       "long_tails_desarrollo": [
-        {{"h3": "Título H3 optimizado 1", "p1": "párrafo 1...", "p2": "párrafo 2..."}},
-        {{"h3": "Título H3 optimizado 2", "p1": "párrafo 1...", "p2": "párrafo 2..."}}
+        {{"h3": "Título H3 optimizado 1", "p1": "párrafo 1 detallado...", "p2": "párrafo 2 detallado...", "p3": "párrafo 3 detallado..."}},
+        {{"h3": "Título H3 optimizado 2", "p1": "párrafo 1 detallado...", "p2": "párrafo 2 detallado...", "p3": "párrafo 3 detallado..."}}
       ]
     }}
     """
@@ -55,34 +58,41 @@ def generar_texto_con_gemini(keyword, long_tails):
         with urllib.request.urlopen(req) as response:
             res_json = json.loads(response.read().decode("utf-8"))
             texto_generado = res_json["candidates"][0]["content"]["parts"][0]["text"]
-            return json.loads(texto_generado)
+            
+            # Limpieza por si la IA envía caracteres de marcado markdown residuales
+            texto_limpio = texto_generado.strip()
+            if texto_limpio.startswith("```json"):
+                texto_limpio = texto_limpio[7:]
+            if texto_limpio.endswith("```"):
+                texto_limpio = texto_limpio[:-3]
+                
+            return json.loads(texto_limpio.strip())
     except Exception as e:
-        print(f"Error al conectar con la API de Gemini: {e}")
+        print(f"Error detallado al conectar con la API de Gemini: {e}")
         return None
 
 # 1. Cargar la parrilla de keywords
 if not os.path.exists("keywords.json"):
-    print("Error crítico: El archivo keywords.json no existe en el repositorio.")
+    print("Error crítico: El archivo keywords.json no existe.")
     exit()
 
 with open("keywords.json", "r", encoding="utf-8") as f:
     keywords_data = json.load(f)
 
-print(f"Keywords encontradas en cola: {len(keywords_data)}")
+print(f"Keywords disponibles en cola: {len(keywords_data)}")
 
-# Si hay keywords disponibles, procesar la primera
 if keywords_data:
     articulo_actual = keywords_data.pop(0)
 
     keyword_principal = articulo_actual.get("keyword_principal")
     long_tails = articulo_actual.get("long_tails", [])
     titulo = articulo_actual.get("titulo")
-    slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
+    slug = articulo_actual.get("slug", "articulo-matematicas-santo-domingo")
 
     print(f"Procesando artículo: {titulo} (Slug: {slug})")
 
     url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
-    extracto_card = f"Guía experta sobre {keyword_principal} en Santo Domingo con métodos prácticos para asegurar tus notas."
+    extracto_card = f"Guía experta y detallada sobre {keyword_principal} en Santo Domingo con métodos de enseñanza personalizados."
 
     imagenes_banco = [
         "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
@@ -104,32 +114,34 @@ if keywords_data:
     enlace_interno_html = ""
     if historial_posts:
         titulo_prev, url_prev = historial_posts[0]
-        enlace_interno_html = f'<p style="margin-top: 1.5rem; font-size: 1rem;">Te recomendamos leer también nuestra guía relacionada sobre <a href="{url_prev}" style="color: #0b2545; font-weight: bold; text-decoration: underline;">{titulo_prev}</a> para complementar tu aprendizaje.</p>'
+        enlace_interno_html = f'<p style="margin-top: 1.5rem; font-size: 1.05rem; line-height: 1.7;">Te invitamos a revisar también nuestra guía especializada sobre <a href="{url_prev}" style="color: #0b2545; font-weight: bold; text-decoration: underline;">{titulo_prev}</a> para dominar por completo tus evaluaciones académicas.</p>'
 
     contenido_ia = generar_texto_con_gemini(keyword_principal, long_tails)
     
     if not contenido_ia:
-        print("Usando contenido de respaldo estructurado...")
+        print("ADVERTENCIA: Usando contenido estructurado extendido de respaldo...")
         contenido_ia = {
-            "intro": f"Si tu objetivo real es dominar {keyword_principal} en Santo Domingo, la solución definitiva requiere un sistema enfocado en resultados rápidos y prácticos.",
-            "por_que": f"El sistema convencional fuerza la memorización mecánica. Abordar {keyword_principal} exige entender la lógica detrás de cada ejercicio.",
-            "long_tails_desarrollo": [{"h3": f"Claves para entender {t}", "p1": f"Desglosamos {t} paso a paso para evitar confusiones.", "p2": "Práctica enfocada exactamente al nivel escolar actual."} for t in long_tails]
+            "intro": f"Enfrentarse a materias complejas sin una guía adecuada en Santo Domingo suele terminar en reprobaciones y horas de desgaste innecesario frente a los libros. Dominar {keyword_principal} exige un cambio drástico de perspectiva, pasando de la memorización mecánica a la comprensión lógica y aplicada. Nuestra experiencia demuestra que con un acompañamiento individualizado, los obstáculos académicos desaparecen rápidamente.",
+            "por_que": f"El sistema de enseñanza tradicional en colegios y academias masivas ignora por completo el ritmo de aprendizaje individual del estudiante. Pretenden que se retengan fórmulas abstractas sin entender de dónde provienen, generando bloqueos mentales severos frente a las evaluaciones reales.",
+            "long_tails_desarrollo": [{"h3": f"Estrategias avanzadas para dominar {t}", "p1": f"Desglosamos cada concepto clave de {t} paso a paso, asegurando que el alumno comprenda los patrones lógicos subyacentes.", "p2": "Implementamos ejercicios prácticos orientados directamente a los modelos de exámenes aplicados en las instituciones educativas locales.", "p3": "Fomentamos la autonomía del estudiante mediante técnicas de resolución visual y simplificación algebraica avanzada."} for t in long_tails]
         }
 
     parrafos_long_tails = ""
     for i, item in enumerate(contenido_ia.get("long_tails_desarrollo", [])):
         h3_text = item.get("h3")
-        p1_text = item.get("p1")
-        p2_text = item.get("p2")
+        p1_text = item.get("p1", "")
+        p2_text = item.get("p2", "")
+        p3_text = item.get("p3", "")
 
         enlace_externo = ""
         if i == 0:
-            enlace_externo = ' Puedes consultar metodologías de práctica global complementarias en portales educativos de referencia como <a href="https://es.khanacademy.org" target="_blank" rel="noopener" style="color: #0b2545; text-decoration: underline;">Khan Academy</a>.'
+            enlace_externo = ' Puedes complementar tus prácticas académicas con recursos de nivel internacional en portales educativos de referencia como <a href="https://es.khanacademy.org" target="_blank" rel="noopener" style="color: #0b2545; text-decoration: underline;">Khan Academy</a>.'
 
         parrafos_long_tails += f"""
-        <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;">{h3_text}</h3>
-        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333;">{p1_text}{enlace_externo}</p>
-        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #444;">{p2_text}</p>
+        <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;">{h3_text}</h3>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333; line-height: 1.8;">{p1_text}{enlace_externo}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333; line-height: 1.8;">{p2_text}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1.5rem; color: #444; line-height: 1.8;">{p3_text}</p>
         """
 
     html_contenido = f"""<!DOCTYPE html>
@@ -144,23 +156,29 @@ if keywords_data:
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.8; color: #222; background-color: #fdfdfd; margin: 0; padding: 0;">
     <div style="max-width: 1000px; width: 90%; margin: 40px auto; background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
         <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1.5rem; margin-bottom: 2rem;">
-            <span style="color: #0b2545; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;">Rendimiento Escolar sin Excusas</span>
-            <h1 style="color: #0b2545; font-size: 2.5rem; margin-top: 0.5rem; line-height: 1.15; font-weight: 900; letter-spacing: -1px;">{titulo}</h1>
+            <span style="color: #0b2545; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;">Excelencia Académica en Santo Domingo</span>
+            <h1 style="color: #0b2545; font-size: 2.4rem; margin-top: 0.5rem; line-height: 1.15; font-weight: 900; letter-spacing: -1px;">{titulo}</h1>
         </header>
         <main>
             <div style="margin-bottom: 2.5rem;">
                 <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 420px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
             </div>
-            <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">{contenido_ia.get("intro")}</p>
+            <p style="font-size: 1.15rem; font-weight: 700; color: #111; line-height: 1.7; margin-bottom: 1.5rem;">{contenido_ia.get("intro")}</p>
+            
             <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales ya no dan resultados?</h2>
-            <p style="font-size: 1.05rem; color: #333;">{contenido_ia.get("por_que")}</p>
+            <p style="font-size: 1.05rem; color: #333; line-height: 1.8; margin-bottom: 1rem;">{contenido_ia.get("por_que")}</p>
+            
             {parrafos_long_tails}
-            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La ruta crítica para asegurar tu aprobación</h2>
-            <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo con teoría innecesaria. Revisa nuestros <a href="../index.html#planes" style="color: #0b2545; font-weight: bold; text-decoration: underline;">planes y tarifas de tutorías</a> para elegir el acompañamiento perfecto adaptado a tus necesidades académicas.</p>
+
+            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La ruta crítica para asegurar tu aprobación definitiva</h2>
+            <p style="font-size: 1.05rem; color: #333; line-height: 1.8;">No pierdas más tiempo intentando descifrar libros complejos por tu cuenta. Conoce nuestros <a href="../index.html#planes" style="color: #0b2545; font-weight: bold; text-decoration: underline;">planes y tarifas de tutorías especializadas</a> diseñados para garantizar un progreso real en tus notas.</p>
+            
             {enlace_interno_html}
+
+            <!-- BLOQUE CTA 100% CENTRADO -->
             <div style="background: #f8fafc; padding: 2.5rem; border-left: 6px solid #0b2545; margin: 3rem 0; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.04); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545; max-width: 600px;">¿Vas a dejar que un mal promedio arruine tu futuro académico?</p>
-                <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.1rem; color: #444; max-width: 600px;">Toma el control hoy mismo. Escríbenos directamente y asegura un profesor particular especializado en resultados en Santo Domingo.</p>
+                <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545; max-width: 600px;">¿Vas a dejar que un mal promedio arruine tu futuro profesional?</p>
+                <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.1rem; color: #444; max-width: 600px;">Toma el control de tus calificaciones hoy mismo. Escríbenos directamente por WhatsApp y asegura un profesor particular enfocado en resultados rápidos en Santo Domingo.</p>
                 <a href="https://wa.me/{NUMERO_WHATSAPP}?text=Hola,%20necesito%20información%20sobre%20clases%20de%20matemáticas%20para%20asegurar%20mis%20calificaciones." target="_blank" style="background: #25d366; color: white; padding: 0.9rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 800; display: inline-block; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(37,211,102,0.3);">¡Quiero asegurar mis calificaciones ahora! →</a>
             </div>
         </main>
@@ -177,9 +195,9 @@ if keywords_data:
     ruta_archivo = os.path.join("blog", f"{slug}.html")
     with open(ruta_archivo, "w", encoding="utf-8") as f:
         f.write(html_contenido)
-    print(f"Archivo guardado exitosamente: {ruta_archivo}")
+    print(f"Artículo generado con éxito: {ruta_archivo}")
 
-    # Actualizar CSV histórico correctamente
+    # Actualizar CSV histórico
     registros_csv = []
     if os.path.exists(csv_path):
         with open(csv_path, mode="r", encoding="utf-8") as f:
@@ -196,7 +214,7 @@ if keywords_data:
         writer = csv.writer(f)
         writer.writerow(["Titulo", "Slug", "URL para Search Console", "Extracto"])
         writer.writerows(registros_csv)
-    print("Archivo CSV actualizado con éxito.")
+    print("CSV actualizado correctamente.")
 
 # 2. Cargar datos del CSV para landing y sitemap
 datos_por_slug = {}
@@ -270,10 +288,10 @@ if os.path.exists("index.html"):
         
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(index_actualizado)
-        print("index.html actualizado con las tarjetas de blog.")
+        print("index.html actualizado correctamente.")
 
 # 4. Guardar keywords restantes
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso finalizado con éxito total!")
+print("¡Proceso finalizado con éxito!")
