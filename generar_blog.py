@@ -2,16 +2,63 @@ import json
 import os
 import csv
 from datetime import datetime
-from google import genai
-from google.genai import types
+import urllib.request
+import urllib.error
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 NUMERO_WHATSAPP = "593993117800" # Reemplaza con tu número real si deseas
 csv_path = "urls_articulos.csv"
 
-# Inicializar cliente de Google Gemini (Gratis con la API Key del entorno)
+# Obtener la API Key desde los secretos de GitHub Actions
 api_key = os.environ.get("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key) if api_key else None
+
+def generar_texto_con_gemini(keyword, long_tails):
+    if not api_key:
+        print("Aviso: No se encontró GEMINI_API_KEY, usando modo de respaldo.")
+        return None
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    
+    prompt = f"""
+    Actúa como un profesor experto de matemáticas y redactor SEO especializado en educación en Santo Domingo, Ecuador.
+    Escribe el contenido redactado para las secciones de un artículo web sobre la keyword principal: "{keyword}".
+    Las subsecciones secundarias (long tails) que debes desarrollar en formato de párrafos variados, técnicos y directos son:
+    {json.dumps(long_tails, ensure_ascii=False)}
+
+    Requisitos estrictos de redacción:
+    1. Proporciona exactamente un párrafo de introducción potente enfocado en los dolores del estudiante local en Santo Domingo (frustración con las notas).
+    2. Proporciona un párrafo explicativo para un bloque titulado "¿Por qué los métodos tradicionales ya no dan resultados?".
+    3. Para cada una de las subsecciones (long tails) listadas arriba, redacta 2 párrafos únicos, profundos y originales que expliquen la materia y la solución práctica.
+    4. Devuelve la respuesta exclusivamente en formato JSON válido con esta estructura exacta, sin bloques de código markdown extra, solo el texto JSON puro:
+    {{
+      "intro": "texto aquí...",
+      "por_que": "texto aquí...",
+      "long_tails_desarrollo": [
+        {{"h3": "Título H3 optimizado 1", "p1": "párrafo 1...", "p2": "párrafo 2..."}},
+        {{"h3": "Título H3 optimizado 2", "p1": "párrafo 1...", "p2": "párrafo 2..."}}
+      ]
+    }}
+    """
+
+    data = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"response_mime_type": "application/json"}
+    }
+
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(data).encode("utf-8"),
+        headers={"Content-Type": "application/json"}
+    )
+
+    try:
+        with urllib.request.urlopen(req) as response:
+            res_json = json.loads(response.read().decode("utf-8"))
+            texto_generado = res_json["candidates"][0]["content"]["parts"][0]["text"]
+            return json.loads(texto_generado)
+    except Exception as e:
+        print(f"Error al conectar con la API de Gemini: {e}")
+        return None
 
 # 1. Cargar la parrilla de keywords
 if not os.path.exists("keywords.json"):
@@ -22,7 +69,7 @@ with open("keywords.json", "r", encoding="utf-8") as f:
     keywords_data = json.load(f)
 
 # Si hay keywords disponibles, generar un nuevo artículo único mediante IA
-if keywords_data and client:
+if keywords_data:
     articulo_actual = keywords_data.pop(0)
 
     keyword_principal = articulo_actual.get("keyword_principal")
@@ -58,45 +105,15 @@ if keywords_data and client:
         titulo_prev, url_prev = historial_posts[0]
         enlace_interno_html = f'<p style="margin-top: 1.5rem; font-size: 1rem;">Te recomendamos leer también nuestra guía relacionada sobre <a href="{url_prev}" style="color: #0b2545; font-weight: bold; text-decoration: underline;">{titulo_prev}</a> para complementar tu aprendizaje.</p>'
 
-    # Prompt inteligente para que Gemini redacte contenido 100% único, fluido y profesional sin repetir plantillas
-    prompt_ia = f"""
-    Actúa como un profesor experto de matemáticas y redactor SEO especializado en educación en Santo Domingo, Ecuador.
-    Escribe el contenido redactado para las secciones de un artículo web sobre la keyword principal: "{keyword_principal}".
-    Las subsecciones secundarias (long tails) que debes desarrollar en formato de párrafos variados, técnicos y directos son:
-    {json.dumps(long_tails, ensure_ascii=False)}
-
-    Requisitos estrictos de redacción:
-    1. Proporciona exactamente un párrafo de introducción potente enfocado en los dolores del estudiante local en Santo Domingo (frustración con las notas).
-    2. Proporciona un párrafo explicativo para un bloque titulado "¿Por qué los métodos tradicionales ya no dan resultados?".
-    3. Para cada una de las subsecciones (long tails) listadas arriba, redacta 2 párrafos únicos, profundos y originales que expliquen la materia y la solución práctica (no repitas frases hechas, usa redacción editorial rica).
-    4. Devuelve la respuesta exclusivamente en formato JSON válido con esta estructura exacta, sin texto adicional alrededor:
-    {{
-      "intro": "texto aquí...",
-      "por_que": "texto aquí...",
-      "long_tails_desarrollo": [
-        {{"h3": "Título H3 optimizado 1", "p1": "párrafo 1...", "p2": "párrafo 2..."}},
-        {{"h3": "Título H3 optimizado 2", "p1": "párrafo 1...", "p2": "párrafo 2..."}}
-      ]
-    }}
-    """
-
-    # Llamada a la IA gratuita de Gemini
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt_ia,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json"
-            )
-        )
-        contenido_ia = json.loads(response.text)
-    except Exception as e:
-        print(f"Error al conectar con la IA de Gemini: {e}")
-        # Fallback de respaldo por si ocurre algún fallo puntual de red
+    # Obtener contenido dinámico y único de la IA de Gemini
+    contenido_ia = generar_texto_con_gemini(keyword_principal, long_tails)
+    
+    if not contenido_ia:
+        # Fallback de seguridad por si falla la red
         contenido_ia = {
             "intro": f"Si tu objetivo real es dominar {keyword_principal} en Santo Domingo, la solución definitiva requiere un sistema enfocado en resultados rápidos y prácticos.",
-            "por_que": f"El sistema convencional fuerza la memorización. Abordar {keyword_principal} exige entender la lógica detrás de los ejercicios.",
-            "long_tails_desarrollo": [{"h3": f"Claves para entender {t}", "p1": f"Desglosamos {t} paso a paso.", "p2": "Práctica enfocada en exámenes reales."} for t in long_tails]
+            "por_que": f"El sistema convencional fuerza la memorización mecánica. Abordar {keyword_principal} exige entender la lógica detrás de cada ejercicio.",
+            "long_tails_desarrollo": [{"h3": f"Claves para entender {t}", "p1": f"Desglosamos {t} paso a paso para evitar confusiones.", "p2": "Práctica enfocada exactamente al nivel escolar actual."} for t in long_tails]
         }
 
     # Armar los bloques H3 dinámicos generados por la IA
@@ -270,4 +287,4 @@ if os.path.exists("index.html"):
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado con IA gratuita y contenido redactado de forma única!")
+print("¡Proceso completado de forma nativa con Gemini y sin librerías externas!")
