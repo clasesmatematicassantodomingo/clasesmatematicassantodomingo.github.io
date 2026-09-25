@@ -6,15 +6,15 @@ import urllib.request
 import urllib.error
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
-NUMERO_WHATSAPP = "593993117800" # Reemplaza con tu número real si deseas
+NUMERO_WHATSAPP = "593993117800"
 csv_path = "urls_articulos.csv"
-
-# Obtener la API Key desde los secretos de GitHub Actions
 api_key = os.environ.get("GEMINI_API_KEY")
+
+print("Iniciando generación de blog con IA de Gemini...")
 
 def generar_texto_con_gemini(keyword, long_tails):
     if not api_key:
-        print("Aviso: No se encontró GEMINI_API_KEY, usando modo de respaldo.")
+        print("Aviso: No se encontró GEMINI_API_KEY en los secretos. Usando respaldo estático.")
         return None
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
@@ -62,13 +62,15 @@ def generar_texto_con_gemini(keyword, long_tails):
 
 # 1. Cargar la parrilla de keywords
 if not os.path.exists("keywords.json"):
-    print("El archivo keywords.json no existe.")
+    print("Error crítico: El archivo keywords.json no existe en el repositorio.")
     exit()
 
 with open("keywords.json", "r", encoding="utf-8") as f:
     keywords_data = json.load(f)
 
-# Si hay keywords disponibles, generar un nuevo artículo único mediante IA
+print(f"Keywords encontradas en cola: {len(keywords_data)}")
+
+# Si hay keywords disponibles, procesar la primera
 if keywords_data:
     articulo_actual = keywords_data.pop(0)
 
@@ -77,20 +79,19 @@ if keywords_data:
     titulo = articulo_actual.get("titulo")
     slug = articulo_actual.get("slug", "clases-de-supletorios-de-matematicas-en-santo-domingo")
 
+    print(f"Procesando artículo: {titulo} (Slug: {slug})")
+
     url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
     extracto_card = f"Guía experta sobre {keyword_principal} en Santo Domingo con métodos prácticos para asegurar tus notas."
 
-    # Banco de imágenes únicas por temática
     imagenes_banco = [
         "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
     ]
     imagen_url = imagenes_banco[len(slug) % len(imagenes_banco)]
 
-    # Cargar historial CSV para Interlinking automático
+    # Cargar historial CSV para Interlinking
     historial_posts = []
     if os.path.exists(csv_path):
         with open(csv_path, mode="r", encoding="utf-8") as f:
@@ -105,18 +106,16 @@ if keywords_data:
         titulo_prev, url_prev = historial_posts[0]
         enlace_interno_html = f'<p style="margin-top: 1.5rem; font-size: 1rem;">Te recomendamos leer también nuestra guía relacionada sobre <a href="{url_prev}" style="color: #0b2545; font-weight: bold; text-decoration: underline;">{titulo_prev}</a> para complementar tu aprendizaje.</p>'
 
-    # Obtener contenido dinámico y único de la IA de Gemini
     contenido_ia = generar_texto_con_gemini(keyword_principal, long_tails)
     
     if not contenido_ia:
-        # Fallback de seguridad por si falla la red
+        print("Usando contenido de respaldo estructurado...")
         contenido_ia = {
             "intro": f"Si tu objetivo real es dominar {keyword_principal} en Santo Domingo, la solución definitiva requiere un sistema enfocado en resultados rápidos y prácticos.",
             "por_que": f"El sistema convencional fuerza la memorización mecánica. Abordar {keyword_principal} exige entender la lógica detrás de cada ejercicio.",
             "long_tails_desarrollo": [{"h3": f"Claves para entender {t}", "p1": f"Desglosamos {t} paso a paso para evitar confusiones.", "p2": "Práctica enfocada exactamente al nivel escolar actual."} for t in long_tails]
         }
 
-    # Armar los bloques H3 dinámicos generados por la IA
     parrafos_long_tails = ""
     for i, item in enumerate(contenido_ia.get("long_tails_desarrollo", [])):
         h3_text = item.get("h3")
@@ -133,7 +132,6 @@ if keywords_data:
         <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #444;">{p2_text}</p>
         """
 
-    # Estructura HTML final del artículo con diseño SILO perfecto
     html_contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -149,32 +147,23 @@ if keywords_data:
             <span style="color: #0b2545; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;">Rendimiento Escolar sin Excusas</span>
             <h1 style="color: #0b2545; font-size: 2.5rem; margin-top: 0.5rem; line-height: 1.15; font-weight: 900; letter-spacing: -1px;">{titulo}</h1>
         </header>
-        
         <main>
             <div style="margin-bottom: 2.5rem;">
                 <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 420px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
             </div>
-
             <p style="font-size: 1.2rem; font-weight: 700; color: #111; line-height: 1.6;">{contenido_ia.get("intro")}</p>
-            
             <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales ya no dan resultados?</h2>
             <p style="font-size: 1.05rem; color: #333;">{contenido_ia.get("por_que")}</p>
-            
             {parrafos_long_tails}
-
             <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La ruta crítica para asegurar tu aprobación</h2>
             <p style="font-size: 1.05rem; color: #333;">No venimos a hacerte perder el tiempo con teoría innecesaria. Revisa nuestros <a href="../index.html#planes" style="color: #0b2545; font-weight: bold; text-decoration: underline;">planes y tarifas de tutorías</a> para elegir el acompañamiento perfecto adaptado a tus necesidades académicas.</p>
-            
             {enlace_interno_html}
-
-            <!-- BLOQUE CTA 100% CENTRADO -->
             <div style="background: #f8fafc; padding: 2.5rem; border-left: 6px solid #0b2545; margin: 3rem 0; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.04); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545; max-width: 600px;">¿Vas a dejar que un mal promedio arruine tu futuro académico?</p>
                 <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.1rem; color: #444; max-width: 600px;">Toma el control hoy mismo. Escríbenos directamente y asegura un profesor particular especializado en resultados en Santo Domingo.</p>
                 <a href="https://wa.me/{NUMERO_WHATSAPP}?text=Hola,%20necesito%20información%20sobre%20clases%20de%20matemáticas%20para%20asegurar%20mis%20calificaciones." target="_blank" style="background: #25d366; color: white; padding: 0.9rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 800; display: inline-block; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(37,211,102,0.3);">¡Quiero asegurar mis calificaciones ahora! →</a>
             </div>
         </main>
-
         <footer style="margin-top: 4rem; border-top: 1px solid #eaeaea; padding-top: 1.5rem; text-align: center; color: #777; font-size: 0.9rem;">
             <p>&copy; {datetime.now().year} Clases de Matemáticas Santo Domingo. Todos los derechos reservados.</p>
             <p><a href="../index.html" style="color: #0b2545; text-decoration: none; font-weight: bold;">← Volver a la página principal</a></p>
@@ -188,8 +177,9 @@ if keywords_data:
     ruta_archivo = os.path.join("blog", f"{slug}.html")
     with open(ruta_archivo, "w", encoding="utf-8") as f:
         f.write(html_contenido)
+    print(f"Archivo guardado exitosamente: {ruta_archivo}")
 
-    # Actualizar CSV histórico
+    # Actualizar CSV histórico correctamente
     registros_csv = []
     if os.path.exists(csv_path):
         with open(csv_path, mode="r", encoding="utf-8") as f:
@@ -198,8 +188,6 @@ if keywords_data:
             for row in reader:
                 if len(row) >= 4:
                     registros_csv.append(row)
-                elif len(row) >= 2:
-                    registros_csv.append([row[0], row[1], f"{DOMINIO_BASE}blog/{row[1]}.html", f"Guía sobre {row[0]}."])
     
     if not any(r[1] == slug for r in registros_csv):
         registros_csv.append([titulo, slug, url_articulo, extracto_card])
@@ -208,8 +196,9 @@ if keywords_data:
         writer = csv.writer(f)
         writer.writerow(["Titulo", "Slug", "URL para Search Console", "Extracto"])
         writer.writerows(registros_csv)
+    print("Archivo CSV actualizado con éxito.")
 
-# 2. Cargar datos desde el CSV para landing y sitemap
+# 2. Cargar datos del CSV para landing y sitemap
 datos_por_slug = {}
 if os.path.exists(csv_path):
     with open(csv_path, mode="r", encoding="utf-8") as f:
@@ -219,7 +208,6 @@ if os.path.exists(csv_path):
             if len(row) >= 4:
                 datos_por_slug[row[1]] = {"titulo": row[0], "extracto": row[3]}
 
-# 3. Generar Sitemap y Tarjetas de la Landing Page
 urls_sitemap = [f"""    <url>
         <loc>{DOMINIO_BASE}</loc>
         <changefreq>weekly</changefreq>
@@ -266,7 +254,7 @@ sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
 with open("sitemap.xml", "w", encoding="utf-8") as sm:
     sm.write(sitemap_contenido)
 
-# 4. Actualizar index.html dinámicamente
+# 3. Actualizar index.html dinámicamente
 if os.path.exists("index.html"):
     with open("index.html", "r", encoding="utf-8") as f:
         index_content = f.read()
@@ -282,9 +270,10 @@ if os.path.exists("index.html"):
         
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(index_actualizado)
+        print("index.html actualizado con las tarjetas de blog.")
 
-# 5. Guardar keywords restantes
+# 4. Guardar keywords restantes
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso completado de forma nativa con Gemini y sin librerías externas!")
+print("¡Proceso finalizado con éxito total!")
