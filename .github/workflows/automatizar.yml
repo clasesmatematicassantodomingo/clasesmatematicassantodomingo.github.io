@@ -1,4 +1,16 @@
-steps:
+name: Automatizar Blog SEO Cada 3 Dias
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 */3 * *'
+
+jobs:
+  construir-blog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
       - name: Clonar repositorio
         uses: actions/checkout@v4
 
