@@ -1,16 +1,4 @@
-name: Automatizar Blog SEO Cada 3 Dias
-
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 0 */3 * *' # Se ejecuta cada 3 días
-
-jobs:
-  construir-blog:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
+steps:
       - name: Clonar repositorio
         uses: actions/checkout@v4
 
@@ -19,13 +7,13 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Ejecutar script generador
+      - name: Actualizar y reorganizar keywords (Detectar borrados)
+        run: python actualizar_keywords.py
+
+      - name: Ejecutar script generador de blog
         run: python generar_blog.py
 
-      - name: Subir artículos generados automáticamente
+      - name: Subir artículos y JSON actualizados automáticamente
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Auto-generación de artículos de blog desde la parrilla SEO optimizada"
-          branch: main
-          # Forzar el rebase automático para evitar conflictos de ramas divergentes
-          push_options: '--force'
+          commit_message: "Auto-actualización de keywords y generación de nuevo artículo de blog"
