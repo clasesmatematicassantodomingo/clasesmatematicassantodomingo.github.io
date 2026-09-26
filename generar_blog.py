@@ -65,7 +65,7 @@ Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de códig
 }}
 """
 
-                response = client.models.generate_content(
+        response = client.models.generate_content(
             model='gemini-1.5-pro',
             contents=prompt,
         )
