@@ -19,6 +19,9 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Instalar librería oficial de Google GenAI
+        run: pip install google-generativeai
+
       - name: Actualizar y reorganizar keywords (Detectar borrados)
         run: python actualizar_keywords.py
 
