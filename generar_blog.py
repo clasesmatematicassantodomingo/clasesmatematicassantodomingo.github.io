@@ -2,7 +2,7 @@ import json
 import os
 import csv
 from datetime import datetime
-import google.generativeai as genai
+from google import genai
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 NUMERO_WHATSAPP = "593993117800"
@@ -21,14 +21,8 @@ def generar_texto_con_gemini(keyword, long_tails, related_questions):
     api_key = raw_key.strip()
     
     try:
-        # Configurar la librería oficial de Google
-        genai.configure(api_key=api_key)
-        
-        # Usar el modelo estable y oficial actual
-        model = genai.GenerativeModel(
-            model_name="gemini-pro",
-            generation_config={"temperature": 0.7}
-        )
+        # Inicializar el cliente oficial moderno de Google GenAI
+        client = genai.Client(api_key=api_key)
         
         long_tails_str = json.dumps(long_tails, ensure_ascii=False)
         related_str = json.dumps(related_questions, ensure_ascii=False)
@@ -71,7 +65,10 @@ Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de códig
 }}
 """
 
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model='gemini-2.0-flash',
+            contents=prompt,
+        )
         return json.loads(response.text)
         
     except Exception as e:
