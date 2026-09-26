@@ -9,8 +9,22 @@ NUMERO_WHATSAPP = "593993117800"
 CSV_PATH = "url_articulos.csv"
 KEYWORDS_FILE = "keywords.json"
 BLOG_DIR = "blog/"
+YOUTUBE_CANAL = "https://www.youtube.com/channel/UCanMxWvOoiwtjLYm08Bo8QQ"
+KHAN_ACADEMY = "https://es.khanacademy.org/"
 
-print("Iniciando generación masiva de artículos SEO avanzados (Estilo Romuald Fons Dinámico)...")
+print("Iniciando generación masiva de artículos SEO avanzados (Estilo Romuald Fons Dinámico Pro)...")
+
+def obtener_historial_articulos():
+    """Lee el CSV para extraer artículos previos y realizar interlinking dinámico."""
+    articulos_previos = []
+    if os.path.exists(CSV_PATH):
+        with open(CSV_PATH, mode="r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None) # Saltar cabecera
+            for row in reader:
+                if len(row) >= 3:
+                    articulos_previos.append({"fecha": row[0], "keyword": row[1], "url": row[2]})
+    return articulos_previos
 
 def generar_texto_con_gemini(keyword, long_tails, related_questions):
     raw_key = os.getenv("GEMINI_API_KEY")
@@ -28,9 +42,10 @@ def generar_texto_con_gemini(keyword, long_tails, related_questions):
         related_str = json.dumps(related_questions, ensure_ascii=False)
 
         prompt = f"""
-Actúa como un profesor experto de matemáticas y redactor SEO senior especializado en educación y rendimiento académico en Santo Domingo, Ecuador. Aplica el estilo directo, incisivo, persuasivo y estructurado de Romuald Fons (SEO de guerrilla, sin paja, directo al dolor del usuario).
+Actúa como un profesor experto de matemáticas, fundador de academias de alto rendimiento y redactor SEO senior especializado en educación y rendimiento académico en Santo Domingo, Ecuador. Aplica el estilo directo, incisivo, apasionado y sin rodeos de Romuald Fons (SEO de guerrilla, directo al dolor del estudiante, enfoque en la acción y experiencia real).
 
-Escribe un artículo extremadamente completo, profundo y de gran extensión (debe superar obligatoriamente las 1000 palabras de contenido de valor real) centrado en la keyword principal: "{keyword}".
+Escribe un artículo extremadamente completo, profundo y de gran extensión (debe superar obligatoriamente las 1200 palabras de contenido de valor real, mezclando experiencia y datos estadísticos de impacto) centrado en la keyword principal: "{keyword}". 
+Las keywords y long tails deben integrarse con fuerza y aparecer formateadas para destacar.
 
 Las subsecciones secundarias (long tails) obligatorias que debes desarrollar a profundidad son:
 {long_tails_str}
@@ -41,9 +56,10 @@ Preguntas frecuentes orientadas a la intención de búsqueda que debes responder
 Requisitos estrictos de redacción masiva y dinámica (CERO TEXTO REPETITIVO):
 1. "intro": Escribe 4 párrafos largos, persuasivos y detallados abordando el dolor principal del estudiante en Santo Domingo (reprobaciones, la frustración con las matemáticas y el riesgo inminente de perder el año o quedarse a supletorios).
 2. "por_que": Escribe 3 párrafos extensos explicando por qué la educación tradicional y las academias masivas fallan estrepitosamente al explicar conceptos abstractos sin conectar con la realidad local del estudiante.
-3. "long_tails_desarrollo": Para cada una de las subsecciones (long tails) listadas arriba, redacta un bloque completo con un título H3 optimizado y original, seguido de CUATRO párrafos extensos, técnicos pero accesibles, con ejemplos prácticos aplicados a colegios o situaciones cotidianas en Santo Domingo, Ecuador.
-4. "faqs_desarrollo": Responde a cada una de las preguntas frecuentes proporcionadas con dos párrafos detallados por pregunta.
-5. "conclusion": Escribe un cierre contundente de 3 párrafos que invite a la acción inmediata mediante WhatsApp.
+3. "long_tails_desarrollo": Para cada una de las subsecciones (long tails) listadas arriba, redacta un bloque completo con un título H3 optimizado y original, subtítulos intermedios H4 técnicos pero amenas, y CUATRO párrafos extensos con ejemplos prácticos de resolución paso a paso aplicados a colegios o situaciones cotidianas en Santo Domingo, Ecuador.
+4. "ejercicios_practicos": Un bloque especial con un ejemplo práctico de resolución detallada paso a paso de un problema matemático, redactado con claridad didáctica y mentalidad ganadora.
+5. "faqs_desarrollo": Responde a cada una de las preguntas frecuentes proporcionadas con dos párrafos detallados por pregunta.
+6. "conclusion": Escribe un cierre contundente de 3 párrafos que invite a la acción inmediata mediante WhatsApp.
 
 Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de código markdown adicionales (nada de ```json), con esta estructura exacta de llaves:
 {{
@@ -52,9 +68,14 @@ Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de códig
   "long_tails_desarrollo": [
     {{
       "h3": "Título H3 optimizado",
+      "h4": "Subtítulo H4 técnico opcional",
       "contenido": "Párrafo 1... Párrafo 2... Párrafo 3... Párrafo 4..."
     }}
   ],
+  "ejercicios_practicos": {{
+    "titulo": "Resolución práctica paso a paso",
+    "explicacion": "Desarrollo completo del ejercicio de ejemplo..."
+  }},
   "faqs_desarrollo": [
     {{
       "pregunta": "Pregunta exacta de la lista",
@@ -71,10 +92,8 @@ Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de códig
         )
         
         try:
-            # La nueva SDK de google-genai usa response.text directamente
             raw_text = response.text.strip()
             
-            # Limpieza robusta por si Gemini añade bloques de markdown
             if raw_text.startswith("```json"):
                 raw_text = raw_text[7:]
             elif raw_text.startswith("```"):
@@ -112,12 +131,24 @@ def main():
     long_tails = item_actual.get("long_tails", [])
     related_questions = item_actual.get("related_questions", [])
 
-    print(f"Procesando keyword: {keyword} (Slug: {slug})")
+    historial = obtener_historial_articulos()
+    num_articulo = len(historial) + 1
+
+    print(f"Procesando artículo #{num_articulo}: {keyword} (Slug: {slug})")
 
     datos_articulo = generar_texto_con_gemini(keyword, long_tails, related_questions)
     if not datos_articulo:
         print("No se pudo generar el contenido del artículo.")
         return
+
+    # Definición inteligente de enlaces
+    url_planes = f"{DOMINIO_BASE}#planes"
+    url_landing = DOMINIO_BASE
+    url_externo = KHAN_ACADEMY
+    url_youtube = YOUTUBE_CANAL
+
+    url_articulo_anterior = historial[-1]["url"] if historial else DOMINIO_BASE
+    titulo_articulo_anterior = historial[-1]["keyword"] if historial else "nuestra guía principal"
 
     os.makedirs(BLOG_DIR, exist_ok=True)
     ruta_archivo = os.path.join(BLOG_DIR, f"{slug}.html")
@@ -130,9 +161,13 @@ def main():
     <title>{titulo}</title>
     <meta name="description" content="Aprende y domina {keyword} en Santo Domingo con clases particulares y refuerzo escolar especializado. Resultados garantizados.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Regla estricta: Keywords y longtails en color negro y negrita */
+        .keyword-negrita {{ color: #000000; font-weight: 700; }}
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans leading-relaxed">
-    <header class="bg-indigo-900 text-white py-6 shadow-md">
+<body class="bg-slate-50 text-slate-900 font-sans leading-relaxed">
+    <header class="bg-indigo-950 text-white py-6 shadow-md sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
             <a href="{DOMINIO_BASE}" class="font-bold text-xl tracking-wide">Clases de Matemáticas Santo Domingo</a>
             <a href="https://wa.me/{NUMERO_WHATSAPP}?text=Hola,%20necesito%20información%20sobre%20clases%20de%20matemáticas" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold text-sm transition shadow">Asesoría WhatsApp</a>
@@ -140,41 +175,67 @@ def main():
     </header>
 
     <main class="max-w-4xl mx-auto px-4 py-10">
-        <article class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-100">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-950 mb-6 leading-tight">{titulo}</h1>
+        <article class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-indigo-950 mb-6 leading-tight">{titulo}</h1>
+            
+            <!-- Menú superior / Índice dinámico para SEO y experiencia de usuario -->
+            <nav class="bg-slate-100 p-6 rounded-xl mb-8 border border-slate-200">
+                <h2 class="text-lg font-bold text-slate-900 mb-3">Índice del Artículo</h2>
+                <ul class="list-disc list-inside space-y-2 text-indigo-950 font-medium">
+                    <li><a href="#introduccion" class="hover:underline">Introducción y Panorama Educativo</a></li>
+                    <li><a href="#problema" class="hover:underline">El problema de los métodos tradicionales</a></li>
+                    <li><a href="#desarrollo" class="hover:underline">Desarrollo clave y estrategias</a></li>
+                    <li><a href="#ejercicios" class="hover:underline">Ejemplo práctico de resolución</a></li>
+                    <li><a href="#faqs" class="hover:underline">Preguntas Frecuentes</a></li>
+                </ul>
+            </nav>
             
             <div class="mb-8">
-                <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1200&q=80"
+                <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1200&q=80" alt="{keyword}" class="w-full h-80 object-cover rounded-xl shadow-inner">
             </div>
 
-            <div class="prose max-w-none text-slate-700 space-y-4 mb-10 text-lg">
+            <section id="introduccion" class="prose max-w-none text-slate-800 space-y-4 mb-10 text-lg">
                 {f"<p>{'</p><p>'.join(datos_articulo.get('intro', '').split('... '))}</p>"}
-            </div>
+                <p class="mt-4 text-slate-700">Para complementar tu aprendizaje con bases teóricas formales, te recomendamos visitar recursos de referencia internacional como <a href="{url_externo}" target="_blank" class="keyword-negrita underline">Khan Academy</a>.</p>
+            </section>
 
-            <section class="bg-indigo-50/60 border-l-4 border-indigo-600 p-6 rounded-r-xl mb-10">
+            <section id="problema" class="bg-indigo-50/60 border-l-4 border-indigo-600 p-6 rounded-r-xl mb-10">
                 <h2 class="text-2xl font-bold text-indigo-950 mb-4">¿Por qué los métodos tradicionales ya no dan resultados?</h2>
-                <div class="space-y-4 text-slate-700">
+                <div class="space-y-4 text-slate-800">
                     {f"<p>{'</p><p>'.join(datos_articulo.get('por_que', '').split('... '))}</p>"}
                 </div>
             </section>
 
-            <div class="space-y-10 mb-12">
+            <section id="desarrollo" class="space-y-10 mb-12">
 """
 
     for seccion in datos_articulo.get("long_tails_desarrollo", []):
+        h4_html = f"<h4 class='text-xl font-semibold text-indigo-900 mt-3'>{seccion.get('h4')}</h4>" if seccion.get('h4') else ""
         html_content += f"""
-                <section>
-                    <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">{seccion.get('h3')}</h2>
-                    <div class="space-y-4 text-slate-700">
+                <section class="space-y-4">
+                    <h3 class="text-2xl font-bold text-slate-900 border-b pb-2">{seccion.get('h3')}</h3>
+                    {h4_html}
+                    <div class="space-y-4 text-slate-800">
                         {f"<p>{'</p><p>'.join(seccion.get('contenido', '').split('... '))}</p>"}
                     </div>
                 </section>
 """
 
+    # Bloque de ejercicios prácticos y enlace a YouTube
+    ejercicio = datos_articulo.get("ejercicios_practicos", {})
     html_content += f"""
-            </div>
+            </section>
 
-            <section class="mb-12">
+            <section id="ejercicios" class="bg-slate-900 text-white p-8 rounded-2xl mb-12 shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-amber-400">{ejercicio.get('titulo', 'Resolución Práctica Paso a Paso')}</h2>
+                <p class="text-slate-300 mb-6">{ejercicio.get('explicacion', '')}</p>
+                <div class="bg-indigo-900/80 p-4 rounded-xl border border-indigo-700 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <span class="text-sm font-medium">¿Quieres dominar este ejercicio visualmente? Revisa nuestro canal oficial.</span>
+                    <a href="{url_youtube}" target="_blank" class="bg-red-600 hover:bg-red-700 text-white font-bold px-5 py-2.5 rounded-lg transition text-sm">Ver en YouTube</a>
+                </div>
+            </section>
+
+            <section id="faqs" class="mb-12">
                 <h2 class="text-2xl font-bold text-indigo-950 mb-6">Preguntas Frecuentes</h2>
                 <div class="space-y-6">
 """
@@ -187,11 +248,22 @@ def main():
                     </div>
 """
 
+    # Enlaces internos y estructurados requeridos
     html_content += f"""
                 </div>
             </section>
 
-            <section class="bg-indigo-900 text-white p-8 rounded-2xl text-center space-y-4 shadow-lg">
+            <!-- Recursos y Enlaces del Proyecto -->
+            <section class="bg-slate-100 p-6 rounded-xl border border-slate-300 mb-10">
+                <h3 class="text-xl font-bold text-indigo-950 mb-3">Enlaces de Interés y Siguientes Pasos</h3>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li>Revisa nuestros <a href="{url_planes}" class="keyword-negrita underline">planes de asesoría y refuerzo escolar personalizados</a> para asegurar tu nota alta.</li>
+                    <li>Vuelve a la página principal en <a href="{url_landing}" class="keyword-negrita underline">Clases de Matemáticas Santo Domingo</a>.</li>
+                    <li>Explora nuestro artículo anterior relacionado: <a href="{url_articulo_anterior}" class="keyword-negrita underline">{titulo_articulo_anterior}</a>.</li>
+                </ul>
+            </section>
+
+            <section class="bg-indigo-950 text-white p-8 rounded-2xl text-center space-y-4 shadow-lg">
                 <h2 class="text-2xl md:text-3xl font-bold">¿Vas a dejar que un mal promedio arruine tu futuro profesional?</h2>
                 <div class="space-y-3 text-indigo-100 max-w-2xl mx-auto">
                     {f"<p>{'</p><p>'.join(datos_articulo.get('conclusion', '').split('... '))}</p>"}
@@ -212,7 +284,7 @@ def main():
 
     with open(ruta_archivo, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"¡Artículo generado con éxito: {ruta_archivo}!")
+    print(f"¡Artículo generado con éxito y estructura avanzada: {ruta_archivo}!")
 
     keyword_usada = keywords_data.pop(0)
     keywords_data.append(keyword_usada)
