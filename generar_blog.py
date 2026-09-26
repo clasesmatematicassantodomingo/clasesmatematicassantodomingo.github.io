@@ -20,7 +20,7 @@ def generar_texto_con_gemini(keyword, long_tails, related_questions):
         return None
     
     api_key = raw_key.strip()
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={api_key}"
     
     long_tails_str = json.dumps(long_tails, ensure_ascii=False)
     related_str = json.dumps(related_questions, ensure_ascii=False)
