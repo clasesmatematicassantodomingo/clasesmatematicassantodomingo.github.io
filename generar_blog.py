@@ -129,13 +129,13 @@ def main():
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{titulo}</title>
     <meta name="description" content="Aprende y domina {keyword} en Santo Domingo con clases particulares y refuerzo escolar especializado. Resultados garantizados.">
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans leading-relaxed">
     <header class="bg-indigo-900 text-white py-6 shadow-md">
         <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
             <a href="{DOMINIO_BASE}" class="font-bold text-xl tracking-wide">Clases de Matemáticas Santo Domingo</a>
-            <a href="[https://wa.me/](https://wa.me/){NUMERO_WHATSAPP}?text=Hola,%20necesito%20información%20sobre%20clases%20de%20matemáticas" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold text-sm transition shadow">Asesoría WhatsApp</a>
+            <a href="https://wa.me/{NUMERO_WHATSAPP}?text=Hola,%20necesito%20información%20sobre%20clases%20de%20matemáticas" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold text-sm transition shadow">Asesoría WhatsApp</a>
         </div>
     </header>
 
@@ -144,7 +144,7 @@ def main():
             <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-950 mb-6 leading-tight">{titulo}</h1>
             
             <div class="mb-8">
-                <img src="[https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1200&q=80](https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1200&q=80)" alt="{keyword}" class="w-full h-72 object-cover rounded-xl shadow-inner">
+                <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1200&q=80"
             </div>
 
             <div class="prose max-w-none text-slate-700 space-y-4 mb-10 text-lg">
@@ -197,7 +197,7 @@ def main():
                     {f"<p>{'</p><p>'.join(datos_articulo.get('conclusion', '').split('... '))}</p>"}
                 </div>
                 <div class="pt-4">
-                    <a href="[https://wa.me/](https://wa.me/){NUMERO_WHATSAPP}?text=Hola,%20quiero%20asegurar%20un%20profesor%20particular" class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold px-8 py-4 rounded-xl shadow-md transition text-lg">¡Reserva tu cupo con profesor experto!</a>
+                    <a href="https://wa.me/{NUMERO_WHATSAPP}?text=Hola,%20quiero%20asegurar%20un%20profesor%20particular" class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold px-8 py-4 rounded-xl shadow-md transition text-lg">¡Reserva tu cupo con profesor experto!</a>
                 </div>
             </section>
         </article>
