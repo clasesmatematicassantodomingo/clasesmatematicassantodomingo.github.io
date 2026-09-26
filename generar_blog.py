@@ -10,7 +10,7 @@ NUMERO_WHATSAPP = "593993117800"
 csv_path = "urls_articulos.csv"
 api_key = os.environ.get("GEMINI_API_KEY")
 
-print("Iniciando generación de blog con IA de Gemini (Estilo Romuald Fons)...")
+print("Iniciando generación masiva de artículos SEO (Estilo Romuald Fons Extendido)...")
 
 def generar_texto_con_gemini(keyword, long_tails):
     if not api_key:
@@ -21,22 +21,22 @@ def generar_texto_con_gemini(keyword, long_tails):
     long_tails_str = json.dumps(long_tails, ensure_ascii=False)
     
     prompt = """
-    Actúa como un profesor experto de matemáticas y redactor SEO senior especializado en educación en Santo Domingo, Ecuador. Aplica el estilo directo, persuasivo y estructurado de Romuald Fons: párrafos cortos de lectura ágil, foco total en la intención de búsqueda, autoridad y resolución de dolores del usuario.
-    Escribe un artículo extremadamente completo, profundo y de gran extensión (mínimo 1000 palabras) sobre la keyword principal: "{keyword}".
-    Las subsecciones secundarias (long tails) que debes desarrollar obligatoriamente son:
+    Actúa como un profesor experto de matemáticas y redactor SEO senior especializado en educación en Santo Domingo, Ecuador. Aplica el estilo directo, incisivo y estructurado de Romuald Fons: párrafos cortos de lectura ultrarrápida, foco total en la intención de búsqueda, autoridad absoluta y resolución de los dolores críticos del estudiante.
+    Escribe un artículo extremadamente completo, profundo y de gran extensión (debe superar obligatoriamente las 1000 palabras de contenido de valor real) sobre la keyword principal: "{keyword}".
+    Las subsecciones secundarias (long tails) que debes desarrollar a profundidad son:
     {long_tails_json}
 
-    Requisitos estrictos de redacción:
-    1. "intro": Escribe 3 párrafos persuasivos abordando el dolor principal del estudiante en Santo Domingo (malas notas, frustración con las matemáticas y el riesgo de perder el año).
-    2. "por_que": Escribe 2 párrafos explicando por qué los métodos educativos tradicionales y las academias masivas fallan.
-    3. "long_tails_desarrollo": Para cada una de las subsecciones (long tails) listadas arriba, redacta un bloque con un título H3 optimizado, y TRES párrafos largos, técnicos y prácticos por cada sección.
+    Requisitos estrictos de redacción masiva:
+    1. "intro": Escribe 4 párrafos largos, persuasivos y detallados abordando el dolor principal del estudiante en Santo Domingo (reprobaciones, la frustración con las matemáticas y el riesgo inminente de perder el año o semestre).
+    2. "por_que": Escribe 3 párrafos extensos explicando por qué la educación tradicional y las academias masivas fallan estrepitosamente.
+    3. "long_tails_desarrollo": Para cada una de las subsecciones (long tails) listadas arriba, redacta un bloque completo con un título H3 optimizado, y CUATRO párrafos largos, técnicos, con ejemplos prácticos y explicaciones paso a paso por cada sección.
     4. Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de código markdown adicionales, con esta estructura exacta de llaves:
     {{
-      "intro": "Párrafo 1... Párrafo 2... Párrafo 3...",
-      "por_que": "Párrafo 1... Párrafo 2...",
+      "intro": "Párrafo 1... Párrafo 2... Párrafo 3... Párrafo 4...",
+      "por_que": "Párrafo 1... Párrafo 2... Párrafo 3...",
       "long_tails_desarrollo": [
-        {{"h3": "Título H3 optimizado 1", "p1": "párrafo 1 detallado...", "p2": "párrafo 2 detallado...", "p3": "párrafo 3 detallado..."}},
-        {{"h3": "Título H3 optimizado 2", "p1": "párrafo 1 detallado...", "p2": "párrafo 2 detallado...", "p3": "párrafo 3 detallado..."}}
+        {{"h3": "Título H3 optimizado 1", "p1": "párrafo 1...", "p2": "párrafo 2...", "p3": "párrafo 3...", "p4": "párrafo 4..."}},
+        {{"h3": "Título H3 optimizado 2", "p1": "párrafo 1...", "p2": "párrafo 2...", "p3": "párrafo 3...", "p4": "párrafo 4..."}}
       ]
     }}
     """.format(keyword=keyword, long_tails_json=long_tails_str)
@@ -84,7 +84,7 @@ if keywords_data:
     titulo = articulo_actual.get("titulo")
     slug = articulo_actual.get("slug", "articulo-matematicas-santo-domingo")
 
-    print(f"Procesando artículo SEO: {titulo}")
+    print(f"Procesando artículo SEO masivo: {titulo}")
 
     url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
     extracto_card = f"Guía experta y definitiva sobre {keyword_principal} en Santo Domingo con métodos de enseñanza personalizados para asegurar tus notas."
@@ -114,11 +114,11 @@ if keywords_data:
     contenido_ia = generar_texto_con_gemini(keyword_principal, long_tails)
     
     if not contenido_ia:
-        print("Usando contenido estructurado de respaldo...")
+        print("Usando contenido estructurado extendido de respaldo...")
         contenido_ia = {
-            "intro": f"Enfrentarse a materias complejas sin una guía adecuada en Santo Domingo suele terminar en reprobaciones y horas de desgaste innecesario frente a los libros. Dominar {keyword_principal} exige un cambio drástico de perspectiva, pasando de la memorización mecánica a la comprensión lógica y aplicada.",
-            "por_que": f"El sistema de enseñanza tradicional en colegios y academias masivas ignora por completo el ritmo de aprendizaje individual del estudiante, generando bloqueos mentales severos.",
-            "long_tails_desarrollo": [{"h3": f"Estrategias avanzadas para dominar {t}", "p1": f"Desglosamos cada concepto clave de {t} paso a paso.", "p2": "Implementamos ejercicios prácticos orientados a exámenes locales.", "p3": "Fomentamos la autonomía del estudiante."} for t in long_tails]
+            "intro": f"Enfrentarse a materias complejas sin una guía adecuada en Santo Domingo suele terminar en reprobaciones y horas de desgaste innecesario frente a los libros. Dominar {keyword_principal} exige un cambio drástico de perspectiva, pasando de la memorización mecánica a la comprensión lógica y aplicada. Nuestra experiencia demuestra que con un acompañamiento individualizado, los obstáculos académicos desaparecen rápidamente.",
+            "por_que": f"El sistema de enseñanza tradicional en colegios y academias masivas ignora por completo el ritmo de aprendizaje individual del estudiante. Pretenden que se retengan fórmulas abstractas sin entender de dónde provienen, generando bloqueos mentales severos frente a las evaluaciones reales.",
+            "long_tails_desarrollo": [{"h3": f"Estrategias avanzadas para dominar {t}", "p1": f"Desglosamos cada concepto clave de {t} paso a paso.", "p2": "Implementamos ejercicios prácticos orientados a exámenes locales.", "p3": "Fomentamos la autonomía del estudiante.", "p4": "Aseguramos resultados medibles a corto plazo."} for t in long_tails]
         }
 
     parrafos_long_tails = ""
@@ -127,6 +127,7 @@ if keywords_data:
         p1_text = item.get("p1", "")
         p2_text = item.get("p2", "")
         p3_text = item.get("p3", "")
+        p4_text = item.get("p4", "")
 
         enlace_externo = ""
         if i == 0:
@@ -136,7 +137,8 @@ if keywords_data:
         <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;">{h3_text}</h3>
         <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333; line-height: 1.8;">{p1_text}{enlace_externo}</p>
         <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333; line-height: 1.8;">{p2_text}</p>
-        <p style="font-size: 1.05rem; margin-bottom: 1.5rem; color: #444; line-height: 1.8;">{p3_text}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333; line-height: 1.8;">{p3_text}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1.5rem; color: #444; line-height: 1.8;">{p4_text}</p>
         """
 
     html_contenido = f"""<!DOCTYPE html>
@@ -283,4 +285,4 @@ if os.path.exists("index.html"):
 with open("keywords.json", "w", encoding="utf-8") as f:
     json.dump(keywords_data, f, ensure_ascii=False, indent=4)
 
-print("¡Proceso finalizado correctamente!")
+print("¡Proceso finalizado con éxito!")
