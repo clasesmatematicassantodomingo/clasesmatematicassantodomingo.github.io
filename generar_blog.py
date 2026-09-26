@@ -26,8 +26,8 @@ def generar_texto_con_gemini(keyword, long_tails, related_questions):
         
         # Usar el modelo estable y oficial actual
         model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            generation_config={"temperature": 0.7, "response_mime_type": "application/json"}
+            model_name="gemini-pro",
+            generation_config={"temperature": 0.7}
         )
         
         long_tails_str = json.dumps(long_tails, ensure_ascii=False)
