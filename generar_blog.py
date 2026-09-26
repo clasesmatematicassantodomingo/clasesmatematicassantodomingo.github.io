@@ -1,245 +1,288 @@
-[
-  {
-    "keyword_principal": "clases de supletorios de matemáticas en Santo Domingo",
-    "slug": "clases-de-supletorios-de-matematicas-en-santo-domingo",
-    "titulo": "¿Vas a dejar que un supletorio le arruine las vacaciones a tu hijo en Santo Domingo?",
-    "long_tails": [
-      "supletorios matemáticas",
-      "profesor particular santo domingo o supletorios matemáticas",
-      "clases de supletorios Ecuador"
-    ],
-    "related_questions": [
-      "¿Cómo preparar a mi hijo para los exámenes supletorios de matemáticas?",
-      "¿Dónde encontrar clases de supletorios de matemáticas en Santo Domingo?",
-      "¿Cuánto tiempo toma nivelar a un estudiante para un examen supletorio?"
+import json
+import os
+import csv
+from datetime import datetime
+import urllib.request
+import urllib.error
+
+DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
+NUMERO_WHATSAPP = "593993117800"
+csv_path = "urls_articulos.csv"
+api_key = os.environ.get("GEMINI_API_KEY")
+
+print("Iniciando generación masiva de artículos SEO (Estilo Romuald Fons Extendido)...")
+
+def generar_texto_con_gemini(keyword, long_tails):
+    if not api_key:
+        return None
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    
+    long_tails_str = json.dumps(long_tails, ensure_ascii=False)
+    
+    prompt = """
+    Actúa como un profesor experto de matemáticas y redactor SEO senior especializado en educación en Santo Domingo, Ecuador. Aplica el estilo directo, incisivo y estructurado de Romuald Fons: párrafos cortos de lectura ultrarrápida, foco total en la intención de búsqueda, autoridad absoluta y resolución de los dolores críticos del estudiante.
+    Escribe un artículo extremadamente completo, profundo y de gran extensión (debe superar obligatoriamente las 1000 palabras de contenido de valor real) sobre la keyword principal: "{keyword}".
+    Las subsecciones secundarias (long tails) que debes desarrollar a profundidad son:
+    {long_tails_json}
+
+    Requisitos estrictos de redacción masiva:
+    1. "intro": Escribe 4 párrafos largos, persuasivos y detallados abordando el dolor principal del estudiante en Santo Domingo (reprobaciones, la frustración con las matemáticas y el riesgo inminente de perder el año o semestre).
+    2. "por_que": Escribe 3 párrafos extensos explicando por qué la educación tradicional y las academias masivas fallan estrepitosamente.
+    3. "long_tails_desarrollo": Para cada una de las subsecciones (long tails) listadas arriba, redacta un bloque completo con un título H3 optimizado, y CUATRO párrafos largos, técnicos, con ejemplos prácticos y explicaciones paso a paso por cada sección.
+    4. Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de código markdown adicionales, con esta estructura exacta de llaves:
+    {{
+      "intro": "Párrafo 1... Párrafo 2... Párrafo 3... Párrafo 4...",
+      "por_que": "Párrafo 1... Párrafo 2... Párrafo 3...",
+      "long_tails_desarrollo": [
+        {{"h3": "Título H3 optimizado 1", "p1": "párrafo 1...", "p2": "párrafo 2...", "p3": "párrafo 3...", "p4": "párrafo 4..."}},
+        {{"h3": "Título H3 optimizado 2", "p1": "párrafo 1...", "p2": "párrafo 2...", "p3": "párrafo 3...", "p4": "párrafo 4..."}}
+      ]
+    }}
+    """.format(keyword=keyword, long_tails_json=long_tails_str)
+
+    data = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"response_mime_type": "application/json"}
+    }
+
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(data).encode("utf-8"),
+        headers={"Content-Type": "application/json"}
+    )
+
+    try:
+        with urllib.request.urlopen(req) as response:
+            res_json = json.loads(response.read().decode("utf-8"))
+            texto_generado = res_json["candidates"][0]["content"]["parts"][0]["text"]
+            
+            texto_limpio = texto_generado.strip()
+            if texto_limpio.startswith("```json"):
+                texto_limpio = texto_limpio[7:]
+            if texto_limpio.endswith("```"):
+                texto_limpio = texto_limpio[:-3]
+                
+            return json.loads(texto_limpio.strip())
+    except Exception as e:
+        print(f"Error al conectar con la API de Gemini: {e}")
+        return None
+
+# 1. Cargar la parrilla de keywords
+if not os.path.exists("keywords.json"):
+    print("Error crítico: El archivo keywords.json no existe.")
+    exit()
+
+with open("keywords.json", "r", encoding="utf-8") as f:
+    keywords_data = json.load(f)
+
+if keywords_data:
+    articulo_actual = keywords_data.pop(0)
+
+    keyword_principal = articulo_actual.get("keyword_principal")
+    long_tails = articulo_actual.get("long_tails", [])
+    titulo = articulo_actual.get("titulo")
+    slug = articulo_actual.get("slug", "articulo-matematicas-santo-domingo")
+
+    print(f"Procesando artículo SEO masivo: {titulo}")
+
+    url_articulo = f"{DOMINIO_BASE}blog/{slug}.html"
+    extracto_card = f"Guía experta y definitiva sobre {keyword_principal} en Santo Domingo con métodos de enseñanza personalizados para asegurar tus notas."
+
+    imagenes_banco = [
+        "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
     ]
-  },
-  {
-    "keyword_principal": "profesor particular de matemáticas",
-    "slug": "profesor-particular-de-matematicas",
-    "titulo": "Por qué el colegio de tu hijo está fracasando enseñando matemáticas (Y cómo lo arreglamos con un profesor particular)",
-    "long_tails": [
-      "profesor a domicilio matematicas",
-      "profesor particular matematicas",
-      "profesor particular mates",
-      "donde tomar clases de matematicas en santo domingo"
-    ],
-    "related_questions": [
-      "¿Cuáles son las ventajas de contratar un profesor particular de matemáticas?",
-      "¿Cómo elegir al mejor profesor particular para nivel escolar?",
-      "¿Qué tarifa cobra un profesor particular de matemáticas en Santo Domingo?"
-    ]
-  },
-  {
-    "keyword_principal": "clases particulares de matemáticas",
-    "slug": "clases-particulares-de-matematicas",
-    "titulo": "Clases particulares de matemáticas que sí funcionan: Adiós a las horas de aburrimiento con tutorías masivas",
-    "long_tails": [
-      "clases particulares de matemáticas a domicilio",
-      "clases privadas de matematicas",
-      "clases de matematicas cerca de mi",
-      "Clases particulares en Santo Domingo",
-      "clases particulares de matematicas en santo domingo ecuador"
-    ],
-    "related_questions": [
-      "¿Cuánto cobran por clases particulares de matemáticas?",
-      "¿Dónde encontrar clases particulares de matemáticas cerca de mí?",
-      "¿Qué incluyen las clases privadas de matemáticas?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de matemáticas online",
-    "slug": "clases-de-matematicas-online",
-    "titulo": "Clases online de matemáticas sin excusas: Aprende desde casa con un especialista real (Sin videos aburridos de YouTube)",
-    "long_tails": [
-      "clases virtuales de matematicas",
-      "clases en linea matematicas",
-      "clases de matematicas online gratis",
-      "Realiza clases de matemáticas online"
-    ],
-    "related_questions": [
-      "¿Dónde puedo encontrar clases de matemáticas online?",
-      "¿Cómo funcionan las tutorías de matemáticas a distancia?",
-      "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
-    ]
-  },
-  {
-    "keyword_principal": "profesores de matemáticas a domicilio",
-    "slug": "profesores-de-matematicas-a-domicilio",
-    "titulo": "El peligro de llevar a tu hijo a academias masivas: Por qué un profesor a domicilio en Santo Domingo marca la diferencia",
-    "long_tails": [
-      "maestros de matemáticas a domicilio",
-      "profesores de matematicas particulares",
-      "busco profesor de matematicas a domicilio"
-    ],
-    "related_questions": [
-      "¿Cómo contratar un profesor de matemáticas a domicilio en Santo Domingo?",
-      "¿Cuáles son los beneficios de las clases de matemáticas en casa?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de álgebra",
-    "slug": "clases-de-algebra",
-    "titulo": "Memorizar fórmulas de álgebra es de mediocres: Cómo entender las ecuaciones de verdad desde cero",
-    "long_tails": [
-      "clases de algebra desde cero",
-      "clases de algebra para principiantes",
-      "clase de álgebra",
-      "profesor de algebra"
-    ],
-    "related_questions": [
-      "¿Cómo aprender álgebra desde cero sin frustrarse?",
-      "¿Qué temas abarca una clase básica de álgebra?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de matemáticas y física",
-    "slug": "clases-de-matematicas-y-fisica",
-    "titulo": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
-    "long_tails": [
-      "profesor de matematicas y fisica",
-      "clases particulares matematicas y fisica",
-      "profesor fisica y matematicas"
-    ],
-    "related_questions": [
-      "¿Dónde buscar un profesor especializado en física y matemáticas?",
-      "¿Cómo superar las dificultades en las materias de ciencias exactas?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de geometría",
-    "slug": "clases-de-geometria",
-    "titulo": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
-    "long_tails": [
-      "clase de geometria",
-      "clases de geometria basica",
-      "clases de geometria desde cero",
-      "geometria clases"
-    ],
-    "related_questions": [
-      "¿Cómo entender los teoremas de geometría fácilmente?",
-      "¿Qué ejercicios prácticos ayudan a dominar la geometría básica?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de fracciones",
-    "slug": "clases-de-fracciones",
-    "titulo": "Si tu hijo todavía sufre con las fracciones en el colegio, este es el único método que necesita para dominarlas",
-    "long_tails": [
-      "clase de fracciones",
-      "clases de fracciones para primaria",
-      "clases de fracciones para secundaria"
-    ],
-    "related_questions": [
-      "¿Cómo explicar las fracciones de forma sencilla a los niños?",
-      "¿Por qué cuestan tanto las operaciones con fracciones en primaria?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de matemáticas para bachillerato",
-    "slug": "clases-de-matematicas-para-bachillerato",
-    "titulo": "Matemáticas de bachillerato para no iniciados: El plan de rescate intensivo para graduarte sin arrastrar materias",
-    "long_tails": [
-      "clases particulares matemáticas bachillerato",
-      "profesor matemáticas bachillerato",
-      "clases de mate para bachillerato"
-    ],
-    "related_questions": [
-      "¿Qué temas de matemáticas son los más difíciles en el bachillerato?",
-      "¿Cómo aprobar las matemáticas de secundaria con éxito?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de matemáticas universitarias",
-    "slug": "clases-de-matematicas-universitarias",
-    "titulo": "El salto mortal de la escuela a la universidad en matemáticas: Por qué el 80% de cachimbos reprueba el primer ciclo",
-    "long_tails": [
-      "clases matematicas universidad",
-      "clases de matematicas universitarias",
-      "clases de matematica basica universitaria"
-    ],
-    "related_questions": [
-      "¿Cómo prepararse para cálculo y matemáticas en la universidad?",
-      "¿Dónde encontrar apoyo para matemáticas de primer semestre universitario?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de matemáticas en Santo Domingo",
-    "slug": "clases-de-matematicas-en-santo-domingo",
-    "titulo": "Clases de Matemáticas en Santo Domingo: El Secreto que Nadie Te Dice para Dejar de Odiar los Números",
-    "long_tails": [
-      "Clases particulares y profesores particulares de matemáticas en Santo Domingo",
-      "Clases particulares para niños de primaria $5/h 1ª clase gratis"
-    ],
-    "related_questions": [
-      "¿Cuánto cuesta una hora de clases en Santo Domingo de los Tsáchilas?",
-      "¿Dónde imparten la primera clase gratis de matemáticas?"
-    ]
-  },
-  {
-    "keyword_principal": "profesor particular de matemáticas online",
-    "slug": "profesor-particular-de-matematicas-online",
-    "titulo": "El Mejor Profesor Particular de Matemáticas Online: Cómo Elegir al Indicado y No Tirar tu Dinero",
-    "long_tails": [
-      "Encuentra tu profe particular de matemáticas online álgebra cálculo trigonometría",
-      "1ra clase gratis profesor online"
-    ],
-    "related_questions": [
-      "¿Cómo evaluar la calidad de un profesor de matemáticas en línea?",
-      "¿Qué plataformas son mejores para tomar tutorías de cálculo y álgebra?"
-    ]
-  },
-  {
-    "keyword_principal": "clases presenciales en local",
-    "slug": "clases-presenciales-en-local",
-    "titulo": "Por Qué Estudiar Aquí Es la Solución Definitiva para tus Notas?",
-    "long_tails": [
-      "Clases en mi local",
-      "a domicilio o por Internet",
-      "Santo Domingo Ecuador"
-    ],
-    "related_questions": [
-      "¿Dónde está ubicado el local de clases particulares en Santo Domingo?",
-      "¿Es mejor estudiar en un centro de apoyo o recibir clases en casa?"
-    ]
-  },
-  {
-    "keyword_principal": "clases particulares para niños de primaria y secundaria",
-    "slug": "clases-particulares-para-ninos-de-primaria-y-secundaria",
-    "titulo": "Clases de primaria y secundaria en Santo Domingo de los Tsáchilas",
-    "long_tails": [
-      "Encuentra tu profesor ideal entre miles de profesores particulares de más de 350 materias",
-      "Clases particulares para niños de primaria y secundaria"
-    ],
-    "related_questions": [
-      "¿Qué materias cubren los centros de apoyo escolar en Santo Domingo?",
-      "¿Cómo ayudar a los niños con dificultades de aprendizaje escolar?"
-    ]
-  },
-  {
-    "keyword_principal": "ventajas de tener un profesor particular",
-    "slug": "ventajas-de-tener-un-profesor-particular",
-    "titulo": "Todo lo que debes saber sobre las clases de matemáticas y el rendimiento académico",
-    "long_tails": [
-      "beneficios de la tutoría individual",
-      "por qué contratar un tutor privado"
-    ],
-    "related_questions": [
-      "¿Cómo mejora las calificaciones un profesor particular?",
-      "¿A qué señales prestar atención para saber si mi hijo necesita un tutor?"
-    ]
-  },
-  {
-    "keyword_principal": "clases particulares en Ecuador",
-    "slug": "clases-particulares-en-ecuador",
-    "titulo": "Cuánto cuesta y cómo encontrar las mejores clases particulares en Ecuador",
-    "long_tails": [
-      "clases particulares de matemáticas a domicilio Ecuador",
-      "clases privadas de matematicas Ecuador"
-    ],
-    "related_questions": [
-      "¿Cuánto cuesta una hora de clases particulares en Ecuador?",
-      "¿Qué ciudades tienen mayor oferta de profesores particulares?"
-    ]
-  }
-]
+    imagen_url = imagenes_banco[len(slug) % len(imagenes_banco)]
+
+    # Cargar historial CSV para Interlinking
+    historial_posts = []
+    if os.path.exists(csv_path):
+        with open(csv_path, mode="r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 2 and row[1] != slug:
+                    historial_posts.append((row[0], f"../blog/{row[1]}.html"))
+
+    enlace_interno_html = ""
+    if historial_posts:
+        titulo_prev, url_prev = historial_posts[0]
+        enlace_interno_html = f'<p style="margin-top: 1.5rem; font-size: 1.05rem; line-height: 1.7;">Te invitamos a revisar también nuestra guía especializada sobre <a href="{url_prev}" style="color: #0b2545; font-weight: bold; text-decoration: underline;">{titulo_prev}</a> para dominar por completo tus evaluaciones académicas.</p>'
+
+    contenido_ia = generar_texto_con_gemini(keyword_principal, long_tails)
+    
+    if not contenido_ia:
+        print("Usando contenido estructurado extendido de respaldo...")
+        contenido_ia = {
+            "intro": f"Enfrentarse a materias complejas sin una guía adecuada en Santo Domingo suele terminar en reprobaciones y horas de desgaste innecesario frente a los libros. Dominar {keyword_principal} exige un cambio drástico de perspectiva, pasando de la memorización mecánica a la comprensión lógica y aplicada. Nuestra experiencia demuestra que con un acompañamiento individualizado, los obstáculos académicos desaparecen rápidamente.",
+            "por_que": f"El sistema de enseñanza tradicional en colegios y academias masivas ignora por completo el ritmo de aprendizaje individual del estudiante. Pretenden que se retengan fórmulas abstractas sin entender de dónde provienen, generando bloqueos mentales severos frente a las evaluaciones reales.",
+            "long_tails_desarrollo": [{"h3": f"Estrategias avanzadas para dominar {t}", "p1": f"Desglosamos cada concepto clave de {t} paso a paso.", "p2": "Implementamos ejercicios prácticos orientados a exámenes locales.", "p3": "Fomentamos la autonomía del estudiante.", "p4": "Aseguramos resultados medibles a corto plazo."} for t in long_tails]
+        }
+
+    parrafos_long_tails = ""
+    for i, item in enumerate(contenido_ia.get("long_tails_desarrollo", [])):
+        h3_text = item.get("h3")
+        p1_text = item.get("p1", "")
+        p2_text = item.get("p2", "")
+        p3_text = item.get("p3", "")
+        p4_text = item.get("p4", "")
+
+        enlace_externo = ""
+        if i == 0:
+            enlace_externo = ' Puedes complementar tus prácticas académicas con recursos en portales educativos de referencia como <a href="https://es.khanacademy.org" target="_blank" rel="noopener" style="color: #0b2545; text-decoration: underline;">Khan Academy</a>.'
+
+        parrafos_long_tails += f"""
+        <h3 style="color: #0b2545; margin-top: 2.5rem; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;">{h3_text}</h3>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333; line-height: 1.8;">{p1_text}{enlace_externo}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333; line-height: 1.8;">{p2_text}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1rem; color: #333; line-height: 1.8;">{p3_text}</p>
+        <p style="font-size: 1.05rem; margin-bottom: 1.5rem; color: #444; line-height: 1.8;">{p4_text}</p>
+        """
+
+    html_contenido = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{titulo}</title>
+    <meta name="description" content="{extracto_card}">
+    <link rel="canonical" href="{url_articulo}">
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.8; color: #222; background-color: #fdfdfd; margin: 0; padding: 0;">
+    <div style="max-width: 1000px; width: 90%; margin: 40px auto; background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1.5rem; margin-bottom: 2rem;">
+            <span style="color: #0b2545; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;">Excelencia Académica en Santo Domingo</span>
+            <h1 style="color: #0b2545; font-size: 2.4rem; margin-top: 0.5rem; line-height: 1.15; font-weight: 900; letter-spacing: -1px;">{titulo}</h1>
+        </header>
+        <main>
+            <div style="margin-bottom: 2.5rem;">
+                <img src="{imagen_url}" alt="{titulo}" style="width: 100%; height: 420px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+            </div>
+            <p style="font-size: 1.15rem; font-weight: 700; color: #111; line-height: 1.7; margin-bottom: 1.5rem;">{contenido_ia.get("intro")}</p>
+            
+            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">¿Por qué los métodos tradicionales ya no dan resultados?</h2>
+            <p style="font-size: 1.05rem; color: #333; line-height: 1.8; margin-bottom: 1rem;">{contenido_ia.get("por_que")}</p>
+            
+            {parrafos_long_tails}
+
+            <h2 style="color: #0b2545; margin-top: 3rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">La ruta crítica para asegurar tu aprobación definitiva</h2>
+            <p style="font-size: 1.05rem; color: #333; line-height: 1.8;">No pierdas más tiempo intentando descifrar libros complejos por tu cuenta. Conoce nuestros <a href="../index.html#planes" style="color: #0b2545; font-weight: bold; text-decoration: underline;">planes y tarifas de tutorías especializadas</a> diseñados para garantizar un progreso real en tus notas.</p>
+            
+            {enlace_interno_html}
+
+            <div style="background: #f8fafc; padding: 2.5rem; border-left: 6px solid #0b2545; margin: 3rem 0; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.04); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <p style="margin: 0; font-weight: 900; font-size: 1.3rem; color: #0b2545; max-width: 600px;">¿Vas a dejar que un mal promedio arruine tu futuro profesional?</p>
+                <p style="margin: 0.8rem 0 1.5rem 0; font-size: 1.1rem; color: #444; max-width: 600px;">Toma el control de tus calificaciones hoy mismo. Escríbenos directamente por WhatsApp y asegura un profesor particular enfocado en resultados rápidos en Santo Domingo.</p>
+                <a href="https://wa.me/{NUMERO_WHATSAPP}?text=Hola,%20necesito%20información%20sobre%20clases%20de%20matemáticas%20para%20asegurar%20mis%20calificaciones." target="_blank" style="background: #25d366; color: white; padding: 0.9rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 800; display: inline-block; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(37,211,102,0.3);">¡Quiero asegurar mis calificaciones ahora! →</a>
+            </div>
+        </main>
+        <footer style="margin-top: 4rem; border-top: 1px solid #eaeaea; padding-top: 1.5rem; text-align: center; color: #777; font-size: 0.9rem;">
+            <p>&copy; {datetime.now().year} Clases de Matemáticas Santo Domingo. Todos los derechos reservados.</p>
+            <p><a href="../index.html" style="color: #0b2545; text-decoration: none; font-weight: bold;">← Volver a la página principal</a></p>
+        </footer>
+    </div>
+</body>
+</html>
+"""
+
+    os.makedirs("blog", exist_ok=True)
+    ruta_archivo = os.path.join("blog", f"{slug}.html")
+    with open(ruta_archivo, "w", encoding="utf-8") as f:
+        f.write(html_contenido)
+    print(f"Artículo generado con éxito: {ruta_archivo}")
+
+    registros_csv = []
+    if os.path.exists(csv_path):
+        with open(csv_path, mode="r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 4:
+                    registros_csv.append(row)
+    
+    if not any(r[1] == slug for r in registros_csv):
+        registros_csv.append([titulo, slug, url_articulo, extracto_card])
+
+    with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Titulo", "Slug", "URL para Search Console", "Extracto"])
+        writer.writerows(registros_csv)
+    print("CSV actualizado correctamente.")
+
+datos_por_slug = {}
+if os.path.exists(csv_path):
+    with open(csv_path, mode="r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if len(row) >= 4:
+                datos_por_slug[row[1]] = {"titulo": row[0], "extracto": row[3]}
+
+urls_sitemap = [f"""    <url>
+        <loc>{DOMINIO_BASE}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>"""]
+
+tarjetas_html = []
+salto_linea = "\n"
+
+if os.path.exists("blog"):
+    for archivo_blog in sorted(os.listdir("blog"), reverse=True):
+        if archivo_blog.endswith(".html"):
+            slug_archivo = archivo_blog.replace(".html", "")
+            info_articulo = datos_por_slug.get(slug_archivo, {"titulo": "Artículo de Matemáticas", "extracto": "Artículo especializado en rendimiento académico."})
+            
+            titulo_card = info_articulo["titulo"]
+            extracto_card = info_articulo["extracto"]
+            url_dinamica = f"{DOMINIO_BASE}blog/{archivo_blog}"
+            
+            urls_sitemap.append(f"""    <url>
+        <loc>{url_dinamica}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>""")
+            
+            tarjeta = f"""
+            <div style="background: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #edf2f7;">
+                <div>
+                    <span style="font-size: 0.8rem; color: #0b2545; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">SEO & Matemáticas</span>
+                    <h3 style="font-size: 1.25rem; margin: 0.6rem 0; color: #111; font-weight: 700; line-height: 1.4;">{titulo_card}</h3>
+                    <p style="font-size: 0.95rem; color: #555; margin-bottom: 1.5rem; line-height: 1.5;">{extracto_card}</p>
+                </div>
+                <a href="blog/{archivo_blog}" target="_blank" style="color: #0b2545; font-weight: 800; text-decoration: none; font-size: 0.95rem; display: inline-flex; align-items: center;">Leer artículo completo →</a>
+            </div>
+            """
+            tarjetas_html.append(tarjeta)
+
+sitemap_contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{salto_linea.join(urls_sitemap)}
+</urlset>
+"""
+
+with open("sitemap.xml", "w", encoding="utf-8") as sm:
+    sm.write(sitemap_contenido)
+
+if os.path.exists("index.html"):
+    with open("index.html", "r", encoding="utf-8") as f:
+        index_content = f.read()
+    
+    start_marker = "<!-- BLOG_CARDS_START -->"
+    end_marker = "<!-- BLOG_CARDS_END -->"
+    
+    if start_marker in index_content and end_marker in index_content:
+        nuevo_bloque_blog = f"{start_marker}\n" + "".join(tarjetas_html) + f"\n{end_marker}"
+        partes = index_content.split(start_marker)
+        segunda_parte = partes[1].split(end_marker)[1]
+        index_actualizado = partes[0] + nuevo_bloque_blog + segunda_parte
+        
+        with open("index.html", "w", encoding="utf-8") as f:
+            f.write(index_actualizado)
+
+with open("keywords.json", "w", encoding="utf-8") as f:
+    json.dump(keywords_data, f, ensure_ascii=False, indent=4)
+
+print("¡Proceso finalizado con éxito!")
