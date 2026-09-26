@@ -66,7 +66,7 @@ Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de códig
 """
 
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.0-flash',
             contents=prompt,
         )
         return json.loads(response.text)
