@@ -24,6 +24,8 @@ jobs:
 
       - name: Ejecutar script generador de blog
         run: python generar_blog.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Subir artículos y JSON actualizados automáticamente
         uses: stefanzweifel/git-auto-commit-action@v4
