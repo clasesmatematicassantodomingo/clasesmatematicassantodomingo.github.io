@@ -12,11 +12,12 @@ BLOG_DIR = "blog/"
 YOUTUBE_CANAL = "https://www.youtube.com/channel/UCanMxWvOoiwtjLYm08Bo8QQ"
 KHAN_ACADEMY = "https://es.khanacademy.org/"
 
-print("Iniciando generación masiva de artículos SEO avanzados (Estilo Romuald Fons Dinámico Pro)...")
+print("Iniciando generación masiva de artículos SEO avanzados (Antiduplicados Pro)...")
 
 def obtener_historial_articulos():
-    """Lee el CSV para extraer artículos previos y realizar interlinking dinámico."""
+    """Lee el CSV para extraer artículos previos y evitar duplicados exactos."""
     articulos_previos = []
+    keywords_publicadas = set()
     if os.path.exists(CSV_PATH):
         with open(CSV_PATH, mode="r", encoding="utf-8") as f:
             reader = csv.reader(f)
@@ -24,7 +25,8 @@ def obtener_historial_articulos():
             for row in reader:
                 if len(row) >= 3:
                     articulos_previos.append({"fecha": row[0], "keyword": row[1], "url": row[2]})
-    return articulos_previos
+                    keywords_publicadas.add(row[1].strip().lower())
+    return articulos_previos, keywords_publicadas
 
 def generar_texto_con_gemini(keyword, long_tails, related_questions):
     raw_key = os.getenv("GEMINI_API_KEY")
@@ -35,14 +37,13 @@ def generar_texto_con_gemini(keyword, long_tails, related_questions):
     api_key = raw_key.strip()
     
     try:
-        # Inicializar el cliente oficial moderno de Google GenAI
         client = genai.Client(api_key=api_key)
         
         long_tails_str = json.dumps(long_tails, ensure_ascii=False)
         related_str = json.dumps(related_questions, ensure_ascii=False)
 
         prompt = f"""
-Actúa como un profesor experto de matemáticas, fundador de academias de alto rendimiento y redactor SEO senior especializado en educación y rendimiento académico en Santo Domingo, Ecuador. Aplica el estilo directo, incisivo, apasionado y sin rodeos de Romuald Fons (SEO de guerrilla, directo al dolor del estudiante, enfoque en la acción y experiencia real).
+Actúa como un profesor experto de matemáticas, fundador de academias de alto rendimiento y redactor SEO senior especializado en rendimiento académico en Santo Domingo, Ecuador. Aplica el estilo directo, incisivo, apasionado y sin rodeos de Romuald Fons (SEO de guerrilla, directo al dolor del estudiante, enfoque en la acción y experiencia real).
 
 Escribe un artículo extremadamente completo, profundo y de gran extensión (debe superar obligatoriamente las 1200 palabras de contenido de valor real, mezclando experiencia y datos estadísticos de impacto) centrado en la keyword principal: "{keyword}". 
 Las keywords y long tails deben integrarse con fuerza y aparecer formateadas para destacar.
@@ -93,19 +94,15 @@ Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de códig
         
         try:
             raw_text = response.text.strip()
-            
             if raw_text.startswith("```json"):
                 raw_text = raw_text[7:]
             elif raw_text.startswith("```"):
                 raw_text = raw_text[3:]
-            
             if raw_text.endswith("```"):
                 raw_text = raw_text[:-3]
-                
             return json.loads(raw_text.strip())
-        except json.JSONDecodeError as e:
+        except json.JSONDecodeError:
             print(f"❌ Error: La API no devolvió un JSON válido.")
-            print(f"Respuesta cruda recibida: {response.text[:300]}...")
             return None
         
     except Exception as e:
@@ -124,16 +121,31 @@ def main():
         print("El archivo keywords.json está vacío.")
         return
 
-    item_actual = keywords_data[0]
+    historial, keywords_publicadas = obtener_historial_articulos()
+
+    # BUSCAR LA PRIMERA KEYWORD QUE NO HAYA SIDO PUBLICADA AÚN
+    item_actual = None
+    indice_a_remover = -1
+
+    for idx, item in enumerate(keywords_data):
+        kw = item.get("keyword_principal", "").strip().lower()
+        if kw not in keywords_publicadas:
+            item_actual = item
+            indice_a_remover = idx
+            break
+
+    if not item_actual:
+        print("⚠️ Todas las keywords de keywords.json ya han sido publicadas. Rotando de forma cíclica normal.")
+        item_actual = keywords_data[0]
+        indice_a_remover = 0
+
     keyword = item_actual.get("keyword_principal")
     slug = item_actual.get("slug")
     titulo = item_actual.get("titulo")
     long_tails = item_actual.get("long_tails", [])
     related_questions = item_actual.get("related_questions", [])
 
-    historial = obtener_historial_articulos()
     num_articulo = len(historial) + 1
-
     print(f"Procesando artículo #{num_articulo}: {keyword} (Slug: {slug})")
 
     datos_articulo = generar_texto_con_gemini(keyword, long_tails, related_questions)
@@ -141,7 +153,6 @@ def main():
         print("No se pudo generar el contenido del artículo.")
         return
 
-    # Definición inteligente de enlaces
     url_planes = f"{DOMINIO_BASE}#planes"
     url_landing = DOMINIO_BASE
     url_externo = KHAN_ACADEMY
@@ -162,7 +173,6 @@ def main():
     <meta name="description" content="Aprende y domina {keyword} en Santo Domingo con clases particulares y refuerzo escolar especializado. Resultados garantizados.">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Regla estricta: Keywords y longtails en color negro y negrita */
         .keyword-negrita {{ color: #000000; font-weight: 700; }}
     </style>
 </head>
@@ -178,7 +188,6 @@ def main():
         <article class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200">
             <h1 class="text-3xl md:text-5xl font-extrabold text-indigo-950 mb-6 leading-tight">{titulo}</h1>
             
-            <!-- Menú superior / Índice dinámico para SEO y experiencia de usuario -->
             <nav class="bg-slate-100 p-6 rounded-xl mb-8 border border-slate-200">
                 <h2 class="text-lg font-bold text-slate-900 mb-3">Índice del Artículo</h2>
                 <ul class="list-disc list-inside space-y-2 text-indigo-950 font-medium">
@@ -221,7 +230,6 @@ def main():
                 </section>
 """
 
-    # Bloque de ejercicios prácticos y enlace a YouTube
     ejercicio = datos_articulo.get("ejercicios_practicos", {})
     html_content += f"""
             </section>
@@ -248,12 +256,10 @@ def main():
                     </div>
 """
 
-    # Enlaces internos y estructurados requeridos
     html_content += f"""
                 </div>
             </section>
 
-            <!-- Recursos y Enlaces del Proyecto -->
             <section class="bg-slate-100 p-6 rounded-xl border border-slate-300 mb-10">
                 <h3 class="text-xl font-bold text-indigo-950 mb-3">Enlaces de Interés y Siguientes Pasos</h3>
                 <ul class="list-disc list-inside space-y-2 text-slate-700">
@@ -284,14 +290,15 @@ def main():
 
     with open(ruta_archivo, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"¡Artículo generado con éxito y estructura avanzada: {ruta_archivo}!")
+    print(f"¡Artículo generado con éxito: {ruta_archivo}!")
 
-    keyword_usada = keywords_data.pop(0)
+    # Rotar la parrilla de forma limpia
+    keyword_usada = keywords_data.pop(indice_a_remover)
     keywords_data.append(keyword_usada)
 
     with open(KEYWORDS_FILE, "w", encoding="utf-8") as f:
         json.dump(keywords_data, f, ensure_ascii=False, indent=2)
-    print("Parrilla de keywords actualizada y rotada correctamente.")
+    print("Parrilla de keywords actualizada y rotada correctamente sin duplicados.")
 
     file_exists = os.path.exists(CSV_PATH)
     with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as csv_file:
