@@ -2,8 +2,7 @@ import json
 import os
 import csv
 from datetime import datetime
-import urllib.request
-import urllib.error
+import google.generativeai as genai
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 NUMERO_WHATSAPP = "593993117800"
@@ -20,12 +19,21 @@ def generar_texto_con_gemini(keyword, long_tails, related_questions):
         return None
     
     api_key = raw_key.strip()
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
     
-    long_tails_str = json.dumps(long_tails, ensure_ascii=False)
-    related_str = json.dumps(related_questions, ensure_ascii=False)
+    try:
+        # Configurar la librería oficial de Google
+        genai.configure(api_key=api_key)
+        
+        # Usar el modelo estable y oficial actual
+        model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            generation_config={"temperature": 0.7, "response_mime_type": "application/json"}
+        )
+        
+        long_tails_str = json.dumps(long_tails, ensure_ascii=False)
+        related_str = json.dumps(related_questions, ensure_ascii=False)
 
-    prompt = f"""
+        prompt = f"""
 Actúa como un profesor experto de matemáticas y redactor SEO senior especializado en educación y rendimiento académico en Santo Domingo, Ecuador. Aplica el estilo directo, incisivo, persuasivo y estructurado de Romuald Fons (SEO de guerrilla, sin paja, directo al dolor del usuario).
 
 Escribe un artículo extremadamente completo, profundo y de gran extensión (debe superar obligatoriamente las 1000 palabras de contenido de valor real) centrado en la keyword principal: "{keyword}".
@@ -63,27 +71,9 @@ Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de códig
 }}
 """
 
-    payload = {
-        "contents": [{
-            "parts": [{"text": prompt}]
-        }],
-        "generationConfig": {
-            "temperature": 0.7,
-            "responseMimeType": "application/json"
-        }
-    }
-
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode('utf-8'),
-        headers={'Content-Type': 'application/json'}
-    )
-
-    try:
-        with urllib.request.urlopen(req) as response:
-            res_json = json.loads(response.read().decode('utf-8'))
-            texto_generado = res_json['candidates'][0]['content']['parts'][0]['text']
-            return json.loads(texto_generado)
+        response = model.generate_content(prompt)
+        return json.loads(response.text)
+        
     except Exception as e:
         print(f"Error al conectar con la API de Gemini: {e}")
         return None
