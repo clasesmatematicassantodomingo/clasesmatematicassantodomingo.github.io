@@ -14,11 +14,12 @@ BLOG_DIR = "blog/"
 print("Iniciando generación masiva de artículos SEO avanzados (Estilo Romuald Fons Dinámico)...")
 
 def generar_texto_con_gemini(keyword, long_tails, related_questions):
-    API_KEY = os.getenv("GEMINI_API_KEY").strip()
-    if not api_key:
+    raw_key = os.getenv("GEMINI_API_KEY")
+    if not raw_key:
         print("Error: No se encontró la variable de entorno GEMINI_API_KEY.")
         return None
-
+    
+    api_key = raw_key.strip()
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     
     long_tails_str = json.dumps(long_tails, ensure_ascii=False)
@@ -99,7 +100,6 @@ def main():
         print("El archivo keywords.json está vacío.")
         return
 
-    # Tomar la primera keyword disponible
     item_actual = keywords_data[0]
     keyword = item_actual.get("keyword_principal")
     slug = item_actual.get("slug")
@@ -109,7 +109,6 @@ def main():
 
     print(f"Procesando keyword: {keyword} (Slug: {slug})")
 
-    # Generar contenido inteligente y masivo con la API
     datos_articulo = generar_texto_con_gemini(keyword, long_tails, related_questions)
     if not datos_articulo:
         print("No se pudo generar el contenido del artículo.")
@@ -118,7 +117,6 @@ def main():
     os.makedirs(BLOG_DIR, exist_ok=True)
     ruta_archivo = os.path.join(BLOG_DIR, f"{slug}.html")
 
-    # Construcción de la plantilla HTML avanzada y maquetada profesionalmente
     html_content = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -211,7 +209,6 @@ def main():
         f.write(html_content)
     print(f"¡Artículo generado con éxito: {ruta_archivo}!")
 
-    # Rotar la keyword utilizada al final de la lista en el JSON
     keyword_usada = keywords_data.pop(0)
     keywords_data.append(keyword_usada)
 
@@ -219,7 +216,6 @@ def main():
         json.dump(keywords_data, f, ensure_ascii=False, indent=2)
     print("Parrilla de keywords actualizada y rotada correctamente.")
 
-    # Actualizar o registrar en el CSV de control
     file_exists = os.path.exists(CSV_PATH)
     with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file)
