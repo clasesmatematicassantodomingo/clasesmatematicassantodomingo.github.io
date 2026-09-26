@@ -65,11 +65,29 @@ Devuelve la respuesta EXCLUSIVAMENTE en formato JSON puro, sin bloques de códig
 }}
 """
 
-        response = client.chat.send_message(
+                response = client.models.generate_content(
             model='gemini-1.5-pro',
             contents=prompt,
         )
-        return json.loads(response.text)
+        
+        try:
+            # La nueva SDK de google-genai usa response.text directamente
+            raw_text = response.text.strip()
+            
+            # Limpieza robusta por si Gemini añade bloques de markdown
+            if raw_text.startswith("```json"):
+                raw_text = raw_text[7:]
+            elif raw_text.startswith("```"):
+                raw_text = raw_text[3:]
+            
+            if raw_text.endswith("```"):
+                raw_text = raw_text[:-3]
+                
+            return json.loads(raw_text.strip())
+        except json.JSONDecodeError as e:
+            print(f"❌ Error: La API no devolvió un JSON válido.")
+            print(f"Respuesta cruda recibida: {response.text[:300]}...")
+            return None
         
     except Exception as e:
         print(f"Error al conectar con la API de Gemini: {e}")
