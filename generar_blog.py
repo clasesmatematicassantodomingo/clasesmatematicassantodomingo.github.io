@@ -14,7 +14,7 @@ BLOG_DIR = "blog/"
 print("Iniciando generación masiva de artículos SEO avanzados (Estilo Romuald Fons Dinámico)...")
 
 def generar_texto_con_gemini(keyword, long_tails, related_questions):
-    api_key = os.environ.get("GEMINI_API_KEY")
+    API_KEY = os.getenv("GEMINI_API_KEY").strip()
     if not api_key:
         print("Error: No se encontró la variable de entorno GEMINI_API_KEY.")
         return None
