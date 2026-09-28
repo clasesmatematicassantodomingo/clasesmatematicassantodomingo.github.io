@@ -13,7 +13,7 @@ BLOG_DIR = "blog/"
 YOUTUBE_CANAL = "https://www.youtube.com/channel/UCanMxWvOoiwtjLYm08Bo8QQ"
 KHAN_ACADEMY = "https://es.khanacademy.org/"
 
-print("Iniciando generación masiva de artículos SEO avanzados (Con reintentos automáticos)...")
+print("Iniciando generación masiva de artículos SEO avanzados (Reintentos robustos Pro)...")
 
 def obtener_historial_articulos():
     articulos_previos = []
@@ -28,7 +28,7 @@ def obtener_historial_articulos():
                     keywords_publicadas.add(row[1].strip().lower())
     return articulos_previos, keywords_publicadas
 
-def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=3):
+def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=4):
     raw_key = os.getenv("GEMINI_API_KEY")
     if not raw_key:
         print("Error: No se encontró la variable de entorno GEMINI_API_KEY.")
@@ -100,13 +100,14 @@ Devuelve EXCLUSIVAMENTE en formato JSON puro (sin ```json):
                 raw_text = raw_text[:-3]
             return json.loads(raw_text.strip())
         except Exception as e:
-            print(f"⚠️ Advertencia en intento {intento}: {e}")
+            print(f"⚠️ Advertencia en intento {intento} (Servidores ocupados / 503): {e}")
             if intento < max_intentos:
-                tiempo_espera = 10 * intento
-                print(f"Esperando {tiempo_espera} segundos antes de reintentar...")
+                # Aumentamos el tiempo de espera progresivo (15s, 30s, 45s) para dar tiempo a que pase el pico de tráfico
+                tiempo_espera = 15 * intento
+                print(f"Esperando {tiempo_espera} segundos antes de reintentar para asegurar la conexión...")
                 time.sleep(tiempo_espera)
             else:
-                print("❌ Se agotaron todos los reintentos con la API de Gemini.")
+                print("❌ Se agotaron todos los reintentos debido a la alta demanda global temporal de la API.")
                 return None
 
 def main():
@@ -147,7 +148,7 @@ def main():
 
     datos_articulo = generar_texto_con_gemini(keyword, long_tails, related_questions)
     if not datos_articulo:
-        print("No se pudo generar el contenido debido a saturación de la API.")
+        print("No se pudo generar el contenido debido a saturación temporal de la API.")
         return
 
     url_planes = f"{DOMINIO_BASE}#planes"
