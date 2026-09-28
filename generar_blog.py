@@ -28,7 +28,7 @@ def obtener_historial_articulos():
                     keywords_publicadas.add(row[1].strip().lower())
     return articulos_previos, keywords_publicadas
 
-def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=4):
+def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=5):
     raw_key = os.getenv("GEMINI_API_KEY")
     if not raw_key:
         print("Error: No se encontró la variable de entorno GEMINI_API_KEY.")
@@ -84,31 +84,55 @@ Devuelve EXCLUSIVAMENTE en formato JSON puro (sin ```json):
 }}
 """
 
-    for intento in range(1, max_intentos + 1):
-        try:
-            print(f"Intentando conectar con Gemini (Intento {intento}/{max_intentos})...")
-            response = client.models.generate_content(
-                model='gemini-3.8-flash',
-                contents=prompt,
-            )
-            raw_text = response.text.strip()
-            if raw_text.startswith("```json"):
-                raw_text = raw_text[7:]
-            elif raw_text.startswith("```"):
-                raw_text = raw_text[3:]
-            if raw_text.endswith("```"):
-                raw_text = raw_text[:-3]
-            return json.loads(raw_text.strip())
-        except Exception as e:
-            print(f"⚠️ Advertencia en intento {intento} (Servidores ocupados / 503): {e}")
-            if intento < max_intentos:
-                # Aumentamos el tiempo de espera progresivo (15s, 30s, 45s) para dar tiempo a que pase el pico de tráfico
-                tiempo_espera = 15 * intento
-                print(f"Esperando {tiempo_espera} segundos antes de reintentar para asegurar la conexión...")
-                time.sleep(tiempo_espera)
-            else:
-                print("❌ Se agotaron todos los reintentos debido a la alta demanda global temporal de la API.")
+    # Modelos vigentes para tu cuenta (Generación 3.8)
+    modelos = ['gemini-3.8-flash', 'gemini-3.8-pro']
+    tiempo_espera_base = 60  # Esperar 60 segundos (1 minuto) en el primer intento
+
+    for modelo_actual in modelos:
+        print(f"🔄 Usando modelo: {modelo_actual}")
+        
+        for intento in range(1, max_intentos + 1):
+            try:
+                print(f"Intentando conectar con Gemini (Intento {intento}/{max_intentos})...")
+                response = client.models.generate_content(
+                    model=modelo_actual,
+                    contents=prompt,
+                )
+                
+                raw_text = response.text.strip()
+                if raw_text.startswith("```json"):
+                    raw_text = raw_text[7:]
+                elif raw_text.startswith("```"):
+                    raw_text = raw_text[3:]
+                if raw_text.endswith("```"):
+                    raw_text = raw_text[:-3]
+                
+                return json.loads(raw_text.strip())
+                
+            except json.JSONDecodeError as e:
+                print(f"❌ Error: La API no devolvió un JSON válido con {modelo_actual}.")
+                print(f"Respuesta cruda: {response.text[:300]}...")
                 return None
+                
+            except Exception as e:
+                error_msg = str(e)
+                # Si es error 503 (Saturado) o 429 (Límite de tasa), esperamos más tiempo
+                if '503' in error_msg or 'UNAVAILABLE' in error_msg or '429' in error_msg:
+                    # Aumentamos el tiempo de espera progresivamente: 60s, 90s, 120s, 150s, 180s
+                    tiempo_espera = tiempo_espera_base + (intento * 30)
+                    print(f"⚠️ Servidor saturado ({error_msg.split(',')[0]}). Esperando {tiempo_espera} segundos antes de reintentar...")
+                    time.sleep(tiempo_espera)
+                elif '404' in error_msg or 'NOT_FOUND' in error_msg:
+                    print(f"❌ Modelo {modelo_actual} no disponible (404). Pasando al siguiente modelo...")
+                    break  # Rompe el bucle de reintentos y pasa al siguiente modelo en la lista
+                else:
+                    print(f"❌ Error con {modelo_actual}: {e}")
+                    break  # Rompe el bucle de reintentos para probar el siguiente modelo
+        
+        print(f"⚠️ Modelo {modelo_actual} agotó reintentos o falló. Probando siguiente modelo...")
+    
+    print("❌ Todos los modelos disponibles fallaron o están saturados.")
+    return None
 
 def main():
     if not os.path.exists(KEYWORDS_FILE):
