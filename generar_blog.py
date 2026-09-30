@@ -93,12 +93,12 @@ REGLAS DE ESTILO ROMUALD FONS:
 }}
 """
 
-        # Modelos ACTUALES de Groq (septiembre 2026)
+            # Modelos ACTUALES de Groq - formato legacy estable
     modelos = [
-        'llama-3.3-70b-versatile',   # El más potente y actual
-        'llama-3.3-70b-specdec',     # Más rápido con especulación decodificada
-        'gemma2-9b-it',              # De Google, muy eficiente
-        'deepseek-r1-distill-llama-70b'  # Excelente para razonamiento
+        'llama3-70b-8192',           # Legacy estable
+        'llama3-8b-8192',            # Legacy ligero
+        'meta-llama/llama-4-maverick',  # Formato nuevo con slash
+        'meta-llama/llama-4-scout'       # Formato nuevo con slash
     ]
 
     for modelo_actual in modelos:
