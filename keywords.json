@@ -16,22 +16,6 @@
     ]
   },
   {
-    "keyword_principal": "clases de matemáticas online",
-    "slug": "clases-de-matematicas-online",
-    "titulo": "Clases online de matemáticas sin excusas: Aprende desde casa con un especialista real (Sin videos aburridos de YouTube)",
-    "long_tails": [
-      "clases virtuales de matematicas",
-      "clases en linea matematicas",
-      "clases de matematicas online gratis",
-      "Realiza clases de matemáticas online"
-    ],
-    "related_questions": [
-      "¿Dónde puedo encontrar clases de matemáticas online?",
-      "¿Cómo funcionan las tutorías de matemáticas a distancia?",
-      "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
-    ]
-  },
-  {
     "keyword_principal": "profesores de matemáticas a domicilio",
     "slug": "profesores-de-matematicas-a-domicilio",
     "titulo": "El peligro de llevar a tu hijo a academias masivas: Por qué un profesor a domicilio en Santo Domingo marca la diferencia",
@@ -225,6 +209,22 @@
       "¿Cuánto cobran por clases particulares de matemáticas?",
       "¿Dónde encontrar clases particulares de matemáticas cerca de mí?",
       "¿Qué incluyen las clases privadas de matemáticas?"
+    ]
+  },
+  {
+    "keyword_principal": "clases de matemáticas online",
+    "slug": "clases-de-matematicas-online",
+    "titulo": "Clases online de matemáticas sin excusas: Aprende desde casa con un especialista real (Sin videos aburridos de YouTube)",
+    "long_tails": [
+      "clases virtuales de matematicas",
+      "clases en linea matematicas",
+      "clases de matematicas online gratis",
+      "Realiza clases de matemáticas online"
+    ],
+    "related_questions": [
+      "¿Dónde puedo encontrar clases de matemáticas online?",
+      "¿Cómo funcionan las tutorías de matemáticas a distancia?",
+      "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
     ]
   }
 ]
