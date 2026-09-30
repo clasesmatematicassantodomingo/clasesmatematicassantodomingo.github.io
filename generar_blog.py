@@ -93,12 +93,12 @@ REGLAS DE ESTILO ROMUALD FONS:
 }}
 """
 
-            # Modelos ACTUALES de Groq - formato legacy estable
-    modelos = [
-        'llama3-70b-8192',           # Legacy estable
-        'llama3-8b-8192',            # Legacy ligero
-        'meta-llama/llama-4-maverick',  # Formato nuevo con slash
-        'meta-llama/llama-4-scout'       # Formato nuevo con slash
+    # Modelo principal de Gemini (confirmado que funciona)
+    modelos = ['gemini-3.8-flash']
+    
+    # Solo 3 reintentos rápidos (no 5 largos)
+    max_intentos = 3
+    tiempos_espera = [30, 60, 90]  # Total máximo: ~3 minutos
     ]
 
     for modelo_actual in modelos:
