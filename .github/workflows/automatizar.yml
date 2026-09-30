@@ -3,7 +3,8 @@ name: Automatizar Blog SEO Cada 3 Dias
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 */3 * *'
+    # Ejecutar a las 08:00 UTC (03:00 AM Ecuador) - hora de mínima saturación global
+    - cron: '0 8 */3 * *'
 
 jobs:
   construir-blog:
@@ -19,8 +20,8 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Instalar librería oficial moderna de Google GenAI
-        run: pip install google-genai
+      - name: Instalar librería OpenAI (compatible con Groq)
+        run: pip install openai
 
       - name: Actualizar y reorganizar keywords (Detectar borrados)
         run: python actualizar_keywords.py
@@ -28,7 +29,7 @@ jobs:
       - name: Ejecutar script generador de blog
         run: python generar_blog.py
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
 
       - name: Subir artículos y JSON actualizados automáticamente
         uses: stefanzweifel/git-auto-commit-action@v4
