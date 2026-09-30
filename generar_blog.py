@@ -2,7 +2,7 @@ import json
 import os
 import csv
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from google import genai
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
@@ -10,10 +10,11 @@ NUMERO_WHATSAPP = "593993117800"
 CSV_PATH = "url_articulos.csv"
 KEYWORDS_FILE = "keywords.json"
 BLOG_DIR = "blog/"
+ESTADO_FILE = "estado_generacion.json"
 YOUTUBE_CANAL = "https://www.youtube.com/channel/UCanMxWvOoiwtjLYm08Bo8QQ"
 KHAN_ACADEMY = "https://es.khanacademy.org/"
 
-print("Iniciando generación masiva de artículos SEO avanzados (Gemini 3.8 Flash - Reintentos Pacientes)...")
+print("Iniciando generación masiva de artículos SEO (Sistema de Reintentos Distribuidos)...")
 
 def obtener_historial_articulos():
     articulos_previos = []
@@ -27,6 +28,26 @@ def obtener_historial_articulos():
                     articulos_previos.append({"fecha": row[0], "keyword": row[1], "url": row[2]})
                     keywords_publicadas.add(row[1].strip().lower())
     return articulos_previos, keywords_publicadas
+
+def cargar_estado():
+    if os.path.exists(ESTADO_FILE):
+        with open(ESTADO_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {
+        "keyword_pendiente": None,
+        "intentos_fallidos": 0,
+        "ultimo_exito": None,
+        "dias_desde_exito": 0,
+        "keyword_actual": None,
+        "slug_actual": None,
+        "titulo_actual": None,
+        "long_tails_actual": [],
+        "related_questions_actual": []
+    }
+
+def guardar_estado(estado):
+    with open(ESTADO_FILE, "w", encoding="utf-8") as f:
+        json.dump(estado, f, ensure_ascii=False, indent=2)
 
 def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=5):
     raw_key = os.getenv("GEMINI_API_KEY")
@@ -88,10 +109,7 @@ REGLAS DE ESTILO ROMUALD FONS:
 }}
 """
 
-    # ÚNICO modelo confirmado que funciona
     modelo_actual = 'gemini-3.8-flash'
-    
-    # Reintentos pacientes: 60s, 120s, 180s, 240s, 300s (máximo 15 minutos de espera total)
     tiempos_espera = [60, 120, 180, 240, 300]
 
     print(f"🔄 Usando modelo: {modelo_actual}")
@@ -131,7 +149,7 @@ REGLAS DE ESTILO ROMUALD FONS:
                 print(f"❌ Error inesperado: {e}")
                 return None
     
-    print(f"❌ Todos los {max_intentos} intentos fallaron. La keyword se mantendrá para el próximo ciclo.")
+    print(f"❌ Todos los {max_intentos} intentos fallaron.")
     return None
 
 def main():
@@ -146,8 +164,95 @@ def main():
         print("El archivo keywords.json está vacío.")
         return
 
+    estado = cargar_estado()
     historial, keywords_publicadas = obtener_historial_articulos()
 
+    # Calcular días desde el último éxito
+    if estado.get("ultimo_exito"):
+        fecha_ultimo_exito = datetime.fromisoformat(estado["ultimo_exito"])
+        dias_desde_exito = (datetime.now() - fecha_ultimo_exito).days
+        estado["dias_desde_exito"] = dias_desde_exito
+    else:
+        dias_desde_exito = 999  # Si nunca ha habido éxito, forzar generación
+
+    # CASO 1: Hubo éxito hace menos de 3 días → NO hacer nada
+    if dias_desde_exito < 3:
+        print(f"✅ Último éxito hace {dias_desde_exito} día(s). Esperando {3 - dias_desde_exito} día(s) más.")
+        guardar_estado(estado)
+        return
+
+    # CASO 2: Hay keyword pendiente de reintentar
+    if estado.get("keyword_pendiente") and estado.get("intentos_fallidos", 0) < 3:
+        print(f"🔄 Reintentando keyword pendiente: {estado['keyword_pendiente']} (Intento {estado['intentos_fallidos'] + 1}/3)")
+        
+        keyword = estado["keyword_pendiente"]
+        slug = estado["slug_actual"]
+        titulo = estado["titulo_actual"]
+        long_tails = estado["long_tails_actual"]
+        related_questions = estado["related_questions_actual"]
+        
+        datos_articulo = generar_texto_con_gemini(keyword, long_tails, related_questions)
+        
+        if datos_articulo:
+            # ÉXITO en reintento
+            print(f"✅ Artículo generado en reintento: {slug}")
+            estado["keyword_pendiente"] = None
+            estado["intentos_fallidos"] = 0
+            estado["ultimo_exito"] = datetime.now().isoformat()
+            estado["dias_desde_exito"] = 0
+            
+            # Rotar keyword
+            for idx, item in enumerate(keywords_data):
+                if item.get("keyword_principal", "").strip().lower() == keyword.strip().lower():
+                    keyword_usada = keywords_data.pop(idx)
+                    keywords_data.append(keyword_usada)
+                    break
+            
+            with open(KEYWORDS_FILE, "w", encoding="utf-8") as f:
+                json.dump(keywords_data, f, ensure_ascii=False, indent=2)
+            
+            # Generar HTML (código completo abajo)
+            generar_html(titulo, slug, keyword, datos_articulo, historial)
+            
+            # Registrar en CSV
+            file_exists = os.path.exists(CSV_PATH)
+            with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as csv_file:
+                writer = csv.writer(csv_file)
+                if not file_exists:
+                    writer.writerow(["Fecha", "Keyword", "URL"])
+                writer.writerow([datetime.now().strftime("%Y-%m-%d %H:%M"), keyword, f"{DOMINIO_BASE}blog/{slug}.html"])
+            
+            guardar_estado(estado)
+            print("✅ Proceso completado exitosamente.")
+            return
+        else:
+            # Fallo en reintento
+            estado["intentos_fallidos"] += 1
+            print(f"⚠️ Reintento {estado['intentos_fallidos']}/3 fallido.")
+            
+            if estado["intentos_fallidos"] >= 3:
+                print("❌ 3 intentos fallidos. Rotando keyword y reseteando.")
+                # Rotar keyword aunque falló
+                for idx, item in enumerate(keywords_data):
+                    if item.get("keyword_principal", "").strip().lower() == keyword.strip().lower():
+                        keyword_usada = keywords_data.pop(idx)
+                        keywords_data.append(keyword_usada)
+                        break
+                
+                with open(KEYWORDS_FILE, "w", encoding="utf-8") as f:
+                    json.dump(keywords_data, f, ensure_ascii=False, indent=2)
+                
+                estado["keyword_pendiente"] = None
+                estado["intentos_fallidos"] = 0
+                estado["ultimo_exito"] = datetime.now().isoformat()
+                estado["dias_desde_exito"] = 0
+            
+            guardar_estado(estado)
+            return
+
+    # CASO 3: No hay keyword pendiente → Seleccionar nueva
+    print(" Seleccionando nueva keyword para generar...")
+    
     item_actual = None
     indice_a_remover = -1
 
@@ -170,13 +275,54 @@ def main():
 
     print(f"Procesando artículo: {keyword} (Slug: {slug})")
 
+    # Guardar estado antes de intentar
+    estado["keyword_pendiente"] = keyword
+    estado["intentos_fallidos"] = 0
+    estado["keyword_actual"] = keyword
+    estado["slug_actual"] = slug
+    estado["titulo_actual"] = titulo
+    estado["long_tails_actual"] = long_tails
+    estado["related_questions_actual"] = related_questions
+    guardar_estado(estado)
+
     datos_articulo = generar_texto_con_gemini(keyword, long_tails, related_questions)
     
     if not datos_articulo:
-        print("️ No se pudo generar el contenido. La keyword NO se rotará y se reintentará en el próximo ciclo.")
-        # NO rotamos la keyword, se queda en su posición para el próximo intento
+        print("⚠️ No se pudo generar el contenido. Se reintentará mañana.")
+        estado["intentos_fallidos"] = 1
+        guardar_estado(estado)
         return
 
+    # ÉXITO en primer intento
+    print(f"✅ Artículo generado con éxito: {slug}")
+    
+    # Rotar keyword
+    keyword_usada = keywords_data.pop(indice_a_remover)
+    keywords_data.append(keyword_usada)
+
+    with open(KEYWORDS_FILE, "w", encoding="utf-8") as f:
+        json.dump(keywords_data, f, ensure_ascii=False, indent=2)
+
+    # Generar HTML
+    generar_html(titulo, slug, keyword, datos_articulo, historial)
+
+    # Registrar en CSV
+    file_exists = os.path.exists(CSV_PATH)
+    with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as csv_file:
+        writer = csv.writer(csv_file)
+        if not file_exists:
+            writer.writerow(["Fecha", "Keyword", "URL"])
+        writer.writerow([datetime.now().strftime("%Y-%m-%d %H:%M"), keyword, f"{DOMINIO_BASE}blog/{slug}.html"])
+    print("Registro agregado al archivo CSV de control.")
+
+    # Actualizar estado
+    estado["keyword_pendiente"] = None
+    estado["intentos_fallidos"] = 0
+    estado["ultimo_exito"] = datetime.now().isoformat()
+    estado["dias_desde_exito"] = 0
+    guardar_estado(estado)
+
+def generar_html(titulo, slug, keyword, datos_articulo, historial):
     url_planes = f"{DOMINIO_BASE}#planes"
     url_landing = DOMINIO_BASE
     url_externo = KHAN_ACADEMY
@@ -322,21 +468,6 @@ def main():
     with open(ruta_archivo, "w", encoding="utf-8") as f:
         f.write(html_content)
     print(f"¡Artículo generado con éxito: {ruta_archivo}!")
-
-    # Solo rotamos la keyword si el artículo se generó exitosamente
-    keyword_usada = keywords_data.pop(indice_a_remover)
-    keywords_data.append(keyword_usada)
-
-    with open(KEYWORDS_FILE, "w", encoding="utf-8") as f:
-        json.dump(keywords_data, f, ensure_ascii=False, indent=2)
-
-    file_exists = os.path.exists(CSV_PATH)
-    with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as csv_file:
-        writer = csv.writer(csv_file)
-        if not file_exists:
-            writer.writerow(["Fecha", "Keyword", "URL"])
-        writer.writerow([datetime.now().strftime("%Y-%m-%d %H:%M"), keyword, f"{DOMINIO_BASE}blog/{slug}.html"])
-    print("Registro agregado al archivo CSV de control.")
 
 if __name__ == "__main__":
     main()
