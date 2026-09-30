@@ -1,6 +1,11 @@
 {
-  "keyword_pendiente": "clases de matemáticas online",
-  "intentos_fallidos": 1,
-  "ultimo_exito": "2026-09-27",
-  "dias_desde_exito": 2
+  "keyword_pendiente": null,
+  "intentos_fallidos": 0,
+  "ultimo_exito": null,
+  "dias_desde_exito": 0,
+  "keyword_actual": null,
+  "slug_actual": null,
+  "titulo_actual": null,
+  "long_tails_actual": [],
+  "related_questions_actual": []
 }
