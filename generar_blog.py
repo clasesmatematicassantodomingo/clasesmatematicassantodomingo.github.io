@@ -3,7 +3,7 @@ import os
 import csv
 import time
 from datetime import datetime
-from openai import OpenAI
+from google import genai
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 NUMERO_WHATSAPP = "593993117800"
@@ -13,7 +13,7 @@ BLOG_DIR = "blog/"
 YOUTUBE_CANAL = "https://www.youtube.com/channel/UCanMxWvOoiwtjLYm08Bo8QQ"
 KHAN_ACADEMY = "https://es.khanacademy.org/"
 
-print("Iniciando generación masiva de artículos SEO avanzados (Groq Ultra-Fast)...")
+print("Iniciando generación masiva de artículos SEO avanzados (Gemini 3.8 Flash - Reintentos Pacientes)...")
 
 def obtener_historial_articulos():
     articulos_previos = []
@@ -28,19 +28,14 @@ def obtener_historial_articulos():
                     keywords_publicadas.add(row[1].strip().lower())
     return articulos_previos, keywords_publicadas
 
-def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=3):
-    raw_key = os.getenv("GROQ_API_KEY")
+def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=5):
+    raw_key = os.getenv("GEMINI_API_KEY")
     if not raw_key:
-        print("Error: No se encontró la variable de entorno GROQ_API_KEY.")
+        print("Error: No se encontró la variable de entorno GEMINI_API_KEY.")
         return None
     
     api_key = raw_key.strip()
-    
-    # Cliente OpenAI configurado para Groq
-    client = OpenAI(
-        api_key=api_key,
-        base_url="https://api.groq.com/openai/v1"
-    )
+    client = genai.Client(api_key=api_key)
     
     long_tails_str = json.dumps(long_tails, ensure_ascii=False)
     related_str = json.dumps(related_questions, ensure_ascii=False)
@@ -93,63 +88,50 @@ REGLAS DE ESTILO ROMUALD FONS:
 }}
 """
 
-    # Modelo principal de Gemini (confirmado que funciona)
-    modelos = ['gemini-3.8-flash']
+    # ÚNICO modelo confirmado que funciona
+    modelo_actual = 'gemini-3.8-flash'
     
-    # Solo 3 reintentos rápidos (no 5 largos)
-    max_intentos = 3
-    tiempos_espera = [30, 60, 90]  # Total máximo: ~3 minutos
-    ]
+    # Reintentos pacientes: 60s, 120s, 180s, 240s, 300s (máximo 15 minutos de espera total)
+    tiempos_espera = [60, 120, 180, 240, 300]
 
-    for modelo_actual in modelos:
-        print(f"🔄 Usando modelo: {modelo_actual}")
-        
-        for intento in range(1, max_intentos + 1):
-            try:
-                print(f"Intentando conectar con Groq (Intento {intento}/{max_intentos})...")
-                
-                response = client.chat.completions.create(
-                    model=modelo_actual,
-                    messages=[
-                        {"role": "system", "content": "Eres un experto en SEO y redacción educativa. Responde SOLO con JSON válido, sin bloques de código markdown."},
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=0.7,
-                    max_tokens=4096,
-                )
-                
-                raw_text = response.choices[0].message.content.strip()
-                
-                # Limpieza de markdown por si acaso
-                if raw_text.startswith("```json"):
-                    raw_text = raw_text[7:]
-                elif raw_text.startswith("```"):
-                    raw_text = raw_text[3:]
-                if raw_text.endswith("```"):
-                    raw_text = raw_text[:-3]
-                
-                return json.loads(raw_text.strip())
-                
-            except json.JSONDecodeError as e:
-                print(f"❌ Error: La API no devolvió un JSON válido con {modelo_actual}.")
-                print(f"Respuesta cruda: {raw_text[:300]}...")
-                return None
-                
-            except Exception as e:
-                error_msg = str(e)
-                if '429' in error_msg or 'rate' in error_msg.lower():
-                    print(f"⚠️ Límite de tasa alcanzado. Esperando 30 segundos...")
-                    time.sleep(30)
-                elif '404' in error_msg or 'not found' in error_msg.lower():
-                    print(f"❌ Modelo {modelo_actual} no disponible. Pasando al siguiente...")
-                    break
-                else:
-                    print(f"❌ Error con {modelo_actual}: {e}")
-                    break
-        
-        print(f"⚠️ Modelo {modelo_actual} agotó reintentos. Probando siguiente modelo...")
+    print(f"🔄 Usando modelo: {modelo_actual}")
     
-    print(" Todos los modelos de Groq fallaron.")
+    for intento in range(1, max_intentos + 1):
+        try:
+            print(f"Intentando conectar con Gemini (Intento {intento}/{max_intentos})...")
+            
+            response = client.models.generate_content(
+                model=modelo_actual,
+                contents=prompt,
+            )
+            
+            raw_text = response.text.strip()
+            if raw_text.startswith("```json"):
+                raw_text = raw_text[7:]
+            elif raw_text.startswith("```"):
+                raw_text = raw_text[3:]
+            if raw_text.endswith("```"):
+                raw_text = raw_text[:-3]
+            
+            print(f"✅ Conexión exitosa en intento {intento}")
+            return json.loads(raw_text.strip())
+            
+        except json.JSONDecodeError as e:
+            print(f"❌ Error: La API no devolvió un JSON válido.")
+            print(f"Respuesta cruda: {response.text[:300]}...")
+            return None
+            
+        except Exception as e:
+            error_msg = str(e)
+            if '503' in error_msg or 'UNAVAILABLE' in error_msg or '429' in error_msg:
+                tiempo_espera = tiempos_espera[intento - 1] if (intento - 1) < len(tiempos_espera) else 300
+                print(f"️ Servidor saturado. Esperando {tiempo_espera} segundos ({tiempo_espera//60} minutos)...")
+                time.sleep(tiempo_espera)
+            else:
+                print(f"❌ Error inesperado: {e}")
+                return None
+    
+    print(f"❌ Todos los {max_intentos} intentos fallaron. La keyword se mantendrá para el próximo ciclo.")
     return None
 
 def main():
@@ -189,8 +171,10 @@ def main():
     print(f"Procesando artículo: {keyword} (Slug: {slug})")
 
     datos_articulo = generar_texto_con_gemini(keyword, long_tails, related_questions)
+    
     if not datos_articulo:
-        print("No se pudo generar el contenido.")
+        print("️ No se pudo generar el contenido. La keyword NO se rotará y se reintentará en el próximo ciclo.")
+        # NO rotamos la keyword, se queda en su posición para el próximo intento
         return
 
     url_planes = f"{DOMINIO_BASE}#planes"
@@ -339,6 +323,7 @@ def main():
         f.write(html_content)
     print(f"¡Artículo generado con éxito: {ruta_archivo}!")
 
+    # Solo rotamos la keyword si el artículo se generó exitosamente
     keyword_usada = keywords_data.pop(indice_a_remover)
     keywords_data.append(keyword_usada)
 
