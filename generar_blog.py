@@ -93,11 +93,12 @@ REGLAS DE ESTILO ROMUALD FONS:
 }}
 """
 
-    # Modelos de Groq en orden de preferencia (todos gratuitos)
+        # Modelos ACTUALES de Groq (septiembre 2026)
     modelos = [
-        'llama-3.1-70b-versatile',   # El más potente (nivel GPT-4)
-        'llama-3.1-8b-instant',      # Más rápido, buena calidad
-        'mixtral-8x7b-32768'         # Excelente para textos largos
+        'llama-3.3-70b-versatile',   # El más potente y actual
+        'llama-3.3-70b-specdec',     # Más rápido con especulación decodificada
+        'gemma2-9b-it',              # De Google, muy eficiente
+        'deepseek-r1-distill-llama-70b'  # Excelente para razonamiento
     ]
 
     for modelo_actual in modelos:
