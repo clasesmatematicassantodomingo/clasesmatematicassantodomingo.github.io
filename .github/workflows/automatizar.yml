@@ -26,6 +26,11 @@ jobs:
       - name: Actualizar y reorganizar keywords (Detectar borrados)
         run: python actualizar_keywords.py
 
+      - name: Listar modelos disponibles en Groq
+        run: python listar_modelos_groq.py
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+
       - name: Ejecutar script generador de blog
         run: python generar_blog.py
         env:
