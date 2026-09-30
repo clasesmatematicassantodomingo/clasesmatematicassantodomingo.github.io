@@ -1,10 +1,11 @@
-name: Automatizar Blog SEO Cada 3 Dias
+name: Automatizar Blog SEO Diario con Reintentos
 
 on:
   workflow_dispatch:
   schedule:
-  - cron: '0 8 * * *'  # Cada día a las 08:00 UTC
-  
+    # Ejecutar CADA DÍA a las 08:00 UTC (03:00 AM Ecuador)
+    - cron: '0 8 * * *'
+
 jobs:
   construir-blog:
     runs-on: ubuntu-latest
@@ -25,12 +26,12 @@ jobs:
       - name: Actualizar y reorganizar keywords (Detectar borrados)
         run: python actualizar_keywords.py
 
-      - name: Ejecutar script generador de blog
+      - name: Ejecutar script generador de blog (con reintentos distribuidos)
         run: python generar_blog.py
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
-      - name: Subir artículos y JSON actualizados automáticamente
+      - name: Subir artículos, JSON y estado actualizados automáticamente
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Auto-actualización de keywords y generación de nuevo artículo de blog"
+          commit_message: "Auto-generación de artículo con sistema de reintentos distribuidos"
