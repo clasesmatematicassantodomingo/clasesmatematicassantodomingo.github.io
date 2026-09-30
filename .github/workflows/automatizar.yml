@@ -3,9 +3,8 @@ name: Automatizar Blog SEO Cada 3 Dias
 on:
   workflow_dispatch:
   schedule:
-    # Ejecutar a las 08:00 UTC (03:00 AM Ecuador) - hora de mínima saturación
-    - cron: '0 8 */3 * *'
-
+  - cron: '0 8 * * *'  # Cada día a las 08:00 UTC
+  
 jobs:
   construir-blog:
     runs-on: ubuntu-latest
