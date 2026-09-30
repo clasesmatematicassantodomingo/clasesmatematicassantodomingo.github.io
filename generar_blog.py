@@ -3,7 +3,7 @@ import os
 import csv
 import time
 from datetime import datetime
-from google import genai
+from openai import OpenAI
 
 DOMINIO_BASE = "https://clasesmatematicassantodomingo.github.io/"
 NUMERO_WHATSAPP = "593993117800"
@@ -13,7 +13,7 @@ BLOG_DIR = "blog/"
 YOUTUBE_CANAL = "https://www.youtube.com/channel/UCanMxWvOoiwtjLYm08Bo8QQ"
 KHAN_ACADEMY = "https://es.khanacademy.org/"
 
-print("Iniciando generación masiva de artículos SEO avanzados (Estructura Romuald Fons Pro)...")
+print("Iniciando generación masiva de artículos SEO avanzados (Groq Ultra-Fast)...")
 
 def obtener_historial_articulos():
     articulos_previos = []
@@ -28,19 +28,23 @@ def obtener_historial_articulos():
                     keywords_publicadas.add(row[1].strip().lower())
     return articulos_previos, keywords_publicadas
 
-def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=5):
-    raw_key = os.getenv("GEMINI_API_KEY")
+def generar_texto_con_gemini(keyword, long_tails, related_questions, max_intentos=3):
+    raw_key = os.getenv("GROQ_API_KEY")
     if not raw_key:
-        print("Error: No se encontró la variable de entorno GEMINI_API_KEY.")
+        print("Error: No se encontró la variable de entorno GROQ_API_KEY.")
         return None
     
     api_key = raw_key.strip()
-    client = genai.Client(api_key=api_key)
+    
+    # Cliente OpenAI configurado para Groq
+    client = OpenAI(
+        api_key=api_key,
+        base_url="https://api.groq.com/openai/v1"
+    )
     
     long_tails_str = json.dumps(long_tails, ensure_ascii=False)
     related_str = json.dumps(related_questions, ensure_ascii=False)
 
-    # 🚀 PROMPT OPTIMIZADO ESTILO ROMUALD FONS
     prompt = f"""
 Actúa como un profesor experto de matemáticas y redactor SEO senior especializado en rendimiento académico en Santo Domingo, Ecuador. Aplica el estilo directo, incisivo, apasionado y sin rodeos de Romuald Fons (SEO de guerrilla: cero paja, directo al dolor del usuario, alta densidad de valor).
 
@@ -89,22 +93,33 @@ REGLAS DE ESTILO ROMUALD FONS:
 }}
 """
 
-    # Modelos vigentes para tu cuenta (Generación 3.8)
-    modelos = ['gemini-3.8-flash', 'gemini-3.8-pro']
-    tiempo_espera_base = 60  # Esperar 60 segundos (1 minuto) en el primer intento
+    # Modelos de Groq en orden de preferencia (todos gratuitos)
+    modelos = [
+        'llama-3.1-70b-versatile',   # El más potente (nivel GPT-4)
+        'llama-3.1-8b-instant',      # Más rápido, buena calidad
+        'mixtral-8x7b-32768'         # Excelente para textos largos
+    ]
 
     for modelo_actual in modelos:
         print(f"🔄 Usando modelo: {modelo_actual}")
         
         for intento in range(1, max_intentos + 1):
             try:
-                print(f"Intentando conectar con Gemini (Intento {intento}/{max_intentos})...")
-                response = client.models.generate_content(
+                print(f"Intentando conectar con Groq (Intento {intento}/{max_intentos})...")
+                
+                response = client.chat.completions.create(
                     model=modelo_actual,
-                    contents=prompt,
+                    messages=[
+                        {"role": "system", "content": "Eres un experto en SEO y redacción educativa. Responde SOLO con JSON válido, sin bloques de código markdown."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.7,
+                    max_tokens=4096,
                 )
                 
-                raw_text = response.text.strip()
+                raw_text = response.choices[0].message.content.strip()
+                
+                # Limpieza de markdown por si acaso
                 if raw_text.startswith("```json"):
                     raw_text = raw_text[7:]
                 elif raw_text.startswith("```"):
@@ -116,27 +131,24 @@ REGLAS DE ESTILO ROMUALD FONS:
                 
             except json.JSONDecodeError as e:
                 print(f"❌ Error: La API no devolvió un JSON válido con {modelo_actual}.")
-                print(f"Respuesta cruda: {response.text[:300]}...")
+                print(f"Respuesta cruda: {raw_text[:300]}...")
                 return None
                 
             except Exception as e:
                 error_msg = str(e)
-                # Si es error 503 (Saturado) o 429 (Límite de tasa), esperamos más tiempo
-                if '503' in error_msg or 'UNAVAILABLE' in error_msg or '429' in error_msg:
-                    # Aumentamos el tiempo de espera progresivamente: 60s, 90s, 120s, 150s, 180s
-                    tiempo_espera = tiempo_espera_base + (intento * 30)
-                    print(f"⚠️ Servidor saturado ({error_msg.split(',')[0]}). Esperando {tiempo_espera} segundos antes de reintentar...")
-                    time.sleep(tiempo_espera)
-                elif '404' in error_msg or 'NOT_FOUND' in error_msg:
-                    print(f"❌ Modelo {modelo_actual} no disponible (404). Pasando al siguiente modelo...")
-                    break  # Rompe el bucle de reintentos y pasa al siguiente modelo en la lista
+                if '429' in error_msg or 'rate' in error_msg.lower():
+                    print(f"⚠️ Límite de tasa alcanzado. Esperando 30 segundos...")
+                    time.sleep(30)
+                elif '404' in error_msg or 'not found' in error_msg.lower():
+                    print(f"❌ Modelo {modelo_actual} no disponible. Pasando al siguiente...")
+                    break
                 else:
                     print(f"❌ Error con {modelo_actual}: {e}")
-                    break  # Rompe el bucle de reintentos para probar el siguiente modelo
+                    break
         
-        print(f"⚠️ Modelo {modelo_actual} agotó reintentos o falló. Probando siguiente modelo...")
+        print(f"⚠️ Modelo {modelo_actual} agotó reintentos. Probando siguiente modelo...")
     
-    print("❌ Todos los modelos disponibles fallaron o están saturados.")
+    print(" Todos los modelos de Groq fallaron.")
     return None
 
 def main():
@@ -177,7 +189,7 @@ def main():
 
     datos_articulo = generar_texto_con_gemini(keyword, long_tails, related_questions)
     if not datos_articulo:
-        print("No se pudo generar el contenido debido a saturación temporal de la API.")
+        print("No se pudo generar el contenido.")
         return
 
     url_planes = f"{DOMINIO_BASE}#planes"
@@ -191,8 +203,6 @@ def main():
     os.makedirs(BLOG_DIR, exist_ok=True)
     ruta_archivo = os.path.join(BLOG_DIR, f"{slug}.html")
 
-    # 🚀 FUNCIÓN AUXILIAR PARA FORMATEO ROBUSTO DE PÁRRAFOS
-    # Convierte los saltos de línea (\n\n) que genera la IA en etiquetas <p> limpias
     def format_parrafos(texto):
         if not texto:
             return ""
