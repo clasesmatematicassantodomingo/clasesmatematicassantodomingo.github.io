@@ -1,11 +1,20 @@
 {
-  "keyword_pendiente": null,
-  "intentos_fallidos": 0,
+  "keyword_pendiente": "clases de matemáticas online",
+  "intentos_fallidos": 1,
   "ultimo_exito": null,
   "dias_desde_exito": 0,
-  "keyword_actual": null,
-  "slug_actual": null,
-  "titulo_actual": null,
-  "long_tails_actual": [],
-  "related_questions_actual": []
+  "keyword_actual": "clases de matemáticas online",
+  "slug_actual": "clases-de-matematicas-online",
+  "titulo_actual": "Clases online de matemáticas sin excusas: Aprende desde casa con un especialista real (Sin videos aburridos de YouTube)",
+  "long_tails_actual": [
+    "clases virtuales de matematicas",
+    "clases en linea matematicas",
+    "clases de matematicas online gratis",
+    "Realiza clases de matemáticas online"
+  ],
+  "related_questions_actual": [
+    "¿Dónde puedo encontrar clases de matemáticas online?",
+    "¿Cómo funcionan las tutorías de matemáticas a distancia?",
+    "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
+  ]
 }
