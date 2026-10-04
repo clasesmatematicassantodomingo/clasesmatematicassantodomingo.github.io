@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Clonar repositorio
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Configurar Python
         uses: actions/setup-python@v5
@@ -35,3 +37,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Auto-generación de artículo con sistema de reintentos distribuidos"
+          commit_options: '--no-verify'
+          push_options: '--force-with-lease'
+          skip_fetch: false
+          base_branch: main
+          file_pattern: '*'
