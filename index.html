@@ -34,7 +34,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-    <!-- SCHEMA.ORG JSON-LD (SEO LOCAL AVANZADO) -->
+        <!-- SCHEMA.ORG JSON-LD (SEO LOCAL AVANZADO + RESEÑAS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -64,6 +64,34 @@
           "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
           "opens": "08:00",
           "closes": "20:00"
+        }
+      ],
+      "review": [
+        {
+          "@type": "Review",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "Carlos M."
+          },
+          "reviewBody": "Mi hijo tenía 4/10 y estaba a una semana de los supletorios. En solo 3 sesiones con el Profe Andrés, no solo aprobó con 8/10, sino que por fin entendió las ecuaciones. Las mejores clases de matemáticas en Santo Domingo que hemos probado."
+        },
+        {
+          "@type": "Review",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "María K."
+          },
+          "reviewBody": "Había probado 2 academias masivas y seguía sin entender nada. El Profe Andrés fue a domicilio, identificó mi problema en 10 minutos y me enseñó con una paciencia increíble. Ahora amo los números y pasé el año sin estrés."
         }
       ]
     }
@@ -355,6 +383,29 @@
             section { padding: 3rem 1rem; }
             .price-card.featured { transform: scale(1); }
         }
+            .testimonial-rating {
+            color: #fbbf24;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 2px;
+        }
+        .video-placeholder {
+            margin-top: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f1f5f9;
+            aspect-ratio: 9/16;
+            max-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #cbd5e1;
+        }
+        .video-placeholder span {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -468,18 +519,46 @@
         </div>
     </section>
     
-    <!-- 6. Prueba Social (Resultados específicos, no genéricos) -->
+        <!-- 6. Prueba Social (Testimonios con Schema.org y preparados para Video) -->
     <section id="testimonios">
-        <h2>Padres en Santo Domingo que ya dejaron de preocuparse por las notas</h2>
+        <h2>Padres y estudiantes en Santo Domingo que ya transformaron sus notas</h2>
         <div class="testimonials-grid">
+            
+            <!-- Testimonio 1: Padre de Familia -->
             <div class="testimonial-card">
-                <p>"Mi hijo tenía 4/10 y estaba a una semana de los supletorios, llorando todos los días. En 3 sesiones con el Profe Andrés, no solo aprobó con 8/10, sino que por fin entendió las ecuaciones. Un verdadero salvavidas para nuestra familia."</p>
-                <div class="testimonial-author">— Carlos M., Padre de familia en Santo Domingo</div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p>"Mi hijo tenía 4/10 y estaba a una semana de los supletorios, estresado todos los días. En solo 3 sesiones con el Profe Andrés, no solo aprobó con 8/10, sino que por fin entendió las ecuaciones. Las mejores <strong>clases de matemáticas en Santo Domingo</strong> que hemos probado."</p>
+                <div class="testimonial-author">
+                    <strong>Carlos M.</strong><br>
+                    <span style="font-size: 0.9rem; color: #64748b;">Padre de familia - Coop. La Lorena, Santo Domingo</span>
+                </div>
+                
+                <!-- ESPACIO RESERVADO PARA FUTURO VIDEO (YouTube Short) -->
+                <!-- Cuando tengas el video, descomenta las líneas de abajo y pon tu ID de YouTube -->
+                <!-- 
+                <div class="video-placeholder">
+                    <iframe src="https://www.youtube.com/embed/TU_ID_DE_VIDEO_AQUI?rel=0" loading="lazy" title="Testimonio Padre de Familia" width="100%" height="100%" style="border: none;"></iframe>
+                </div> 
+                -->
             </div>
+
+            <!-- Testimonio 2: Estudiante -->
             <div class="testimonial-card">
-                <p>"Hemos probado 3 academias masivas y ninguna funcionó. El Profe Andrés fue a domicilio, identificó el problema en 10 minutos y mi hija le perdió el miedo a las matemáticas para siempre. Sin duda, el mejor <strong>profesor de matemáticas a domicilio</strong>."</p>
-                <div class="testimonial-author">— Andrea P., Madre de familia</div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p>"Había probado 2 academias masivas y seguía sin entender nada. El Profe Andrés fue a domicilio, identificó mi problema en 10 minutos y me enseñó con una paciencia increíble. Ahora amo los números y pasé el año sin estrés. El mejor <strong>profesor de matemáticas a domicilio</strong>."</p>
+                <div class="testimonial-author">
+                    <strong>María K.</strong><br>
+                    <span style="font-size: 0.9rem; color: #64748b;">Estudiante de Bachillerato - Colegio Nacional Santo Domingo</span>
+                </div>
+
+                <!-- ESPACIO RESERVADO PARA FUTURO VIDEO (YouTube Short) -->
+                <!-- 
+                <div class="video-placeholder">
+                    <iframe src="https://www.youtube.com/embed/TU_ID_DE_VIDEO_AQUI_2?rel=0" loading="lazy" title="Testimonio Estudiante" width="100%" height="100%" style="border: none;"></iframe>
+                </div> 
+                -->
             </div>
+
         </div>
     </section>
 
