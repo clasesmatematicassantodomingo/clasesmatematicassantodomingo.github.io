@@ -3,7 +3,6 @@ name: Automatizar Blog SEO Diario con Reintentos
 on:
   workflow_dispatch:
   schedule:
-    # Ejecutar CADA DÍA a las 08:00 UTC (03:00 AM Ecuador)
     - cron: '0 8 * * *'
 
 jobs:
@@ -40,5 +39,4 @@ jobs:
           commit_options: '--no-verify'
           push_options: '--force-with-lease'
           skip_fetch: false
-          base_branch: main
           file_pattern: '*'
