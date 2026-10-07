@@ -1,18 +1,19 @@
 {
-  "keyword_pendiente": null,
-  "intentos_fallidos": 0,
+  "keyword_pendiente": "clases de álgebra",
+  "intentos_fallidos": 1,
   "ultimo_exito": "2026-10-04T02:59:35.062343",
-  "dias_desde_exito": 2,
-  "keyword_actual": "profesores de matemáticas a domicilio",
-  "slug_actual": "profesores-de-matematicas-a-domicilio",
-  "titulo_actual": "El peligro de llevar a tu hijo a academias masivas: Por qué un profesor a domicilio en Santo Domingo marca la diferencia",
+  "dias_desde_exito": 3,
+  "keyword_actual": "clases de álgebra",
+  "slug_actual": "clases-de-algebra",
+  "titulo_actual": "Memorizar fórmulas de álgebra es de mediocres: Cómo entender las ecuaciones de verdad desde cero",
   "long_tails_actual": [
-    "maestros de matemáticas a domicilio",
-    "profesores de matematicas particulares",
-    "busco profesor de matematicas a domicilio"
+    "clases de algebra desde cero",
+    "clases de algebra para principiantes",
+    "clase de álgebra",
+    "profesor de algebra"
   ],
   "related_questions_actual": [
-    "¿Cómo contratar un profesor de matemáticas a domicilio en Santo Domingo?",
-    "¿Cuáles son los beneficios de las clases de matemáticas en casa?"
+    "¿Cómo aprender álgebra desde cero sin frustrarse?",
+    "¿Qué temas abarca una clase básica de álgebra?"
   ]
 }
