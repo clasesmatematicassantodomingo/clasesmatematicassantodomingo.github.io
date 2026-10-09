@@ -30,21 +30,6 @@
     ]
   },
   {
-    "keyword_principal": "clases de álgebra",
-    "slug": "clases-de-algebra",
-    "titulo": "Memorizar fórmulas de álgebra es de mediocres: Cómo entender las ecuaciones de verdad desde cero",
-    "long_tails": [
-      "clases de algebra desde cero",
-      "clases de algebra para principiantes",
-      "clase de álgebra",
-      "profesor de algebra"
-    ],
-    "related_questions": [
-      "¿Cómo aprender álgebra desde cero sin frustrarse?",
-      "¿Qué temas abarca una clase básica de álgebra?"
-    ]
-  },
-  {
     "keyword_principal": "clases de matemáticas y física",
     "slug": "clases-de-matematicas-y-fisica",
     "titulo": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
@@ -225,6 +210,21 @@
       "¿Dónde puedo encontrar clases de matemáticas online?",
       "¿Cómo funcionan las tutorías de matemáticas a distancia?",
       "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
+    ]
+  },
+  {
+    "keyword_principal": "clases de álgebra",
+    "slug": "clases-de-algebra",
+    "titulo": "Memorizar fórmulas de álgebra es de mediocres: Cómo entender las ecuaciones de verdad desde cero",
+    "long_tails": [
+      "clases de algebra desde cero",
+      "clases de algebra para principiantes",
+      "clase de álgebra",
+      "profesor de algebra"
+    ],
+    "related_questions": [
+      "¿Cómo aprender álgebra desde cero sin frustrarse?",
+      "¿Qué temas abarca una clase básica de álgebra?"
     ]
   }
 ]
