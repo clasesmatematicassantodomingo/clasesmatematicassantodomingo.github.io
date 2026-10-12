@@ -1,19 +1,18 @@
 {
   "keyword_pendiente": null,
   "intentos_fallidos": 0,
-  "ultimo_exito": "2026-10-09T15:04:42.887748",
-  "dias_desde_exito": 1,
-  "keyword_actual": "clases de álgebra",
-  "slug_actual": "clases-de-algebra",
-  "titulo_actual": "Memorizar fórmulas de álgebra es de mediocres: Cómo entender las ecuaciones de verdad desde cero",
+  "ultimo_exito": "2026-10-12T17:30:01.564529",
+  "dias_desde_exito": 0,
+  "keyword_actual": "clases de matemáticas y física",
+  "slug_actual": "clases-de-matematicas-y-fisica",
+  "titulo_actual": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
   "long_tails_actual": [
-    "clases de algebra desde cero",
-    "clases de algebra para principiantes",
-    "clase de álgebra",
-    "profesor de algebra"
+    "profesor de matematicas y fisica",
+    "clases particulares matematicas y fisica",
+    "profesor fisica y matematicas"
   ],
   "related_questions_actual": [
-    "¿Cómo aprender álgebra desde cero sin frustrarse?",
-    "¿Qué temas abarca una clase básica de álgebra?"
+    "¿Dónde buscar un profesor especializado en física y matemáticas?",
+    "¿Cómo superar las dificultades en las materias de ciencias exactas?"
   ]
 }
