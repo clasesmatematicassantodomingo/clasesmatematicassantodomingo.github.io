@@ -45,6 +45,20 @@
     ]
   },
   {
+    "keyword_principal": "clases de matemáticas y física",
+    "slug": "clases-de-matematicas-y-fisica",
+    "titulo": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
+    "long_tails": [
+      "profesor de matematicas y fisica",
+      "clases particulares matematicas y fisica",
+      "profesor fisica y matematicas"
+    ],
+    "related_questions": [
+      "¿Dónde buscar un profesor especializado en física y matemáticas?",
+      "¿Cómo superar las dificultades en las materias de ciencias exactas?"
+    ]
+  },
+  {
     "keyword_principal": "clases de geometría",
     "slug": "clases-de-geometria",
     "titulo": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
@@ -211,20 +225,6 @@
       "¿Dónde puedo encontrar clases de matemáticas online?",
       "¿Cómo funcionan las tutorías de matemáticas a distancia?",
       "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de matemáticas y física",
-    "slug": "clases-de-matematicas-y-fisica",
-    "titulo": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
-    "long_tails": [
-      "profesor de matematicas y fisica",
-      "clases particulares matematicas y fisica",
-      "profesor fisica y matematicas"
-    ],
-    "related_questions": [
-      "¿Dónde buscar un profesor especializado en física y matemáticas?",
-      "¿Cómo superar las dificultades en las materias de ciencias exactas?"
     ]
   }
 ]
