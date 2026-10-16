@@ -1,18 +1,19 @@
 {
   "keyword_pendiente": null,
   "intentos_fallidos": 0,
-  "ultimo_exito": "2026-10-12T17:30:01.564529",
-  "dias_desde_exito": 2,
-  "keyword_actual": "clases de matemáticas y física",
-  "slug_actual": "clases-de-matematicas-y-fisica",
-  "titulo_actual": "Física y Matemáticas sin drama: Cómo pasar de arrastrar notas a ser el mejor de la clase en Santo Domingo",
+  "ultimo_exito": "2026-10-16T13:05:18.597084",
+  "dias_desde_exito": 0,
+  "keyword_actual": "clases de geometría",
+  "slug_actual": "clases-de-geometria",
+  "titulo_actual": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
   "long_tails_actual": [
-    "profesor de matematicas y fisica",
-    "clases particulares matematicas y fisica",
-    "profesor fisica y matematicas"
+    "clase de geometria",
+    "clases de geometria basica",
+    "clases de geometria desde cero",
+    "geometria clases"
   ],
   "related_questions_actual": [
-    "¿Dónde buscar un profesor especializado en física y matemáticas?",
-    "¿Cómo superar las dificultades en las materias de ciencias exactas?"
+    "¿Cómo entender los teoremas de geometría fácilmente?",
+    "¿Qué ejercicios prácticos ayudan a dominar la geometría básica?"
   ]
 }
