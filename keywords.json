@@ -59,6 +59,21 @@
     ]
   },
   {
+    "keyword_principal": "clases de geometría",
+    "slug": "clases-de-geometria",
+    "titulo": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
+    "long_tails": [
+      "clase de geometria",
+      "clases de geometria basica",
+      "clases de geometria desde cero",
+      "geometria clases"
+    ],
+    "related_questions": [
+      "¿Cómo entender los teoremas de geometría fácilmente?",
+      "¿Qué ejercicios prácticos ayudan a dominar la geometría básica?"
+    ]
+  },
+  {
     "keyword_principal": "clases de fracciones",
     "slug": "clases-de-fracciones",
     "titulo": "Si tu hijo todavía sufre con las fracciones en el colegio, este es el único método que necesita para dominarlas",
@@ -210,21 +225,6 @@
       "¿Dónde puedo encontrar clases de matemáticas online?",
       "¿Cómo funcionan las tutorías de matemáticas a distancia?",
       "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
-    ]
-  },
-  {
-    "keyword_principal": "clases de geometría",
-    "slug": "clases-de-geometria",
-    "titulo": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
-    "long_tails": [
-      "clase de geometria",
-      "clases de geometria basica",
-      "clases de geometria desde cero",
-      "geometria clases"
-    ],
-    "related_questions": [
-      "¿Cómo entender los teoremas de geometría fácilmente?",
-      "¿Qué ejercicios prácticos ayudan a dominar la geometría básica?"
     ]
   }
 ]
