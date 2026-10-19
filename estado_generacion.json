@@ -1,19 +1,18 @@
 {
-  "keyword_pendiente": null,
-  "intentos_fallidos": 0,
+  "keyword_pendiente": "clases de fracciones",
+  "intentos_fallidos": 1,
   "ultimo_exito": "2026-10-16T13:05:18.597084",
-  "dias_desde_exito": 1,
-  "keyword_actual": "clases de geometría",
-  "slug_actual": "clases-de-geometria",
-  "titulo_actual": "Geometría sin dolores de cabeza: Las 3 claves para dominar figuras y espacios sin memorizar teoremas inútiles",
+  "dias_desde_exito": 3,
+  "keyword_actual": "clases de fracciones",
+  "slug_actual": "clases-de-fracciones",
+  "titulo_actual": "Si tu hijo todavía sufre con las fracciones en el colegio, este es el único método que necesita para dominarlas",
   "long_tails_actual": [
-    "clase de geometria",
-    "clases de geometria basica",
-    "clases de geometria desde cero",
-    "geometria clases"
+    "clase de fracciones",
+    "clases de fracciones para primaria",
+    "clases de fracciones para secundaria"
   ],
   "related_questions_actual": [
-    "¿Cómo entender los teoremas de geometría fácilmente?",
-    "¿Qué ejercicios prácticos ayudan a dominar la geometría básica?"
+    "¿Cómo explicar las fracciones de forma sencilla a los niños?",
+    "¿Por qué cuestan tanto las operaciones con fracciones en primaria?"
   ]
 }
