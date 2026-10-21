@@ -74,20 +74,6 @@
     ]
   },
   {
-    "keyword_principal": "clases de fracciones",
-    "slug": "clases-de-fracciones",
-    "titulo": "Si tu hijo todavía sufre con las fracciones en el colegio, este es el único método que necesita para dominarlas",
-    "long_tails": [
-      "clase de fracciones",
-      "clases de fracciones para primaria",
-      "clases de fracciones para secundaria"
-    ],
-    "related_questions": [
-      "¿Cómo explicar las fracciones de forma sencilla a los niños?",
-      "¿Por qué cuestan tanto las operaciones con fracciones en primaria?"
-    ]
-  },
-  {
     "keyword_principal": "clases de matemáticas para bachillerato",
     "slug": "clases-de-matematicas-para-bachillerato",
     "titulo": "Matemáticas de bachillerato para no iniciados: El plan de rescate intensivo para graduarte sin arrastrar materias",
@@ -225,6 +211,20 @@
       "¿Dónde puedo encontrar clases de matemáticas online?",
       "¿Cómo funcionan las tutorías de matemáticas a distancia?",
       "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
+    ]
+  },
+  {
+    "keyword_principal": "clases de fracciones",
+    "slug": "clases-de-fracciones",
+    "titulo": "Si tu hijo todavía sufre con las fracciones en el colegio, este es el único método que necesita para dominarlas",
+    "long_tails": [
+      "clase de fracciones",
+      "clases de fracciones para primaria",
+      "clases de fracciones para secundaria"
+    ],
+    "related_questions": [
+      "¿Cómo explicar las fracciones de forma sencilla a los niños?",
+      "¿Por qué cuestan tanto las operaciones con fracciones en primaria?"
     ]
   }
 ]
