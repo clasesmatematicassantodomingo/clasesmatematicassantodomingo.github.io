@@ -1,18 +1,18 @@
 {
-  "keyword_pendiente": null,
-  "intentos_fallidos": 0,
+  "keyword_pendiente": "clases de matemáticas universitarias",
+  "intentos_fallidos": 1,
   "ultimo_exito": "2026-10-25T13:04:36.871404",
-  "dias_desde_exito": 2,
-  "keyword_actual": "clases de matemáticas para bachillerato",
-  "slug_actual": "clases-de-matematicas-para-bachillerato",
-  "titulo_actual": "Matemáticas de bachillerato para no iniciados: El plan de rescate intensivo para graduarte sin arrastrar materias",
+  "dias_desde_exito": 5,
+  "keyword_actual": "clases de matemáticas universitarias",
+  "slug_actual": "clases-de-matematicas-universitarias",
+  "titulo_actual": "El salto mortal de la escuela a la universidad en matemáticas: Por qué el 80% de cachimbos reprueba el primer ciclo",
   "long_tails_actual": [
-    "clases particulares matemáticas bachillerato",
-    "profesor matemáticas bachillerato",
-    "clases de mate para bachillerato"
+    "clases matematicas universidad",
+    "clases de matematicas universitarias",
+    "clases de matematica basica universitaria"
   ],
   "related_questions_actual": [
-    "¿Qué temas de matemáticas son los más difíciles en el bachillerato?",
-    "¿Cómo aprobar las matemáticas de secundaria con éxito?"
+    "¿Cómo prepararse para cálculo y matemáticas en la universidad?",
+    "¿Dónde encontrar apoyo para matemáticas de primer semestre universitario?"
   ]
 }
