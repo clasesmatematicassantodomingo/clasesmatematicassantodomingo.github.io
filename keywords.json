@@ -102,20 +102,6 @@
     ]
   },
   {
-    "keyword_principal": "clases de matemáticas universitarias",
-    "slug": "clases-de-matematicas-universitarias",
-    "titulo": "El salto mortal de la escuela a la universidad en matemáticas: Por qué el 80% de cachimbos reprueba el primer ciclo",
-    "long_tails": [
-      "clases matematicas universidad",
-      "clases de matematicas universitarias",
-      "clases de matematica basica universitaria"
-    ],
-    "related_questions": [
-      "¿Cómo prepararse para cálculo y matemáticas en la universidad?",
-      "¿Dónde encontrar apoyo para matemáticas de primer semestre universitario?"
-    ]
-  },
-  {
     "keyword_principal": "clases de matemáticas en Santo Domingo",
     "slug": "clases-de-matematicas-en-santo-domingo",
     "titulo": "Clases de Matemáticas en Santo Domingo: El Secreto que Nadie Te Dice para Dejar de Odiar los Números",
@@ -225,6 +211,20 @@
       "¿Dónde puedo encontrar clases de matemáticas online?",
       "¿Cómo funcionan las tutorías de matemáticas a distancia?",
       "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
+    ]
+  },
+  {
+    "keyword_principal": "clases de matemáticas universitarias",
+    "slug": "clases-de-matematicas-universitarias",
+    "titulo": "El salto mortal de la escuela a la universidad en matemáticas: Por qué el 80% de cachimbos reprueba el primer ciclo",
+    "long_tails": [
+      "clases matematicas universidad",
+      "clases de matematicas universitarias",
+      "clases de matematica basica universitaria"
+    ],
+    "related_questions": [
+      "¿Cómo prepararse para cálculo y matemáticas en la universidad?",
+      "¿Dónde encontrar apoyo para matemáticas de primer semestre universitario?"
     ]
   }
 ]
