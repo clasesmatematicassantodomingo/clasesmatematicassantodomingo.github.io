@@ -116,19 +116,6 @@
     ]
   },
   {
-    "keyword_principal": "clases de matemáticas en Santo Domingo",
-    "slug": "clases-de-matematicas-en-santo-domingo",
-    "titulo": "Clases de Matemáticas en Santo Domingo: El Secreto que Nadie Te Dice para Dejar de Odiar los Números",
-    "long_tails": [
-      "Clases particulares y profesores particulares de matemáticas en Santo Domingo",
-      "Clases particulares para niños de primaria $5/h 1ª clase gratis"
-    ],
-    "related_questions": [
-      "¿Cuánto cuesta una hora de clases en Santo Domingo de los Tsáchilas?",
-      "¿Dónde imparten la primera clase gratis de matemáticas?"
-    ]
-  },
-  {
     "keyword_principal": "profesor particular de matemáticas online",
     "slug": "profesor-particular-de-matematicas-online",
     "titulo": "El Mejor Profesor Particular de Matemáticas Online: Cómo Elegir al Indicado y No Tirar tu Dinero",
@@ -225,6 +212,19 @@
       "¿Dónde puedo encontrar clases de matemáticas online?",
       "¿Cómo funcionan las tutorías de matemáticas a distancia?",
       "¿Qué herramientas se necesitan para tomar clases de matemáticas virtuales?"
+    ]
+  },
+  {
+    "keyword_principal": "clases de matemáticas en Santo Domingo",
+    "slug": "clases-de-matematicas-en-santo-domingo",
+    "titulo": "Clases de Matemáticas en Santo Domingo: El Secreto que Nadie Te Dice para Dejar de Odiar los Números",
+    "long_tails": [
+      "Clases particulares y profesores particulares de matemáticas en Santo Domingo",
+      "Clases particulares para niños de primaria $5/h 1ª clase gratis"
+    ],
+    "related_questions": [
+      "¿Cuánto cuesta una hora de clases en Santo Domingo de los Tsáchilas?",
+      "¿Dónde imparten la primera clase gratis de matemáticas?"
     ]
   }
 ]
