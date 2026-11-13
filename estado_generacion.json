@@ -1,17 +1,18 @@
 {
-  "keyword_pendiente": null,
-  "intentos_fallidos": 0,
+  "keyword_pendiente": "clases presenciales en local",
+  "intentos_fallidos": 1,
   "ultimo_exito": "2026-11-10T02:44:01.311429",
-  "dias_desde_exito": 2,
-  "keyword_actual": "profesor particular de matemáticas online",
-  "slug_actual": "profesor-particular-de-matematicas-online",
-  "titulo_actual": "El Mejor Profesor Particular de Matemáticas Online: Cómo Elegir al Indicado y No Tirar tu Dinero",
+  "dias_desde_exito": 3,
+  "keyword_actual": "clases presenciales en local",
+  "slug_actual": "clases-presenciales-en-local",
+  "titulo_actual": "Por Qué Estudiar Aquí Es la Solución Definitiva para tus Notas?",
   "long_tails_actual": [
-    "Encuentra tu profe particular de matemáticas online álgebra cálculo trigonometría",
-    "1ra clase gratis profesor online"
+    "Clases en mi local",
+    "a domicilio o por Internet",
+    "Santo Domingo Ecuador"
   ],
   "related_questions_actual": [
-    "¿Cómo evaluar la calidad de un profesor de matemáticas en línea?",
-    "¿Qué plataformas son mejores para tomar tutorías de cálculo y álgebra?"
+    "¿Dónde está ubicado el local de clases particulares en Santo Domingo?",
+    "¿Es mejor estudiar en un centro de apoyo o recibir clases en casa?"
   ]
 }
