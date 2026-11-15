@@ -129,20 +129,6 @@
     ]
   },
   {
-    "keyword_principal": "clases presenciales en local",
-    "slug": "clases-presenciales-en-local",
-    "titulo": "Por Qué Estudiar Aquí Es la Solución Definitiva para tus Notas?",
-    "long_tails": [
-      "Clases en mi local",
-      "a domicilio o por Internet",
-      "Santo Domingo Ecuador"
-    ],
-    "related_questions": [
-      "¿Dónde está ubicado el local de clases particulares en Santo Domingo?",
-      "¿Es mejor estudiar en un centro de apoyo o recibir clases en casa?"
-    ]
-  },
-  {
     "keyword_principal": "clases particulares para niños de primaria y secundaria",
     "slug": "clases-particulares-para-ninos-de-primaria-y-secundaria",
     "titulo": "Clases de primaria y secundaria en Santo Domingo de los Tsáchilas",
@@ -225,6 +211,20 @@
     "related_questions": [
       "¿Cuánto cuesta una hora de clases en Santo Domingo de los Tsáchilas?",
       "¿Dónde imparten la primera clase gratis de matemáticas?"
+    ]
+  },
+  {
+    "keyword_principal": "clases presenciales en local",
+    "slug": "clases-presenciales-en-local",
+    "titulo": "Por Qué Estudiar Aquí Es la Solución Definitiva para tus Notas?",
+    "long_tails": [
+      "Clases en mi local",
+      "a domicilio o por Internet",
+      "Santo Domingo Ecuador"
+    ],
+    "related_questions": [
+      "¿Dónde está ubicado el local de clases particulares en Santo Domingo?",
+      "¿Es mejor estudiar en un centro de apoyo o recibir clases en casa?"
     ]
   }
 ]
