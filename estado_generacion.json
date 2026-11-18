@@ -1,18 +1,17 @@
 {
-  "keyword_pendiente": null,
-  "intentos_fallidos": 0,
+  "keyword_pendiente": "clases particulares para niños de primaria y secundaria",
+  "intentos_fallidos": 1,
   "ultimo_exito": "2026-11-15T15:28:47.582161",
-  "dias_desde_exito": 2,
-  "keyword_actual": "clases presenciales en local",
-  "slug_actual": "clases-presenciales-en-local",
-  "titulo_actual": "Por Qué Estudiar Aquí Es la Solución Definitiva para tus Notas?",
+  "dias_desde_exito": 3,
+  "keyword_actual": "clases particulares para niños de primaria y secundaria",
+  "slug_actual": "clases-particulares-para-ninos-de-primaria-y-secundaria",
+  "titulo_actual": "Clases de primaria y secundaria en Santo Domingo de los Tsáchilas",
   "long_tails_actual": [
-    "Clases en mi local",
-    "a domicilio o por Internet",
-    "Santo Domingo Ecuador"
+    "Encuentra tu profesor ideal entre miles de profesores particulares de más de 350 materias",
+    "Clases particulares para niños de primaria y secundaria"
   ],
   "related_questions_actual": [
-    "¿Dónde está ubicado el local de clases particulares en Santo Domingo?",
-    "¿Es mejor estudiar en un centro de apoyo o recibir clases en casa?"
+    "¿Qué materias cubren los centros de apoyo escolar en Santo Domingo?",
+    "¿Cómo ayudar a los niños con dificultades de aprendizaje escolar?"
   ]
 }
