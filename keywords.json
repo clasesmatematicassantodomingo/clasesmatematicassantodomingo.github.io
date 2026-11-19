@@ -143,19 +143,6 @@
     ]
   },
   {
-    "keyword_principal": "clases particulares para niños de primaria y secundaria",
-    "slug": "clases-particulares-para-ninos-de-primaria-y-secundaria",
-    "titulo": "Clases de primaria y secundaria en Santo Domingo de los Tsáchilas",
-    "long_tails": [
-      "Encuentra tu profesor ideal entre miles de profesores particulares de más de 350 materias",
-      "Clases particulares para niños de primaria y secundaria"
-    ],
-    "related_questions": [
-      "¿Qué materias cubren los centros de apoyo escolar en Santo Domingo?",
-      "¿Cómo ayudar a los niños con dificultades de aprendizaje escolar?"
-    ]
-  },
-  {
     "keyword_principal": "ventajas de tener un profesor particular",
     "slug": "ventajas-de-tener-un-profesor-particular",
     "titulo": "Todo lo que debes saber sobre las clases de matemáticas y el rendimiento académico",
@@ -225,6 +212,19 @@
     "related_questions": [
       "¿Cuánto cuesta una hora de clases en Santo Domingo de los Tsáchilas?",
       "¿Dónde imparten la primera clase gratis de matemáticas?"
+    ]
+  },
+  {
+    "keyword_principal": "clases particulares para niños de primaria y secundaria",
+    "slug": "clases-particulares-para-ninos-de-primaria-y-secundaria",
+    "titulo": "Clases de primaria y secundaria en Santo Domingo de los Tsáchilas",
+    "long_tails": [
+      "Encuentra tu profesor ideal entre miles de profesores particulares de más de 350 materias",
+      "Clases particulares para niños de primaria y secundaria"
+    ],
+    "related_questions": [
+      "¿Qué materias cubren los centros de apoyo escolar en Santo Domingo?",
+      "¿Cómo ayudar a los niños con dificultades de aprendizaje escolar?"
     ]
   }
 ]
