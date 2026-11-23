@@ -1,17 +1,17 @@
 {
-  "keyword_pendiente": null,
-  "intentos_fallidos": 0,
+  "keyword_pendiente": "ventajas de tener un profesor particular",
+  "intentos_fallidos": 1,
   "ultimo_exito": "2026-11-19T17:11:12.039224",
-  "dias_desde_exito": 2,
-  "keyword_actual": "clases particulares para niños de primaria y secundaria",
-  "slug_actual": "clases-particulares-para-ninos-de-primaria-y-secundaria",
-  "titulo_actual": "Clases de primaria y secundaria en Santo Domingo de los Tsáchilas",
+  "dias_desde_exito": 4,
+  "keyword_actual": "ventajas de tener un profesor particular",
+  "slug_actual": "ventajas-de-tener-un-profesor-particular",
+  "titulo_actual": "Todo lo que debes saber sobre las clases de matemáticas y el rendimiento académico",
   "long_tails_actual": [
-    "Encuentra tu profesor ideal entre miles de profesores particulares de más de 350 materias",
-    "Clases particulares para niños de primaria y secundaria"
+    "beneficios de la tutoría individual",
+    "por qué contratar un tutor privado"
   ],
   "related_questions_actual": [
-    "¿Qué materias cubren los centros de apoyo escolar en Santo Domingo?",
-    "¿Cómo ayudar a los niños con dificultades de aprendizaje escolar?"
+    "¿Cómo mejora las calificaciones un profesor particular?",
+    "¿A qué señales prestar atención para saber si mi hijo necesita un tutor?"
   ]
 }
