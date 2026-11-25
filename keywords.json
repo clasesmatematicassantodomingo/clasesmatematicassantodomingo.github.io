@@ -156,19 +156,6 @@
     ]
   },
   {
-    "keyword_principal": "ventajas de tener un profesor particular",
-    "slug": "ventajas-de-tener-un-profesor-particular",
-    "titulo": "Todo lo que debes saber sobre las clases de matemáticas y el rendimiento académico",
-    "long_tails": [
-      "beneficios de la tutoría individual",
-      "por qué contratar un tutor privado"
-    ],
-    "related_questions": [
-      "¿Cómo mejora las calificaciones un profesor particular?",
-      "¿A qué señales prestar atención para saber si mi hijo necesita un tutor?"
-    ]
-  },
-  {
     "keyword_principal": "clases particulares en Ecuador",
     "slug": "clases-particulares-en-ecuador",
     "titulo": "Cuánto cuesta y cómo encontrar las mejores clases particulares en Ecuador",
@@ -225,6 +212,19 @@
     "related_questions": [
       "¿Cuánto cuesta una hora de clases en Santo Domingo de los Tsáchilas?",
       "¿Dónde imparten la primera clase gratis de matemáticas?"
+    ]
+  },
+  {
+    "keyword_principal": "ventajas de tener un profesor particular",
+    "slug": "ventajas-de-tener-un-profesor-particular",
+    "titulo": "Todo lo que debes saber sobre las clases de matemáticas y el rendimiento académico",
+    "long_tails": [
+      "beneficios de la tutoría individual",
+      "por qué contratar un tutor privado"
+    ],
+    "related_questions": [
+      "¿Cómo mejora las calificaciones un profesor particular?",
+      "¿A qué señales prestar atención para saber si mi hijo necesita un tutor?"
     ]
   }
 ]
